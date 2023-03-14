@@ -10,3 +10,21 @@ Dresseur::Dresseur(){
     v.x=0.5;
     v.y=0.5;
 }
+
+void Dresseur::DeplaGauche(){
+
+    dress.corps.x=dress.corps.x-v.x;
+
+}
+
+void Dresseur::DeplaDroite(){
+    dress.corps.x=dress.corps.x+v.x;
+}
+
+void Dresseur::DeplaHaut(){
+    dress.corps.y=dress.corps.y+v.y;
+}
+
+void Dresseur::DeplaBas(){
+    dress.corps.y=dress.corps.y-v.y;
+}
