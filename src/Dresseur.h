@@ -2,12 +2,15 @@
 #define _Dresseur_H
 
 #include "Vect2D.h"
+#include "Personne.h"
 
-class Dresseur {
+
+class Dresseur{
 
     private :
-        Vect2D position; // le corps du dresseur
+        Personne dress; // le corps du dresseur
         Vect2D pokbeall[10]; // Stock pokeball du dresseur
+        Vect2D v; // vitesse de deplacement
     
     public :
 
