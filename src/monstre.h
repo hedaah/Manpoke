@@ -1,26 +1,26 @@
-#include "Personne.h"
 #ifndef MONSTER_H
 #define MONSTER_H
 
-enum TypeMonstre {
-    petit,
-    moyen,
-    grand,
-    boss
+#include "Personne.h"
 
+enum TypeMonstre {
+  petit,
+  moyen,
+  grand,
+  boss
 };
 
 class Monstre: public Personne
 {
+  
   private :
 
   TypeMonstre m_type;
 
   public :
-  
-  float getX(); //retourne la position X 
 
-  float getY(); //retourne la positionn en Y
+  Monstre(unsigned short int x, unsigned short int y); // m_type = moyen, vie = 100;
+  Monstre(unsigned short int x, unsigned short int y, TypeMonstre type);
 
   void deplacerAuto(); // deplacement aléatoire des monstres
 

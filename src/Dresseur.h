@@ -5,24 +5,15 @@
 #include "Personne.h"
 
 
-class Dresseur{
+class Dresseur : public Personne{
 
     private :
-        Personne dress; // le corps du dresseur
         Vect2D pokbeall[10]; // Stock pokeball du dresseur
         Vect2D v; // vitesse de deplacement
     
     public :
 
         Dresseur();// constructeur
-
-        void DeplaGauche(); // vers la gauche
-
-        void DeplaDroite(); // VERS LA DROITE
-
-        void DeplaHaut(); // vers le Haut
-
-        void DeplaBas(); // vers le Bas
 
         void attaquer(); // generations des degats
 
