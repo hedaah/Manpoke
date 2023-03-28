@@ -1,7 +1,7 @@
-all: bin/Dresseur
+all: bin/texte
 
-texte: obj/dresseur.o obj/vect2D.o obj/monstre.o obj/personne.o obj/terrain.o obj/maintexte.o obj/wintxt.o
-	g++ -g -Wall obj/dresseur.o obj/vect2D.o obj/monstre.o obj/personne.o obj/terrain.o obj/maintexte.o obj/wintxt.o -o texte/texte.out
+bin/texte: obj/dresseur.o obj/vect2D.o obj/monstre.o obj/personne.o obj/terrain.o obj/maintexte.o obj/wintxt.o
+	g++ -g -Wall obj/dresseur.o obj/vect2D.o obj/monstre.o obj/personne.o obj/terrain.o obj/maintexte.o obj/wintxt.o -o bin/texte
 
 obj/dresseur.o: src/Dresseur.h src/Dresseur.cpp
 	g++ -c -Wall src/Dresseur.cpp -o obj/dresseur.o
@@ -21,7 +21,7 @@ obj/terrain.o: src/Terrain.h src/Terrain.cpp
 obj/maintexte.o: src/maintexte.cpp
 	g++ -c -Wall src/maintexte.cpp -o obj/maintexte.o
 
-obj/wintxt.o: texte/src/WinTXT.cpp texte/src/WinTXT.h
+obj/wintxt.o: texte/WinTXT.cpp texte/WinTXT.h
 	g++ -c -Wall texte/src/WinTXT.cpp -o obj/wintxt.o
 
 bin/test: obj/Dresseur.o obj/Personne.o obj/Pokeball.o
