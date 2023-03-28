@@ -8,6 +8,8 @@
 #include "Vect2D.h"
 #include "../texte/WinTXT.h"
 
+using namespace std;
+
 int main(){
     srand(time(NULL));
 
@@ -38,7 +40,7 @@ int main(){
         win.print(monstre1.getPosX(),monstre1.getPosY(),'M');
         win.print(monstre2.getPosX(),monstre2.getPosY(),'M');
         win.print(monstre3.getPosX(),monstre3.getPosY(),'M');
-
+         cout<<"oeoeoeo"<<endl;
         switch(c)
         {
             case 'z': // déplacement en haut
