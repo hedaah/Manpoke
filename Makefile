@@ -22,7 +22,7 @@ obj/maintexte.o: src/maintexte.cpp
 	g++ -c -Wall src/maintexte.cpp -o obj/maintexte.o
 
 obj/wintxt.o: texte/WinTXT.cpp texte/WinTXT.h
-	g++ -c -Wall texte/src/WinTXT.cpp -o obj/wintxt.o
+	g++ -c -Wall texte/WinTXT.cpp -o obj/wintxt.o
 
 bin/test: obj/Dresseur.o obj/Personne.o obj/Pokeball.o
 	g++ -g obj/Dresseur.o obj/Personne.o obj/Pokeball.o -o bin/test
