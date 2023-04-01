@@ -1,7 +1,16 @@
-all: bin/texte
+all: bin/texte bin/sdl
+
+bin/sdl : obj/main.o obj/sdl_aff.o 
+	g++ -g obj/main.o  obj/sdl_aff.o -o bin/sdl -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 bin/texte: obj/dresseur.o obj/vect2D.o obj/monstre.o obj/personne.o obj/terrain.o obj/maintexte.o obj/wintxt.o
 	g++ -g -Wall obj/dresseur.o obj/vect2D.o obj/monstre.o obj/personne.o obj/terrain.o obj/maintexte.o obj/wintxt.o -o bin/texte
+
+obj/main.o : sdl2/main.cpp sdl2/sdl_aff.h
+	g++ -g -o obj/main.o -Wall -c sdl2/main.cpp
+
+obj/sdl_aff.o: sdl2/sdl_aff.h sdl2/sdl_aff.cpp
+	g++ -g -o obj/sdl_aff.o -Wall -c sdl2/sdl_aff.cpp
 
 obj/dresseur.o: src/Dresseur.h src/Dresseur.cpp
 	g++ -c -Wall src/Dresseur.cpp -o obj/dresseur.o
@@ -24,8 +33,6 @@ obj/maintexte.o: src/maintexte.cpp
 obj/wintxt.o: texte/WinTXT.cpp texte/WinTXT.h
 	g++ -c -Wall texte/WinTXT.cpp -o obj/wintxt.o
 
-bin/test: obj/Dresseur.o obj/Personne.o obj/Pokeball.o
-	g++ -g obj/Dresseur.o obj/Personne.o obj/Pokeball.o -o bin/test
 
-obj/Dresseur.o : src/Dresseur.cpp src/Personne.h src/Personne.h
-	g++ -g -o  obj/mainTest.o -Wall -c src/Dresseur.cpp
+clean:
+	rm *.o
