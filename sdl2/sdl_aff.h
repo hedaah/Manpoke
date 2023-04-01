@@ -5,32 +5,49 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 
+#include "../src/Jeu.h"
+
 using namespace std;
 
 
-class jeu
-{
-    private :
+class Image {
 
-   
-    unsigned int dimx, dimy;        // les dimensions de l'image
-    SDL_Window * m_window;
-    SDL_Renderer * m_renderer;
-    SDL_Texture * m_texture ;
-    SDL_Surface * m_surface ;
+private:
+
+    SDL_Surface * m_surface;
+    SDL_Texture * m_texture;
     bool m_hasChanged;
 
-    public :
+public:
+    Image () ;
+    ~Image();
+    void loadFromFile (const char* filename, SDL_Renderer * renderer);
+    void loadFromCurrentSurface (SDL_Renderer * renderer);
+    void draw (SDL_Renderer * renderer, int x, int y, int w=-1, int h=-1);
+    SDL_Texture * getTexture() const;
+    void setSurface(SDL_Surface * surf);
+};
 
-    void afficherBoucle();
+
+class jeu {
+
+private :
+
+    SDL_Window * window;
+    SDL_Renderer * renderer;
+
+    TTF_Font * font;
+    Image font_im;
+    SDL_Color font_color;
+
+    Mix_Chunk * sound;
+    bool withSound;
+
+public :
 
     void afficherInit();
-
     void afficherDetruit();
-
+    void afficherBoucle();
     void afficher();
-
-
-
 
 };
