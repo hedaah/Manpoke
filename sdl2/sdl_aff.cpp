@@ -17,6 +17,7 @@ Image::~Image()
 
     m_surface = nullptr;
     m_texture = nullptr;
+
     m_hasChanged = false;
 }
 
@@ -83,11 +84,14 @@ void Image::setSurface(SDL_Surface * surf) {m_surface = surf;}
 
 // ============= CLASS SDLJEU =============== //
 
+jeu::jeu(){
+
+}
 
 void jeu:: afficherInit()
 
 {  
-
+    
     // On initialise SDL 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
             cout << "Erreur lors de l'initialisation de la SDL : " << SDL_GetError() << endl;
@@ -117,9 +121,12 @@ void jeu:: afficherInit()
     }
     else withSound = true;
 
+    
+    
+
     // On crée la fenetre
 
-    window = SDL_CreateWindow("manPoke", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 800, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    window = SDL_CreateWindow("manPoke", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 600, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (window == nullptr) {
         cout << "Erreur lors de la creation de la fenetre : " << SDL_GetError() << endl; 
         SDL_Quit(); 
@@ -128,14 +135,26 @@ void jeu:: afficherInit()
 
      renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
 
+    
+
 
      // Image 
-
+    im_Menu.loadFromFile("data/ecran_menu.jpg",renderer);
+    im_dresseur[0].loadFromFile("data/bas.png",renderer);
+    im_dresseur[1].loadFromFile("data/haut.png",renderer);
+    im_dresseur[2].loadFromFile("data/gauche.png",renderer);
+    im_dresseur[3].loadFromFile("data/droite.png",renderer);
 
      // Fonts
 
 
      // Sons
+     if(withSound){
+        sound=Mix_LoadWAV("data/ecran.mp3");
+        if(sound==nullptr){
+            cout<<"Failed to load son.mp d'ecran mp3"<<endl;
+        }
+     }
     
 }
 
@@ -153,24 +172,65 @@ void jeu:: afficherDetruit()
 
 void jeu:: afficherBoucle()
 {
-     bool quit=false;
+    bool quit=false;
      
-
-    SDL_Event windowEvent;
+    int i=0;
+    int k=0;
+    SDL_Event Event;
 
     while(!quit)
     {
-        while(SDL_PollEvent(&windowEvent))
-        {
-        if(windowEvent.type == SDL_QUIT){quit=true;}
-        }
-    
+        while(SDL_PollEvent(&Event))
+        {   
+            if(Event.type == SDL_QUIT) quit=true;
 
+            else if (Event.type == SDL_KEYDOWN) 
+            { 
+
+				switch (Event.key.keysym.scancode) 
+                {   
+                    case SDL_SCANCODE_RETURN:
+                        k=1;
+                        break;
+                    
+                    case SDL_SCANCODE_ESCAPE:
+                        quit = true;
+                        break;
+                    
+                    case SDL_SCANCODE_UP:
+                        i=1;
+                        break;
+                    
+                    case SDL_SCANCODE_DOWN:
+                        i=0;
+                        break;
+
+                    case SDL_SCANCODE_LEFT:
+                        i=2;
+                        break;
+                    
+                    case SDL_SCANCODE_RIGHT:
+                        i=3;
+                        break;
+                    
+                    default: break;
+				}
+			}
+        }
      SDL_SetRenderDrawColor(renderer,100,100,100,225);
      SDL_RenderClear(renderer);
-}
+     switch (k){
+        case 0:im_Menu.draw(renderer,0,0,1000,600);
+            Mix_PlayChannel(-1,sound,-1);
+            break;
+        case 1: im_dresseur[i].draw(renderer,game.getConstDresseur().getPosX(),game.getConstDresseur().getPosY(),50,50); 
+            break;
 
- afficherDetruit();
+     }
+     SDL_RenderPresent(renderer);
+
+    }
+    afficherDetruit();
 
 }
 

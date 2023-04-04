@@ -19,6 +19,7 @@ class Monstre: public Personne
 
   public :
 
+  Monstre();
   Monstre(unsigned short int x, unsigned short int y); // m_type = moyen, vie = 100;
   Monstre(unsigned short int x, unsigned short int y, TypeMonstre type);
 

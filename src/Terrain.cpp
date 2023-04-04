@@ -1,7 +1,8 @@
 #include <iostream>
-#include "Terrain.h"
 #include <stdlib.h>
 #include <time.h>
+#include "Terrain.h"
+
 
 const char terrain1[15][28] = {
  "###########################",

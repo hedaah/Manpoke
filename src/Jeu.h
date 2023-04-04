@@ -18,16 +18,20 @@ private :
 
 public :
 
-    Jeu ();
+    Jeu();
 
-    const Terrain& getConstTerrain () const;                        //< \brief accesseur nécesseaire pour l'affichage
-    const Dresseur& getConstPacman () const;                          //< \brief accesseur nécesseaire pour l'affichage
-    const Monstre& getConstFantome () const;                        //< \brief accesseur nécesseaire pour l'affichage
+
+    Terrain getConstTerrain () const;                        //< \brief accesseur nécesseaire pour l'affichage
+    Dresseur getConstDresseur () const;                          //< \brief accesseur nécesseaire pour l'affichage
+                                                                        //< \brief accesseur nécesseaire pour l'affichage
     int getNombreDeMonstre() const;                                 //< \brief accesseur nécesseaire pour l'affichage
 
     void actionsMonstre ();
-    bool actionClavier(const char touche);          //< \brief rend vrai si mange une pastille, faux sinon
+    void actionClavier(const char touche);          //< \brief rend vrai si mange une pastille, faux sinon
 
 };
+
+ 
+
 
 #endif

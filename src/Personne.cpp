@@ -20,11 +20,11 @@ void Personne::setVie(int x) {
     m_vie = x;
 }
 
-float Personne::getPosX() {
+int Personne::getPosX() {
      return m_corps.x;
 }
 
-float Personne::getPosY() {
+int Personne::getPosY() {
     return m_corps.y;
 }
 

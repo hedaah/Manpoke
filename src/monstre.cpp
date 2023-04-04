@@ -1,6 +1,10 @@
 #include <iostream>
 #include "monstre.h"
 
+Monstre::Monstre(){
+
+}
+
 Monstre::Monstre(unsigned short int x, unsigned short int y) {
     setPos((float)x,(float)y);
     m_type = moyen;
@@ -34,4 +38,8 @@ Monstre::Monstre(unsigned short int x, unsigned short int y, TypeMonstre type) {
         default : 
             break;
     }
+}
+
+void Monstre::deplacerAuto(){
+    
 }

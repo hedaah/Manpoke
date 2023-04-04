@@ -25,8 +25,8 @@ class Personne {
         int getVie();
         void setVie(int x);
 
-        float getPosX(); // récupère la position X de la personne.
-        float getPosY(); // récupère la position Y de la personne.
+        int getPosX(); // récupère la position X de la personne.
+        int getPosY(); // récupère la position Y de la personne.
         void setPos(float x, float y); // Définie la position de la personne.
 
         Direction getDir(); // récupère la direction de la personne.

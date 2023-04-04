@@ -1,6 +1,11 @@
 #include "Jeu.h"
 
-bool Jeu::actionClavier(const char touche){
+Jeu::Jeu(){
+
+}
+
+
+void Jeu::actionClavier(const char touche){
     switch (touche){
     case 'z':
             dres.moveUp();
@@ -28,3 +33,6 @@ void Jeu::actionsMonstre(){
         tab[i].deplacerAuto();
     }
 }
+
+Terrain Jeu::getConstTerrain() const {return ter;}
+ Dresseur Jeu::getConstDresseur() const {return dres;}

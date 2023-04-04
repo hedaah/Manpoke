@@ -9,14 +9,16 @@
 
 using namespace std;
 
-
 class Image {
 
 private:
 
     SDL_Surface * m_surface;
+    
     SDL_Texture * m_texture;
+
     bool m_hasChanged;
+
 
 public:
     Image () ;
@@ -33,8 +35,13 @@ class jeu {
 
 private :
 
+    Jeu game;
+
     SDL_Window * window;
     SDL_Renderer * renderer;
+    SDL_Renderer * menu;
+
+    SDL_Rect positionMenu;
 
     TTF_Font * font;
     Image font_im;
@@ -43,8 +50,12 @@ private :
     Mix_Chunk * sound;
     bool withSound;
 
+    Image im_Menu;
+    Image im_dresseur[4];
+
 public :
 
+    jeu();
     void afficherInit();
     void afficherDetruit();
     void afficherBoucle();
