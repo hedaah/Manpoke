@@ -12,36 +12,37 @@ void Jeu::actionClavier(const char touche){
     switch (touche){
     case 'z':
             dres.moveUp();
-            dres.LienPokD();
+            dres.LienPokD2();
             break;
 
     case 's':
             dres.moveDown();
-            dres.LienPokD();
+            dres.LienPokD2();
             break;
     
     case 'd':
             dres.moveRight();
-            dres.LienPokD();
+            dres.LienPokD2();
             break;
     
     case 'q':
             dres.moveLeft();
-            dres.LienPokD();
+            dres.LienPokD2();
             break;
     case 'a':
+        dres.attaquer2();
         //     while(dres.getBol()){
-            dres.attaquer(0);
+            //dres.attaquer(0);
             //cout<<"position du pokemon ="<<dres.getPoke(0).y<<endl;
-            cout<<"la distance entre le pokemon et dresseur est ="<<dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())<<endl;
-            if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==200){
-                        dres.setBolF();
-                        cout<<"la valeur boolen "<<dres.getBol()<<endl;
-                }
-            if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==201){
-                        dres.setBolF();
-                        cout<<"la valeur boolen "<<dres.getBol()<<endl;
-                }
+            //cout<<"la distance entre le pokemon et dresseur est ="<<dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())<<endl;
+            //if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==200){
+                        //dres.setBolF();
+                        //cout<<"la valeur boolen "<<dres.getBol()<<endl;
+                //}
+            //if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==201){
+                        //dres.setBolF();
+                        //cout<<"la valeur boolen "<<dres.getBol()<<endl;
+                //}
         //     }
         
             /*
