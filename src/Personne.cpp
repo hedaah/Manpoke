@@ -32,7 +32,9 @@ void Personne::setPos(float x, float y) {
     m_corps.x = x;
     m_corps.y = y;
 }
-
+Vect2D Personne::getVect2D(){
+    return m_corps;
+}
 Direction Personne::getDir() {
     return m_dir;
 }
@@ -42,21 +44,21 @@ void Personne::setDir(Direction dir) {
 }
 
 void Personne::moveLeft(){
-    setPos(getPosX() + 1.0, getPosY());
-    m_dir = bas;
+    setPos(getPosX() + 5.0, getPosY());
+    m_dir = gauche;
 }
 
 void Personne::moveRight(){
-    setPos(getPosX() - 1.0, getPosY());
+    setPos(getPosX() - 5.0, getPosY());
     m_dir = droite;
 }
 
 void Personne::moveUp(){
-    setPos(getPosX(), getPosY() + 1.0);
+    setPos(getPosX(), getPosY() + 3.0);
     m_dir = haut;
 }
 
 void Personne::moveDown(){
-    setPos(getPosX(), getPosY() - 1.0);
+    setPos(getPosX(), getPosY() - 3.0);
     m_dir = bas;  
 }

@@ -48,10 +48,13 @@ private :
     SDL_Color font_color;
 
     Mix_Chunk * sound;
+    Mix_Chunk * pas;
     bool withSound;
+    
 
     Image im_Menu;
     Image im_dresseur[4];
+    Image im_pokeball;
 
 public :
 

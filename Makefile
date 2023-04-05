@@ -6,7 +6,7 @@ bin/sdl : obj/main.o obj/sdl_aff.o obj/Jeu.o obj/Vect2D.o obj/Personne.o obj/Dre
 obj/main.o : sdl2/main.cpp sdl2/sdl_aff.h
 	g++ -g -o obj/main.o -Wall -c sdl2/main.cpp
 
-obj/sdl_aff.o: sdl2/sdl_aff.h sdl2/sdl_aff.h src/Jeu.h
+obj/sdl_aff.o: sdl2/sdl_aff.h sdl2/sdl_aff.cpp src/Jeu.h
 	g++ -g -o obj/sdl_aff.o -Wall -c sdl2/sdl_aff.cpp
 
 obj/Jeu.o : src/Jeu.h src/Jeu.cpp src/Dresseur.h src/monstre.h src/Terrain.h

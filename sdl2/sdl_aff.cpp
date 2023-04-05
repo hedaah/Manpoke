@@ -2,7 +2,10 @@
 #include <time.h>
 #include <cassert>
 #include <stdlib.h>
+#include <unistd.h>
+
 #include "sdl_aff.h"
+
 
 using namespace std;
 // ============= CLASS IMAGE =============== //
@@ -140,6 +143,7 @@ void jeu:: afficherInit()
 
      // Image 
     im_Menu.loadFromFile("data/ecran_menu.jpg",renderer);
+    im_pokeball.loadFromFile("data/pokeball.png",renderer);
     im_dresseur[0].loadFromFile("data/bas.png",renderer);
     im_dresseur[1].loadFromFile("data/haut.png",renderer);
     im_dresseur[2].loadFromFile("data/gauche.png",renderer);
@@ -151,9 +155,14 @@ void jeu:: afficherInit()
      // Sons
      if(withSound){
         sound=Mix_LoadWAV("data/ecran.mp3");
+        pas=Mix_LoadWAV("data/bruit_pas.wav");
         if(sound==nullptr){
-            cout<<"Failed to load son.mp d'ecran mp3"<<endl;
+            cout<<"Failed to load son d'ecran mp3"<<endl;
         }
+        if(pas==nullptr){
+            cout<<"Failed to load bruit pas wav"<<endl;
+        }
+
      }
     
 }
@@ -199,21 +208,66 @@ void jeu:: afficherBoucle()
                     
                     case SDL_SCANCODE_UP:
                         i=1;
+                        game.actionClavier('s');
+                        cout<<"position du dresseur en y = "<<game.getConstDresseur().getPosY()<<endl;
+                        cout<<"position du pokemon en y = "<<game.getConstDresseur().getPosYP(0)<<endl;
+                        cout<<"la direction du dresseur = "<<game.getConstDresseur().getDir()<<endl;
+                        //Mix_PlayChannel(-2,pas,-2);
                         break;
                     
                     case SDL_SCANCODE_DOWN:
                         i=0;
+                        game.actionClavier('z');
+                        cout<<"position du dresseur en y = "<<game.getConstDresseur().getPosY()<<endl;
+                        cout<<"position du pokemon en y = "<<game.getConstDresseur().getPosYP(0)<<endl;
+                        cout<<"la direction du dresseur = "<<game.getConstDresseur().getDir()<<endl;
+                        //im_pokeball.draw(renderer,game.getConstDresseur().getPosXP(),game.getConstDresseur().getPosYP(),10,10);
+                        //Mix_PlayChannel(-2,pas,-2);
                         break;
 
                     case SDL_SCANCODE_LEFT:
                         i=2;
+                        game.actionClavier('d');
+                        cout<<"position du dresseur en x = "<<game.getConstDresseur().getPosX()<<endl;
+                        cout<<"position du pokemon en x = "<<game.getConstDresseur().getPosXP(0)<<endl;
+                        cout<<"la direction du dresseur = "<<game.getConstDresseur().getDir()<<endl;
+
+                        //im_pokeball.draw(renderer,game.getConstDresseur().getPosXP(),game.getConstDresseur().getPosYP(),10,10);
+                        //Mix_PlayChannel(-2,pas,-2);
                         break;
                     
                     case SDL_SCANCODE_RIGHT:
                         i=3;
+                        game.actionClavier('q');
+                        cout<<"position du dresseur en x = "<<game.getConstDresseur().getPosX()<<endl;
+                        cout<<"position du pokemon en x = "<<game.getConstDresseur().getPosXP(0)<<endl;
+                        cout<<"la direction du dresseur = "<<game.getConstDresseur().getDir()<<endl;
+                        //im_pokeball.draw(renderer,game.getConstDresseur().getPosXP(),game.getConstDresseur().getPosYP(),10,10);
+                        //Mix_PlayChannel(-2,pas,-2);
                         break;
                     
-                    default: break;
+                    case SDL_SCANCODE_SPACE:
+                        //cout<<" 1- valeur du boolen ="<<game.getConstDresseur().getBol()<<endl;
+                        while(game.getConstDresseur().getBol()){
+                            
+                            game.actionClavier('a');
+                            //SDL_SetRenderDrawColor(renderer,100,100,100,225);
+                            SDL_RenderClear(renderer);
+                            im_pokeball.draw(renderer,game.getConstDresseur().getPosXP(0),game.getConstDresseur().getPosYP(0),20,20);
+                            im_dresseur[i].draw(renderer,game.getConstDresseur().getPosX(),game.getConstDresseur().getPosY(),50,50); 
+
+                            SDL_RenderPresent(renderer);
+
+                            
+
+                        }
+                        //game.getConstDresseur().setBolT();
+                        //cout<<"2- valeur du boolen ="<<game.getConstDresseur().getBol()<<endl;
+                        break;
+                    
+                    default: 
+                    Mix_Pause(-2);
+                    break;
 				}
 			}
         }
@@ -223,13 +277,16 @@ void jeu:: afficherBoucle()
         case 0:im_Menu.draw(renderer,0,0,1000,600);
             Mix_PlayChannel(-1,sound,-1);
             break;
-        case 1: im_dresseur[i].draw(renderer,game.getConstDresseur().getPosX(),game.getConstDresseur().getPosY(),50,50); 
+        case 1: 
+            im_pokeball.draw(renderer,game.getConstDresseur().getPosXP(0),game.getConstDresseur().getPosYP(0),20,20);
+            im_dresseur[i].draw(renderer,game.getConstDresseur().getPosX(),game.getConstDresseur().getPosY(),50,50); 
+            Mix_Pause(-1);
             break;
 
      }
      SDL_RenderPresent(renderer);
 
-    }
+    } 
     afficherDetruit();
 
 }
