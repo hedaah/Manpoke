@@ -1,4 +1,7 @@
 #include "Personne.h"
+#include <iostream>
+using namespace std;
+
 
 Personne::Personne(){
     m_corps.x=0.0;
@@ -20,11 +23,11 @@ void Personne::setVie(int x) {
     m_vie = x;
 }
 
-int Personne::getPosX() {
+float Personne::getPosX() {
      return m_corps.x;
 }
 
-int Personne::getPosY() {
+float Personne::getPosY() {
     return m_corps.y;
 }
 
@@ -41,24 +44,47 @@ Direction Personne::getDir() {
 
 void Personne::setDir(Direction dir) {
     m_dir = dir;
+
 }
 
-void Personne::moveLeft(){
-    setPos(getPosX() + 5.0, getPosY());
-    m_dir = gauche;
+void Personne::moveLeft(const Terrain & t){
+    cout<<"boolen vrai est "<<true<<endl;
+    cout<<t.Collision(m_corps.x,m_corps.y)<<endl;
+    if(t.Collision(getPosX()+1.0,getPosY())){
+        
+        setPos(getPosX() + 0.1, getPosY());
+        m_dir = gauche;
+    }
+    
+    //setPos(getPosX() + 0.1, getPosY());
 }
 
-void Personne::moveRight(){
-    setPos(getPosX() - 5.0, getPosY());
-    m_dir = droite;
+void Personne::moveRight(const Terrain & t){
+    cout<<"boolen vrai est "<<true<<endl;
+    cout<<t.Collision(m_corps.x,m_corps.y)<<endl;
+    if(t.Collision(getPosX()-1.0,getPosY())){
+        setPos(getPosX() - 0.1, getPosY());
+        m_dir = droite;
+    }
+    ////setPos(getPosX() - 0.1, getPosY());
 }
 
-void Personne::moveUp(){
-    setPos(getPosX(), getPosY() + 3.0);
-    m_dir = haut;
+void Personne::moveUp(const Terrain & t){
+    cout<<"boolen vrai est "<<true<<endl;
+    cout<<t.Collision(m_corps.x,m_corps.y)<<endl;
+    if(t.Collision(getPosX(),getPosY()+1)){
+        setPos(getPosX(), getPosY() + 1.0);
+        m_dir = haut;
+    }
+    //setPos(getPosX(), getPosY() + 0.1);
 }
 
-void Personne::moveDown(){
-    setPos(getPosX(), getPosY() - 3.0);
-    m_dir = bas;  
+void Personne::moveDown(const Terrain & t){
+    cout<<"boolen vrai est "<<true<<endl;
+    cout<<t.Collision(m_corps.x,m_corps.y)<<endl;
+    if(t.Collision(getPosX(),getPosY()-1)){
+        setPos(getPosX(), getPosY() - 1);
+        m_dir = bas;  
+    }
+    //setPos(getPosX(), getPosY() - 0.1);
 }

@@ -11,26 +11,28 @@ Jeu::Jeu(){
 void Jeu::actionClavier(const char touche){
     switch (touche){
     case 'z':
-            dres.moveUp();
+            dres.moveUp(ter);
             dres.LienPokD2();
             break;
 
     case 's':
-            dres.moveDown();
+            dres.moveDown(ter);
             dres.LienPokD2();
             break;
     
     case 'd':
-            dres.moveRight();
+            dres.moveRight(ter);
             dres.LienPokD2();
             break;
+
     
     case 'q':
-            dres.moveLeft();
+            dres.moveLeft(ter);
             dres.LienPokD2();
             break;
     case 'a':
         dres.attaquer2();
+        dres.LienPokD2();
         //     while(dres.getBol()){
             //dres.attaquer(0);
             //cout<<"position du pokemon ="<<dres.getPoke(0).y<<endl;
@@ -64,4 +66,4 @@ void Jeu::actionsMonstre(){
 }
 
 Terrain Jeu::getConstTerrain() const {return ter;}
- Dresseur Jeu::getConstDresseur() const {return dres;}
+Dresseur Jeu::getConstDresseur() const {return dres;}

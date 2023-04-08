@@ -124,12 +124,18 @@ void jeu:: afficherInit()
     }
     else withSound = true;
 
-    
+    int dimX,dimY;
+    dimX=game.getConstTerrain().getDimX();
+    dimY=game.getConstTerrain().getDimY();
+    dimX=dimX*37;
+    dimY=dimY*40;
+    cout<<"dimension de x ="<<dimX<<endl;
+    cout<<"dimension de y="<<dimY<<endl;
     
 
     // On crée la fenetre
 
-    window = SDL_CreateWindow("manPoke", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 600, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    window = SDL_CreateWindow("manPoke", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, dimX, dimY, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (window == nullptr) {
         cout << "Erreur lors de la creation de la fenetre : " << SDL_GetError() << endl; 
         SDL_Quit(); 
@@ -148,6 +154,11 @@ void jeu:: afficherInit()
     im_dresseur[1].loadFromFile("data/haut.png",renderer);
     im_dresseur[2].loadFromFile("data/gauche.png",renderer);
     im_dresseur[3].loadFromFile("data/droite.png",renderer);
+    im_mur.loadFromFile("data/mur.png",renderer);
+    im_herbe.loadFromFile("data/herbe.png",renderer);
+    im_pierre.loadFromFile("data/pierre.png",renderer);
+    im_porte.loadFromFile("data/porte2.png",renderer);
+    
 
      // Fonts
 
@@ -187,6 +198,15 @@ void jeu:: afficherBoucle()
     int k=0;
     SDL_Event Event;
 
+    int x,y;
+    Terrain ter=game.getConstTerrain();
+    Dresseur dres=game.getConstDresseur();
+    int restante=dres.GetnombreRestantesPokemon();
+
+    
+
+    //
+
     while(!quit)
     {
         while(SDL_PollEvent(&Event))
@@ -210,8 +230,9 @@ void jeu:: afficherBoucle()
                         i=1;
                         game.actionClavier('s');
                         cout<<"position du dresseur en y = "<<game.getConstDresseur().getPosY()<<endl;
-                        cout<<"position du pokemon en y = "<<game.getConstDresseur().getPosYSP()<<endl;
+                        cout<<"position du pokeball en y = "<<game.getConstDresseur().getPosYSP()<<endl;
                         cout<<"la direction du dresseur = "<<game.getConstDresseur().getDir()<<endl;
+                        //im_pokeball.draw(renderer,game.getConstDresseur().getPosXSP()*37,game.getConstDresseur().getPosYSP()*40,18,20);
                         //Mix_PlayChannel(-2,pas,-2);
                         break;
                     
@@ -219,8 +240,9 @@ void jeu:: afficherBoucle()
                         i=0;
                         game.actionClavier('z');
                         cout<<"position du dresseur en y = "<<game.getConstDresseur().getPosY()<<endl;
-                        cout<<"position du pokemon en y = "<<game.getConstDresseur().getPosYSP()<<endl;
+                        cout<<"position du pokeball en y = "<<game.getConstDresseur().getPosYSP()<<endl;
                         cout<<"la direction du dresseur = "<<game.getConstDresseur().getDir()<<endl;
+                        //im_pokeball.draw(renderer,game.getConstDresseur().getPosXSP()*37,game.getConstDresseur().getPosYSP()*40,18,20);
                         //im_pokeball.draw(renderer,game.getConstDresseur().getPosXP(),game.getConstDresseur().getPosYP(),10,10);
                         //Mix_PlayChannel(-2,pas,-2);
                         break;
@@ -229,8 +251,9 @@ void jeu:: afficherBoucle()
                         i=2;
                         game.actionClavier('d');
                         cout<<"position du dresseur en x = "<<game.getConstDresseur().getPosX()<<endl;
-                        cout<<"position du pokemon en x = "<<game.getConstDresseur().getPosXSP()<<endl;
+                        cout<<"position du pokeball en x = "<<game.getConstDresseur().getPosXSP()<<endl;
                         cout<<"la direction du dresseur = "<<game.getConstDresseur().getDir()<<endl;
+                        //im_pokeball.draw(renderer,game.getConstDresseur().getPosXSP()*37,game.getConstDresseur().getPosYSP()*40,18,20);
 
                         //im_pokeball.draw(renderer,game.getConstDresseur().getPosXP(),game.getConstDresseur().getPosYP(),10,10);
                         //Mix_PlayChannel(-2,pas,-2);
@@ -240,8 +263,9 @@ void jeu:: afficherBoucle()
                         i=3;
                         game.actionClavier('q');
                         cout<<"position du dresseur en x = "<<game.getConstDresseur().getPosX()<<endl;
-                        cout<<"position du pokemon en x = "<<game.getConstDresseur().getPosXSP()<<endl;
+                        cout<<"position du pokeball en x = "<<game.getConstDresseur().getPosXSP()<<endl;
                         cout<<"la direction du dresseur = "<<game.getConstDresseur().getDir()<<endl;
+                        //im_pokeball.draw(renderer,game.getConstDresseur().getPosXSP()*37,game.getConstDresseur().getPosYSP()*40,18,20);
                         //im_pokeball.draw(renderer,game.getConstDresseur().getPosXP(),game.getConstDresseur().getPosYP(),10,10);
                         //Mix_PlayChannel(-2,pas,-2);
                         break;
@@ -251,9 +275,10 @@ void jeu:: afficherBoucle()
                         //while(game.getConstDresseur().getBol()){
                             
                             game.actionClavier('a');
-                            cout<<"position du pokemon en x = "<<game.getConstDresseur().getPosXSP()<<endl;
-                            cout<<"position du pokemon en y = "<<game.getConstDresseur().getPosYSP()<<endl;
-                            im_pokeball.draw(renderer,game.getConstDresseur().getPosXSP(),game.getConstDresseur().getPosYSP(),20,20);
+                            cout<<"position du pokemon en x = "<<game.getConstDresseur().getPosXSPA()<<endl;
+                            cout<<"position du pokemon en y = "<<game.getConstDresseur().getPosYSPA()<<endl;
+                            im_pokeball.draw(renderer,game.getConstDresseur().getPosXSPA()*37,game.getConstDresseur().getPosYSPA()*40,18,20);
+                            //im_pokeball.draw(renderer,game.getConstDresseur().getPosXSP(),game.getConstDresseur().getPosYSP(),20,20);
 
 
                             
@@ -276,9 +301,33 @@ void jeu:: afficherBoucle()
             Mix_PlayChannel(-1,sound,-1);
             break;
         case 1: 
-            im_pokeball.draw(renderer,game.getConstDresseur().getPosXSP(),game.getConstDresseur().getPosYSP(),20,20);
-            im_dresseur[i].draw(renderer,game.getConstDresseur().getPosX(),game.getConstDresseur().getPosY(),50,50); 
-            Mix_Pause(-1);
+            
+            for(x=0;x<ter.getDimX();x++){
+                for(y=0;y<ter.getDimY();y++)
+                {
+                    switch (ter.getXY(x,y))
+                    {
+                    case '#':
+                        im_mur.draw(renderer,x*37,y*40,37,40);
+                        break;
+                    case '.':
+                        im_herbe.draw(renderer,x*37,y*40,37,40);
+                        break;
+                    case 'A':
+                        im_pierre.draw(renderer,x*37,y*40,37,40);
+                    //case 'D':
+                    //   im_porte.draw(renderer,x*67,y*30,67,30);
+                    
+                    }
+                    
+                }
+            }
+            cout<<restante<<endl;
+                im_pokeball.draw(renderer,game.getConstDresseur().getPosXSP()*37,game.getConstDresseur().getPosYSP()*40,18,20);
+                im_pokeball.draw(renderer,game.getConstDresseur().getPosXSPA()*37,game.getConstDresseur().getPosYSPA()*40,18,20);
+            
+            im_dresseur[i].draw(renderer,game.getConstDresseur().getPosX()*37,game.getConstDresseur().getPosY()*40,37,40); 
+            //Mix_Pause(-1);
             break;
 
      }
@@ -288,6 +337,7 @@ void jeu:: afficherBoucle()
     afficherDetruit();
 
 }
+
 
 void jeu:: afficher()
 {

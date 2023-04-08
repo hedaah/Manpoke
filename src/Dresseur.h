@@ -17,12 +17,12 @@ class Dresseur : public Personne{
 
     private :
         Vect2D pokeball[10]; // Stock pokeball du dresseur
-        Vect2D v; // vitesse de deplacement
-        bool lancer; //booleen pour gerer le lancer de pokeball
+        //Vect2D v; // vitesse de deplacement
+        //bool lancer; //booleen pour gerer le lancer de pokeball
 
         Pokeball StockPokeball[10]; //stock Pokeball du Dresseur VERSION 2
         int nb_RP; // nombre restantes de pokemon du Dresseur VERSION 2
-    
+        int nb_RPA;
     public :
 
         Dresseur();// constructeur
@@ -44,6 +44,11 @@ class Dresseur : public Personne{
         //Version 2//
         int getPosXSP(); //recupere la position x du pokeball[nb_RP]
         int getPosYSP(); //recupere la position x du pokeball[nb_RP]
+
+        int getPosXSPA(); //recupere la position x du pokeball lancé 
+        int getPosYSPA();  // recupere la position y du pokeball lancé
+
+        int GetnombreRestantesPokemon();
 
         void LienPokD2();
 

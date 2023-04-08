@@ -2,6 +2,7 @@
 #define _Personne_H
 
 #include "Vect2D.h"
+#include "Terrain.h"
 
     enum Direction{
         haut,
@@ -25,18 +26,18 @@ class Personne {
         int getVie();
         void setVie(int x);
 
-        int getPosX(); // récupère la position X de la personne.
-        int getPosY(); // récupère la position Y de la personne.
+        float getPosX(); // récupère la position X de la personne.
+        float getPosY(); // récupère la position Y de la personne.
         void setPos(float x, float y); // Définie la position de la personne.
 
         Vect2D getVect2D(); // recupere le vecteur de la personne
         Direction getDir(); // récupère la direction de la personne.
         void setDir(Direction dir); // définie la direction de la personne.
 
-        void moveLeft(); // déplacement vers la gauche
-        void moveRight(); // déplacement vers la droite
-        void moveUp(); // déplacement vers le haut
-        void moveDown(); // déplacement vers le bas
+        void moveLeft(const Terrain & t); // déplacement vers la gauche
+        void moveRight(const Terrain & t); // déplacement vers la droite
+        void moveUp(const Terrain & t); // déplacement vers le haut
+        void moveDown(const Terrain & t); // déplacement vers le bas
 };
 
 #endif

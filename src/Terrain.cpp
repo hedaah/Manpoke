@@ -2,154 +2,80 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Terrain.h"
-
+#include <cassert>
 
 const char terrain1[15][28] = {
  "###########################",
  "#.......##................#",
  "##D###..##..........#######",
  "#.......##................#",
- "#..#######................#",
- "#..##.....................#",
- "#......#...##.............#",
- "#####..#....#.........#####",
- "#......##...#.............#",
- "#......#....#.............#",
- "#.........................#",
- "#.........................#",
- "#.....#......#............#",
- "#.....#......#............#",
+ "#..#######..AAAAAA........#",
+ "#..##...........AA........#",
+ "#......#...##...AA........#",
+ "#####..#....#...AA....#####",
+ "#......##...#...AA........#",
+ "#......#....#...AA........#",
+ "#...........AAAAAAAAAAA...#",
+ "#....................AA...#",
+ "#.....#......#.......AA...#",
+ "#.....#......#.......AA...#",
  "###########################"
 };
 
-const char terrain2[15][28] = {
- "############D##############",
- "#?......##................#",
- "######..##..........#######",
- "#.......##................#",
- "#..#######................#",
- "#..##.....................#",
- "#......#...##.............#",
- "#####..#....#.........#####",
- "#......##...#.............#",
- "#......#....#.............#",
- "#.........................#",
- "#.........................#",
- "#.....#......#............#",
- "#.....#......#............#",
- "###########################"
-};
+/**/
 
-const char terrain3[15][28] = {
- "############D##############",
- "#?......##................#",
- "######..##..........#######",
- "#.......##................#",
- "#..#######................#",
- "#..##.....................#",
- "#......#...##.............#",
- "#####..#....#.........#####",
- "#......##...#.............#",
- "#......#....#.............#",
- "#.........................#",
- "#.........................#",
- "#.....#......#............#",
- "#.....#......#............#",
- "###########################"
-};
-
-const char m_terrain4[15][28] = {
- "############D##############",
- "#?......##................#",
- "######..##..........#######",
- "#.......##................#",
- "#..#######................#",
- "#..##.....................#",
- "#......#...##.............#",
- "#####..#....#.........#####",
- "#......##...#.............#",
- "#......#....#.............#",
- "#.........................#",
- "#.........................#",
- "#.....#......#............#",
- "#.....#......#............#",
- "###########################"
-};
-
-const char m_terrain5[15][28] = {
- "############D##############",
- "#?......##................#",
- "######..##..........#######",
- "#.......##................#",
- "#..#######................#",
- "#..##.....................#",
- "#......#...##.............#",
- "#####..#....#.........#####",
- "#......##...#.............#",
- "#......#....#.............#",
- "#.........................#",
- "#.........................#",
- "#.....#......#............#",
- "#.....#......#............#",
- "###########################"
-};
-
-
+ 
 
 Terrain::Terrain() {
-    dimx = 50;
-    dimy = 50;
-    srand(time(NULL));
-    for(unsigned int i = 0; i< dimx ; i++)
+    dimx = 27;
+    dimy = 15;
+    for(unsigned int i = 0; i< dimx ;++i)
     {
-        for(unsigned int j = 0; j < dimy; j++)
+        for(unsigned int j = 0; j < dimy; ++j)
         {
-            //std::cout << "Itération numéro : " << i << " " << j << " passée" << std::endl;
-            tab_ter[i][j] = '.'; // Caractère par défaut du niveau, représentant une case sur laquelle les entités (Personnes) peuvent marcher.
+            switch(terrain1[dimy-1-j][i])
+            {
+                case '#' : tab_terr[i][j]=WALL;
+                        break;
+
+                case '.' : tab_terr[i][j]=GRASS;
+                        break;
+
+                case 'D' : tab_terr[i][j]=DOOR;
+                        break;
+
+                case 'A': tab_terr[i][j]=ST;
+                        break;
+            }
         }
     }
-
-    for(unsigned int i = 0; i < 5; i++)
-    {
-        tab_ter[(unsigned int)rand() % dimx][(unsigned int)rand() % dimy] = '#';
-    }
+    
 }
 
-Terrain::Terrain(unsigned short x, unsigned short y) {
-    dimx = x;
-    dimy = y;
-    srand(time(NULL));
-    for(unsigned int i = 0; i< dimx ; i++)
-    {
-        for(unsigned int j = 0; j < dimy; j++)
-        {
-            tab_ter[i][j] = '.'; // Caractère par défaut du niveau, représentant une case sur laquelle les entités (Personnes) peuvent marcher.
-        }
-    }
-
-    for(unsigned int i = 0; i < 5; i++) // Pour le mode texte on génére un niveau aléatoire contenant seulement 5 obstacles.
-    {
-        tab_ter[(unsigned int)rand() % dimx][(unsigned int)rand() % dimy] = '#';
-    }
-}
 
 Terrain::~Terrain() {
     dimx=0;
     dimy=0;
 }
 
-char Terrain::getXY(unsigned short int x,unsigned short int y){
-    return tab_ter[x][y];
+bool Terrain::Collision(float x,float y)const {
+    int x_int = static_cast<int>(x);
+    int y_int = static_cast<int>(y);
+    return ((x_int >= 0) && (x_int < dimx) && (y_int >= 0) && (y_int < dimy) && (tab_terr[x_int][y_int] != '#'));
 }
 
-bool Terrain::Collision(unsigned short int x, unsigned short int y){
-    return getXY(x,y) == '#';
+Terrain::TypeCase Terrain::getXY(unsigned int x,unsigned  int y)const {
+    assert(x>=0);
+    assert(y>=0);
+    assert(x<dimx);
+    assert(y<dimy);
+    return tab_terr[x][y];
 }
 
-unsigned short int Terrain::getDimX(){
+unsigned int Terrain::getDimX(){
     return dimx;
 }
 
-unsigned short int Terrain::getDimY(){
+unsigned  int Terrain::getDimY(){
     return dimy;
 }

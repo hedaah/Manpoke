@@ -5,13 +5,13 @@ using namespace std;
 
 Dresseur::Dresseur(){
     
-    setPos(450,200);
+    setPos(1,1);
     setVie(1000);
     for(int i=0;i<=10;i++){
 
         //version 2 du stock pokeball //
         StockPokeball[i].p.x=getPosX();
-        StockPokeball[i].p.y=getPosY()+20;
+        StockPokeball[i].p.y=getPosY()+0.8;
         StockPokeball[i].vie=-1;
         StockPokeball[i].lancement=true;
 
@@ -93,40 +93,71 @@ int Dresseur::getPosYSP(){
     return StockPokeball[nb_RP].p.y;
 }
 
+int Dresseur::getPosXSPA(){
+    return StockPokeball[nb_RP+1].p.x;
+}
+
+int Dresseur::getPosYSPA(){
+    return StockPokeball[nb_RP+1].p.y;
+}
+
+int Dresseur::GetnombreRestantesPokemon(){
+    return nb_RP;
+}
 void Dresseur::LienPokD2(){
-    StockPokeball[nb_RP].p.x=getPosX();
-    StockPokeball[nb_RP].p.y=getPosY()+20;
+    if(nb_RP>=0){
+        StockPokeball[nb_RP].p.x=getPosX();
+        StockPokeball[nb_RP].p.y=getPosY();
+    }
 
 }
 
 void Dresseur::attaquer2(){
-    for(int i=0;i<=10;i++)
+    for(int i=0;i<10;i++)
     {
         StockPokeball[i].degat=25;
     }
     switch (getDir())
     {
-    case 0:
+    case 0: //bas
         if(nb_RP>=0){
-            while (StockPokeball[nb_RP].lancement)
+            /*while (StockPokeball[nb_RP].lancement)
             {
-                StockPokeball[nb_RP].p.y=StockPokeball[nb_RP].p.y+0.10;
+                StockPokeball[nb_RP].p.y=StockPokeball[nb_RP].p.y+0.1;
+                //
                 cout<<"position du pokeball["<<nb_RP<< "]en y = "<<StockPokeball[nb_RP].p.x<<" et sa distance avec le dresseur est = "<<StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())<<endl;
                 if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=200) StockPokeball[nb_RP].lancement=false;
 
             }
             StockPokeball[nb_RP].vie=0;  
             nb_RP--;
+            */
+
+          if (StockPokeball[nb_RP].lancement){
+            
+                StockPokeball[nb_RP].p.y=StockPokeball[nb_RP].p.y+0.1;
+                cout<<"position du pokeball["<<nb_RP<< "]en y = "<<StockPokeball[nb_RP].p.x<<" et sa distance avec le dresseur est = "<<StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())<<endl;
+                }
+                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=2){
+
+                StockPokeball[nb_RP].lancement=false;
+
+            
+                StockPokeball[nb_RP].vie=0;  
+                nb_RP--;
+                }
+            
         }
         break;
 
     case 1:
         if(nb_RP>=0){
+            nb_RPA=nb_RP;
             while (StockPokeball[nb_RP].lancement)
             {
-                StockPokeball[nb_RP].p.y=StockPokeball[nb_RP].p.y-0.10;
+                StockPokeball[nb_RP].p.y=StockPokeball[nb_RP].p.y-0.1;
                 cout<<"position du pokeball["<<nb_RP<< "]en y = "<<StockPokeball[nb_RP].p.x<<" et sa distance avec le dresseur est = "<<StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())<<endl;
-                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=200) StockPokeball[nb_RP].lancement=false;
+                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=2) StockPokeball[nb_RP].lancement=false;
 
             }
             StockPokeball[nb_RP].vie=0;  
@@ -136,11 +167,12 @@ void Dresseur::attaquer2(){
 
     case 2:
         if(nb_RP>=0){
+            nb_RPA=nb_RP;
             while (StockPokeball[nb_RP].lancement)
             {
-                StockPokeball[nb_RP].p.x=StockPokeball[nb_RP].p.x+0.10;
+                StockPokeball[nb_RP].p.x=StockPokeball[nb_RP].p.x+0.1;
                 cout<<"position du pokeball["<<nb_RP<< "]en x = "<<StockPokeball[nb_RP].p.x<<" et sa distance avec le dresseur est = "<<StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())<<endl;
-                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=200) StockPokeball[nb_RP].lancement=false;
+                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=4) StockPokeball[nb_RP].lancement=false;
 
             }
             StockPokeball[nb_RP].vie=0;  
@@ -148,13 +180,13 @@ void Dresseur::attaquer2(){
         }
         break;
 
-    case 3:
+    case 3: 
         if(nb_RP>=0){
             while (StockPokeball[nb_RP].lancement)
             {
-                StockPokeball[nb_RP].p.x=StockPokeball[nb_RP].p.x-0.10;
+                StockPokeball[nb_RP].p.x=StockPokeball[nb_RP].p.x-0.1;
                 cout<<"position du pokeball["<<nb_RP<< "]en x = "<<StockPokeball[nb_RP].p.x<<" et sa distance avec le dresseur est = "<<StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())<<endl;
-                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=200) StockPokeball[nb_RP].lancement=false;
+                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=4) StockPokeball[nb_RP].lancement=false;
 
             }
             StockPokeball[nb_RP].vie=0;  

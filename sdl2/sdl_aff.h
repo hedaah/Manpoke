@@ -55,6 +55,11 @@ private :
     Image im_Menu;
     Image im_dresseur[4];
     Image im_pokeball;
+    Image im_mur;
+    Image im_herbe;
+    Image im_porte;
+    Image im_pierre;
+    Image im_water;
 
 public :
 
