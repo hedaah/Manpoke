@@ -1,9 +1,9 @@
-#include "sdl_aff.h"
+#include "../src/Jeu.h"
 
 int main(int argc, char** argv)
 
 {
-    jeu a;
+    Jeu a;
     a.afficher();
 
     return 0;

@@ -3,6 +3,11 @@
 
 #include "Vect2D.h"
 #include "Terrain.h"
+#include "../sdl2/Image.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 
     enum Direction{
         haut,
@@ -17,6 +22,9 @@ class Personne {
         int m_vie;
 
         Direction m_dir;
+
+        Image im_sprite[4]; // chaque sprite possède une image pour chaque directions.
+        
 
     public: 
         Personne(); // constructeur, toutes les données membres à 0 et la direction en bas, ces données seront gérées par les classes Monstre et Personne qui héritent de cette classe.
@@ -33,6 +41,8 @@ class Personne {
         Vect2D getVect2D(); // recupere le vecteur de la personne
         Direction getDir(); // récupère la direction de la personne.
         void setDir(Direction dir); // définie la direction de la personne.
+
+        Image* getImageSprite();
 
         void moveLeft(const Terrain & t); // déplacement vers la gauche
         void moveRight(const Terrain & t); // déplacement vers la droite

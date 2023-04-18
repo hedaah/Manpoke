@@ -10,10 +10,10 @@ Dresseur::Dresseur(){
     for(int i=0;i<=10;i++){
 
         //version 2 du stock pokeball //
-        StockPokeball[i].p.x=getPosX();
-        StockPokeball[i].p.y=getPosY()+0.8;
-        StockPokeball[i].vie=-1;
-        StockPokeball[i].lancement=true;
+        tab_StockPokeball[i].vec2_p.x=getPosX();
+        tab_StockPokeball[i].vec2_p.y=getPosY()+0.8;
+        tab_StockPokeball[i].m_Vie=-1;
+        tab_StockPokeball[i].b_Lancement=true;
 
     }
 
@@ -86,19 +86,19 @@ void Dresseur::attaquer(int entier){
 // VERSION 2//
 
 int Dresseur::getPosXSP(){
-    return StockPokeball[nb_RP].p.x;
+    return tab_StockPokeball[nb_RP].vec2_p.x;
 }
 
 int Dresseur::getPosYSP(){
-    return StockPokeball[nb_RP].p.y;
+    return tab_StockPokeball[nb_RP].vec2_p.y;
 }
 
 int Dresseur::getPosXSPA(){
-    return StockPokeball[nb_RP+1].p.x;
+    return tab_StockPokeball[nb_RP+1].vec2_p.x;
 }
 
 int Dresseur::getPosYSPA(){
-    return StockPokeball[nb_RP+1].p.y;
+    return tab_StockPokeball[nb_RP+1].vec2_p.y;
 }
 
 int Dresseur::GetnombreRestantesPokemon(){
@@ -106,8 +106,8 @@ int Dresseur::GetnombreRestantesPokemon(){
 }
 void Dresseur::LienPokD2(){
     if(nb_RP>=0){
-        StockPokeball[nb_RP].p.x=getPosX();
-        StockPokeball[nb_RP].p.y=getPosY();
+        tab_StockPokeball[nb_RP].vec2_p.x=getPosX();
+        tab_StockPokeball[nb_RP].vec2_p.y=getPosY();
     }
 
 }
@@ -115,35 +115,35 @@ void Dresseur::LienPokD2(){
 void Dresseur::attaquer2(){
     for(int i=0;i<10;i++)
     {
-        StockPokeball[i].degat=25;
+        tab_StockPokeball[i].m_Degat=25;
     }
     switch (getDir())
     {
     case 0: //bas
         if(nb_RP>=0){
-            /*while (StockPokeball[nb_RP].lancement)
+            /*while (StockPokeball[nb_RP].b_Lancement)
             {
-                StockPokeball[nb_RP].p.y=StockPokeball[nb_RP].p.y+0.1;
+                StockPokeball[nb_RP].vec2_p.y=StockPokeball[nb_RP].vec2_p.y+0.1;
                 //
-                cout<<"position du pokeball["<<nb_RP<< "]en y = "<<StockPokeball[nb_RP].p.x<<" et sa distance avec le dresseur est = "<<StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())<<endl;
-                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=200) StockPokeball[nb_RP].lancement=false;
+                cout<<"position du pokeball["<<nb_RP<< "]en y = "<<StockPokeball[nb_RP].vec2_p.x<<" et sa distance avec le dresseur est = "<<StockPokeball[nb_RP].vec2_p.distance2(StockPokeball[nb_RP].vec2_p,getVect2D())<<endl;
+                if(StockPokeball[nb_RP].vec2_p.distance2(StockPokeball[nb_RP].vec2_p,getVect2D())>=200) StockPokeball[nb_RP].b_Lancement=false;
 
             }
             StockPokeball[nb_RP].vie=0;  
             nb_RP--;
             */
 
-          if (StockPokeball[nb_RP].lancement){
+          if (tab_StockPokeball[nb_RP].b_Lancement){
             
-                StockPokeball[nb_RP].p.y=StockPokeball[nb_RP].p.y+0.1;
-                cout<<"position du pokeball["<<nb_RP<< "]en y = "<<StockPokeball[nb_RP].p.x<<" et sa distance avec le dresseur est = "<<StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())<<endl;
+                tab_StockPokeball[nb_RP].vec2_p.y=tab_StockPokeball[nb_RP].vec2_p.y+0.1;
+                cout<<"position du pokeball["<<nb_RP<< "]en y = "<<tab_StockPokeball[nb_RP].vec2_p.x<<" et sa distance avec le dresseur est = "<<tab_StockPokeball[nb_RP].vec2_p.distance2(tab_StockPokeball[nb_RP].vec2_p,getVect2D())<<endl;
                 }
-                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=2){
+                if(tab_StockPokeball[nb_RP].vec2_p.distance2(tab_StockPokeball[nb_RP].vec2_p,getVect2D())>=2){
 
-                StockPokeball[nb_RP].lancement=false;
+                tab_StockPokeball[nb_RP].b_Lancement=false;
 
             
-                StockPokeball[nb_RP].vie=0;  
+                tab_StockPokeball[nb_RP].m_Vie=0;  
                 nb_RP--;
                 }
             
@@ -153,14 +153,14 @@ void Dresseur::attaquer2(){
     case 1:
         if(nb_RP>=0){
             nb_RPA=nb_RP;
-            while (StockPokeball[nb_RP].lancement)
+            while (tab_StockPokeball[nb_RP].b_Lancement)
             {
-                StockPokeball[nb_RP].p.y=StockPokeball[nb_RP].p.y-0.1;
-                cout<<"position du pokeball["<<nb_RP<< "]en y = "<<StockPokeball[nb_RP].p.x<<" et sa distance avec le dresseur est = "<<StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())<<endl;
-                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=2) StockPokeball[nb_RP].lancement=false;
+                tab_StockPokeball[nb_RP].vec2_p.y=tab_StockPokeball[nb_RP].vec2_p.y-0.1;
+                cout<<"position du pokeball["<<nb_RP<< "]en y = "<<tab_StockPokeball[nb_RP].vec2_p.x<<" et sa distance avec le dresseur est = "<<tab_StockPokeball[nb_RP].vec2_p.distance2(tab_StockPokeball[nb_RP].vec2_p,getVect2D())<<endl;
+                if(tab_StockPokeball[nb_RP].vec2_p.distance2(tab_StockPokeball[nb_RP].vec2_p,getVect2D())>=2) tab_StockPokeball[nb_RP].b_Lancement=false;
 
             }
-            StockPokeball[nb_RP].vie=0;  
+            tab_StockPokeball[nb_RP].m_Vie=0;  
             nb_RP--;
         }
         break;
@@ -168,28 +168,28 @@ void Dresseur::attaquer2(){
     case 2:
         if(nb_RP>=0){
             nb_RPA=nb_RP;
-            while (StockPokeball[nb_RP].lancement)
+            while (tab_StockPokeball[nb_RP].b_Lancement)
             {
-                StockPokeball[nb_RP].p.x=StockPokeball[nb_RP].p.x+0.1;
-                cout<<"position du pokeball["<<nb_RP<< "]en x = "<<StockPokeball[nb_RP].p.x<<" et sa distance avec le dresseur est = "<<StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())<<endl;
-                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=4) StockPokeball[nb_RP].lancement=false;
+                tab_StockPokeball[nb_RP].vec2_p.x=tab_StockPokeball[nb_RP].vec2_p.x+0.1;
+                cout<<"position du pokeball["<<nb_RP<< "]en x = "<<tab_StockPokeball[nb_RP].vec2_p.x<<" et sa distance avec le dresseur est = "<<tab_StockPokeball[nb_RP].vec2_p.distance2(tab_StockPokeball[nb_RP].vec2_p,getVect2D())<<endl;
+                if(tab_StockPokeball[nb_RP].vec2_p.distance2(tab_StockPokeball[nb_RP].vec2_p,getVect2D())>=4) tab_StockPokeball[nb_RP].b_Lancement=false;
 
             }
-            StockPokeball[nb_RP].vie=0;  
+            tab_StockPokeball[nb_RP].m_Vie=0;  
             nb_RP--;
         }
         break;
 
     case 3: 
         if(nb_RP>=0){
-            while (StockPokeball[nb_RP].lancement)
+            while (tab_StockPokeball[nb_RP].b_Lancement)
             {
-                StockPokeball[nb_RP].p.x=StockPokeball[nb_RP].p.x-0.1;
-                cout<<"position du pokeball["<<nb_RP<< "]en x = "<<StockPokeball[nb_RP].p.x<<" et sa distance avec le dresseur est = "<<StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())<<endl;
-                if(StockPokeball[nb_RP].p.distance2(StockPokeball[nb_RP].p,getVect2D())>=4) StockPokeball[nb_RP].lancement=false;
+                tab_StockPokeball[nb_RP].vec2_p.x=tab_StockPokeball[nb_RP].vec2_p.x-0.1;
+                cout<<"position du pokeball["<<nb_RP<< "]en x = "<<tab_StockPokeball[nb_RP].vec2_p.x<<" et sa distance avec le dresseur est = "<<tab_StockPokeball[nb_RP].vec2_p.distance2(tab_StockPokeball[nb_RP].vec2_p,getVect2D())<<endl;
+                if(tab_StockPokeball[nb_RP].vec2_p.distance2(tab_StockPokeball[nb_RP].vec2_p,getVect2D())>=4) tab_StockPokeball[nb_RP].b_Lancement=false;
 
             }
-            StockPokeball[nb_RP].vie=0;  
+            tab_StockPokeball[nb_RP].m_Vie=0;  
             nb_RP--;
         }
         break;
@@ -197,4 +197,20 @@ void Dresseur::attaquer2(){
     default:
         break;
     }
+}
+
+unsigned short int Dresseur::getNbPokeball() {
+    return m_nbPokeball;
+}
+
+void Dresseur::setNbPokeball(unsigned short int x) {
+    if (x > 10) {
+        cout << x << " le setter du nombre de pokeball a tenté de set un nombre de pokéball supérieur à 10, fonction échouée." << endl;
+        return;
+    }
+    m_nbPokeball = x;
+}
+
+Pokeball* Dresseur::getTabPokeball(){
+    return tab_StockPokeball;
 }

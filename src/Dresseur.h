@@ -3,12 +3,18 @@
 
 #include "Vect2D.h"
 #include "Personne.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 
 struct Pokeball {
-    Vect2D p; // position
-    int vie; //sa vie
-    int degat; //son degat
-    bool lancement; // boolen pour gerer le lancement
+    Vect2D vec2_p; // position
+    int m_Vie; //sa vie
+    int m_Degat; //son degat
+    bool b_Lancement; // boolen pour gerer le lancement
+
+    Image im_pokeball;
 
 };
 
@@ -16,13 +22,18 @@ struct Pokeball {
 class Dresseur : public Personne{
 
     private :
-        Vect2D pokeball[10]; // Stock pokeball du dresseur
+        //Vect2D vec2_pokeball[10]; // Stock pokeball du dresseur
         //Vect2D v; // vitesse de deplacement
         //bool lancer; //booleen pour gerer le lancer de pokeball
 
-        Pokeball StockPokeball[10]; //stock Pokeball du Dresseur VERSION 2
+        Pokeball tab_StockPokeball[10]; //stock Pokeball du Dresseur VERSION 2
+        unsigned short int m_nbPokeball;
         int nb_RP; // nombre restantes de pokemon du Dresseur VERSION 2
         int nb_RPA;
+
+        
+
+
     public :
 
         Dresseur();// constructeur
@@ -47,6 +58,11 @@ class Dresseur : public Personne{
 
         int getPosXSPA(); //recupere la position x du pokeball lancé 
         int getPosYSPA();  // recupere la position y du pokeball lancé
+
+        unsigned short int getNbPokeball();
+        void setNbPokeball(unsigned short int x);
+
+        Pokeball* getTabPokeball();
 
         int GetnombreRestantesPokemon();
 

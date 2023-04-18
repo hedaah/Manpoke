@@ -88,3 +88,7 @@ void Personne::moveDown(const Terrain & t){
     }
     //setPos(getPosX(), getPosY() - 0.1);
 }
+
+Image* Personne::getImageSprite(){
+    return &im_sprite[0];
+}

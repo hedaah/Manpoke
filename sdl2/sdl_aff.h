@@ -8,7 +8,7 @@
 #include "../src/Jeu.h"
 
 using namespace std;
-
+/*
 class Image {
 
 private:
@@ -29,13 +29,12 @@ public:
     SDL_Texture * getTexture() const;
     void setSurface(SDL_Surface * surf);
 };
+*/
 
-
-class jeu {
+/*class jeu {
 
 private :
 
-    Jeu game;
 
     SDL_Window * window;
     SDL_Renderer * renderer;
@@ -69,4 +68,4 @@ public :
     void afficherBoucle();
     void afficher();
 
-};
+};*/

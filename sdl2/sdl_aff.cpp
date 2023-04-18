@@ -8,6 +8,7 @@
 
 
 using namespace std;
+/*
 // ============= CLASS IMAGE =============== //
 
 Image::Image () : m_surface(nullptr), m_texture(nullptr), m_hasChanged(false) {
@@ -83,15 +84,15 @@ void Image::draw (SDL_Renderer * renderer, int x, int y, int w, int h) {
 SDL_Texture * Image::getTexture() const {return m_texture;}
 
 void Image::setSurface(SDL_Surface * surf) {m_surface = surf;}
-
+*/
 
 // ============= CLASS SDLJEU =============== //
-
-jeu::jeu(){
+/*
+Jeu::Jeu(){
 
 }
 
-void jeu:: afficherInit()
+void Jeu::afficherInit()
 
 {  
     
@@ -345,4 +346,4 @@ void jeu:: afficher()
     afficherBoucle();
 }
 
-
+*/
