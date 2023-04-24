@@ -18,13 +18,17 @@
 
 class Personne {
     private:
-        Vect2D m_corps;
         int m_vie;
+        unsigned short int m_internalMovingState;
+        bool b_isMoving;
 
+        Vect2D m_corps;
         Direction m_dir;
 
         Image im_sprite[4]; // chaque sprite possède une image pour chaque directions.
+        Image im_sprites;
         
+        SDL_Rect rect_spritesPart[4][4];
 
     public: 
         Personne(); // constructeur, toutes les données membres à 0 et la direction en bas, ces données seront gérées par les classes Monstre et Personne qui héritent de cette classe.
@@ -39,10 +43,17 @@ class Personne {
         void setPos(float x, float y); // Définie la position de la personne.
 
         Vect2D getVect2D(); // recupere le vecteur de la personne
+
         Direction getDir(); // récupère la direction de la personne.
         void setDir(Direction dir); // définie la direction de la personne.
 
-        Image* getImageSprite();
+        void getMovingState(bool& isMoving, unsigned short int& internalMovingState);
+        void setMovingState(const bool& isMoving, const unsigned short int& internalMovingState);
+        unsigned short int getInternalMovingState();
+
+        Image& getImageSprite();
+
+        SDL_Rect* getTabSpritesRect(Direction dir);
 
         void moveLeft(const Terrain & t); // déplacement vers la gauche
         void moveRight(const Terrain & t); // déplacement vers la droite

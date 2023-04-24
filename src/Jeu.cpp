@@ -13,10 +13,32 @@ Jeu::Jeu(){
     {
         dres.getTabPokeball()[i].im_pokeball.loadFromFile("data/pokeball.png", renderer);
     }
-    dres.getImageSprite()[haut].loadFromFile("data/haut.png",renderer);
+    /*dres.getImageSprite()[haut].loadFromFile("data/haut.png",renderer);
     dres.getImageSprite()[gauche].loadFromFile("data/gauche.png",renderer);
     dres.getImageSprite()[bas].loadFromFile("data/bas.png",renderer);
-    dres.getImageSprite()[droite].loadFromFile("data/droite.png",renderer);
+    dres.getImageSprite()[droite].loadFromFile("data/droite.png",renderer);*/
+
+    dres.getImageSprite().loadFromFile("data/trainer.png",renderer);
+    dres.getTabSpritesRect(haut)[0] = {0,192,64,64};
+    dres.getTabSpritesRect(haut)[1] = {64,192,64,64};
+    dres.getTabSpritesRect(haut)[2] = {128,192,64,64};
+    dres.getTabSpritesRect(haut)[3] = {192,192,64,64};
+
+    dres.getTabSpritesRect(bas)[0] = {0,0,64,64};
+    dres.getTabSpritesRect(bas)[1] = {64,0,64,64};
+    dres.getTabSpritesRect(bas)[2] = {128,0,64,64};
+    dres.getTabSpritesRect(bas)[3] = {192,0,64,64};
+
+    dres.getTabSpritesRect(gauche)[0] = {0,64,64,64};
+    dres.getTabSpritesRect(gauche)[1] = {64,64,64,64};
+    dres.getTabSpritesRect(gauche)[2] = {128,64,64,64};
+    dres.getTabSpritesRect(gauche)[3] = {192,64,64,64};
+
+    dres.getTabSpritesRect(droite)[0] = {0,128,64,64};
+    dres.getTabSpritesRect(droite)[1] = {64,128,64,64};
+    dres.getTabSpritesRect(droite)[2] = {128,128,64,64};
+    dres.getTabSpritesRect(droite)[3] = {192,128,64,64};
+
 
     ter.setImageTerrain(GRASS,"data/herbe.png",renderer);
     ter.setImageTerrain(WALL,"data/mur.png",renderer);
@@ -26,27 +48,44 @@ Jeu::Jeu(){
 
 
 void Jeu::actionClavier(const char touche){
+    bool moving;
+    unsigned short int movingState;
+    dres.getMovingState(moving,movingState);
+    cout << "moving : " << moving << " movingState : " << movingState << " direction : " << dres.getDir() << endl; 
+    if (moving == true) 
+    {
+        return; //Si le joueur est déjà en mouvement, on fait rien et on attend la fin de son déplacement actuel.
+    }
     switch (touche){
     case 'z':
-            dres.moveUp(ter);
+        if (moving == false) {
+            dres.setMovingState(true,0);
+            dres.setDir(haut);
             dres.LienPokD2();
-            break;
+        }
+        break;
 
     case 's':
-            dres.moveDown(ter);
+        if (moving == false) {
+            dres.setMovingState(true,0);
+            dres.setDir(bas);
             dres.LienPokD2();
-            break;
-    
+        }
+        break;
     case 'd':
-            dres.moveRight(ter);
+        if (moving == false) {
+            dres.setMovingState(true,0);
+            dres.setDir(droite);
             dres.LienPokD2();
-            break;
-
-    
+        }
+        break;
     case 'q':
-            dres.moveLeft(ter);
+        if (moving == false) {
+            dres.setMovingState(true,0);
+            dres.setDir(gauche);
             dres.LienPokD2();
-            break;
+        }
+        break;
     case 'a':
         dres.attaquer2();
         dres.LienPokD2();
@@ -121,8 +160,8 @@ void Jeu::afficherInit()
     int dimX,dimY;
     dimX=ter.getDimX();
     dimY=ter.getDimY();
-    dimX=dimX*37;
-    dimY=dimY*40;
+    dimX=dimX*64;
+    dimY=dimY*64;
     cout<<"dimension de x ="<<dimX<<endl;
     cout<<"dimension de y="<<dimY<<endl;
     
@@ -171,16 +210,98 @@ void Jeu::afficherDetruit()
 
 }
 
+void Jeu::setupRenderer(int state)
+{
+     switch (state){
+        case 0:im_Menu.draw(renderer,0,0,1000,600);
+            Mix_PlayChannel(-1,sound,-1);
+            break;
+        case 1: 
+            //cout << "Nous sommes rentrée dans le draw de la map"  << endl;
+            
+            if (renderer == NULL) { cout << "Renderer nul lors du draw de map" << endl;}
+            for(unsigned int x=0;x<ter.getDimX();x++){
+                for(unsigned int y=0;y<ter.getDimY();y++)
+                {
+                    //cout << "NOus sommes dans la boucle : x = " << x << " et y = " << y << endl;
+                    //cout << "SUr quel case on est : "<<(char)ter.getXY(x,y) << endl;
+                    switch (ter.getXY(x,y))
+                    {
+                    case '#':
+                        ter.getImageTerrain(WALL).draw(renderer,x*64,y*64,64,64);
+                        //cout << "Wall a bien été dessiné" << endl;
+                        break;
+                    case '.':
+                        ter.getImageTerrain(GRASS).draw(renderer,x*64,y*64,64,64);
+                        //cout << "Grass a bien été dessiné" << endl;
+                        break;
+                    case 'A':
+                        ter.getImageTerrain(STONE).draw(renderer,x*64,y*64,64,64);
+                        //cout << "Stone a bien été dessiné" << endl;
+                        break;
+                    //case 'D':
+                    //   im_porte.draw(renderer,x*67,y*30,67,30);
+                    
+                    }
+                    
+                }
+            }
+            //cout << dres.GetnombreRestantesPokemon() << endl;
+                //dres.getTabPokeball()[0].im_pokeball.draw(renderer,dres.getPosXSP()*64,dres.getPosYSP()*64,18,20);
+                //dres.getTabPokeball()[0].im_pokeball.draw(renderer,dres.getPosXSPA()*64,dres.getPosYSPA()*64,18,20);
+
+            
+            //dres.getImageSprite()[dres.getDir()].draw(renderer,dres.getPosX()*37,dres.getPosY()*40,37,40);
+            SDL_Rect tmpTrainerRect = {dres.getPosX()*64,dres.getPosY()*64,64,64};
+
+            if (dres.getInternalMovingState() == 0)
+            {
+                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
+                    &dres.getTabSpritesRect(dres.getDir())[0],&tmpTrainerRect);
+            }
+           else if (dres.getInternalMovingState() < 4)
+           {
+                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
+                    &dres.getTabSpritesRect(dres.getDir())[0],&tmpTrainerRect);
+           }
+           else if (dres.getInternalMovingState() < 8 && dres.getInternalMovingState() >=4)
+           {
+                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
+                    &dres.getTabSpritesRect(dres.getDir())[1],&tmpTrainerRect);
+           }
+           else if (dres.getInternalMovingState() < 12 && dres.getInternalMovingState() >=8)
+           {
+                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
+                    &dres.getTabSpritesRect(dres.getDir())[2],&tmpTrainerRect);
+           }
+           else if (dres.getInternalMovingState() < 16 && dres.getInternalMovingState() >=12)
+           {
+                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
+                    &dres.getTabSpritesRect(dres.getDir())[3],&tmpTrainerRect);
+           }
+           else if (dres.getInternalMovingState() >= 16)
+           {
+                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
+                    &dres.getTabSpritesRect(dres.getDir())[0],&tmpTrainerRect);
+           }
+
+            //Mix_Pause(-1);
+            break;
+
+     }
+}
+
 void Jeu::afficherBoucle()
 {
     bool quit=false;
      
-    Direction i=bas;
-    int k=0;
+    int state=0;
     SDL_Event Event;
 
-    unsigned int x,y;
-    int restante=dres.GetnombreRestantesPokemon();
+    //unsigned int x,y;
+    //int restante=dres.GetnombreRestantesPokemon();
+
+    
 
     
 
@@ -188,6 +309,7 @@ void Jeu::afficherBoucle()
 
     while(!quit)
     {
+        unsigned int start = SDL_GetPerformanceCounter();
         while(SDL_PollEvent(&Event))
         {   
             if(Event.type == SDL_QUIT) quit=true;
@@ -198,7 +320,7 @@ void Jeu::afficherBoucle()
 				switch (Event.key.keysym.scancode) 
                 {   
                     case SDL_SCANCODE_RETURN:
-                        k=1;
+                        state=1;
                         break;
                     
                     case SDL_SCANCODE_ESCAPE:
@@ -206,8 +328,7 @@ void Jeu::afficherBoucle()
                         break;
                     
                     case SDL_SCANCODE_UP:
-                        i=haut;
-                        actionClavier('s');
+                        actionClavier('z');
                         cout<<"position du dresseur en y = "<<dres.getPosY()<<endl;
                         cout<<"position du pokeball en y = "<<dres.getPosYSP()<<endl;
                         cout<<"la direction du dresseur = "<<dres.getDir()<<endl;
@@ -216,8 +337,7 @@ void Jeu::afficherBoucle()
                         break;
                     
                     case SDL_SCANCODE_DOWN:
-                        i=bas;
-                        actionClavier('z');
+                        actionClavier('s');
                         cout<<"position du dresseur en y = "<<dres.getPosY()<<endl;
                         cout<<"position du pokeball en y = "<<dres.getPosYSP()<<endl;
                         cout<<"la direction du dresseur = "<<dres.getDir()<<endl;
@@ -227,8 +347,7 @@ void Jeu::afficherBoucle()
                         break;
 
                     case SDL_SCANCODE_LEFT:
-                        i=gauche;
-                        actionClavier('d');
+                        actionClavier('q');
                         cout<<"position du dresseur en x = "<<dres.getPosX()<<endl;
                         cout<<"position du pokeball en x = "<<dres.getPosXSP()<<endl;
                         cout<<"la direction du dresseur = "<<dres.getDir()<<endl;
@@ -239,8 +358,7 @@ void Jeu::afficherBoucle()
                         break;
                     
                     case SDL_SCANCODE_RIGHT:
-                        i=droite;
-                        actionClavier('q');
+                        actionClavier('d');
                         cout<<"position du dresseur en x = "<<dres.getPosX()<<endl;
                         cout<<"position du pokeball en x = "<<dres.getPosXSP()<<endl;
                         cout<<"la direction du dresseur = "<<dres.getDir()<<endl;
@@ -273,52 +391,68 @@ void Jeu::afficherBoucle()
 				}
 			}
         }
-     SDL_SetRenderDrawColor(renderer,100,100,100,225);
-     SDL_RenderClear(renderer);
-     switch (k){
-        case 0:im_Menu.draw(renderer,0,0,1000,600);
-            Mix_PlayChannel(-1,sound,-1);
-            break;
-        case 1: 
-            cout << "Nous sommes rentrée dans le draw de la map"  << endl;
-            
-            if (renderer == NULL) { cout << "Renderer nul lors du draw de map" << endl;}
-            for(x=0;x<ter.getDimX();x++){
-                for(y=0;y<ter.getDimY();y++)
-                {
-                    cout << "NOus sommes dans la boucle : x = " << x << " et y = " << y << endl;
-                    cout << "SUr quel case on est : "<<(char)ter.getXY(x,y) << endl;
-                    switch (ter.getXY(x,y))
-                    {
-                    case '#':
-                        ter.getImageTerrain(WALL).draw(renderer,x*37,y*40,37,40);
-                        cout << "Wall a bien été dessiné" << endl;
-                        break;
-                    case '.':
-                        ter.getImageTerrain(GRASS).draw(renderer,x*37,y*40,37,40);
-                        cout << "Grass a bien été dessiné" << endl;
-                        break;
-                    case 'A':
-                        ter.getImageTerrain(STONE).draw(renderer,x*37,y*40,37,40);
-                        cout << "Stone a bien été dessiné" << endl;
-                        break;
-                    //case 'D':
-                    //   im_porte.draw(renderer,x*67,y*30,67,30);
-                    
-                    }
-                    
-                }
-            }
-            cout<<restante<<endl;
-                dres.getTabPokeball()[0].im_pokeball.draw(renderer,dres.getPosXSP()*37,dres.getPosYSP()*40,18,20);
-                dres.getTabPokeball()[0].im_pokeball.draw(renderer,dres.getPosXSPA()*37,dres.getPosYSPA()*40,18,20);
-            
-            dres.getImageSprite()[i].draw(renderer,dres.getPosX()*37,dres.getPosY()*40,37,40); 
-            //Mix_Pause(-1);
-            break;
+    // ################## Déplacement du joueur ################
 
-     }
-     SDL_RenderPresent(renderer);
+    bool moving;
+    unsigned short int movingState;
+    dres.getMovingState(moving,movingState);
+    //cout << "moving : " << moving << " movingState : " << movingState << " direction : " << dres.getDir() << endl; 
+    if (movingState < 20 && moving == true) // On veut que le déplacement dure 20 frames, càd environ 1/3 secondes dans le cas où l'ordinateur rend bien à 60 images par secondes.
+    {
+        cout << "On entre dans le déplacement" << endl;
+        switch(dres.getDir())
+        {
+            case haut:
+            {
+                dres.moveUp(ter);
+                //dres.LienPokD2();
+                movingState+=1;
+                dres.setMovingState(moving,movingState);
+                break;
+            }
+            case bas:
+            {
+                dres.moveDown(ter);
+                //dres.LienPokD2();
+                movingState+=1;
+                dres.setMovingState(moving,movingState);
+                break;
+            }
+            case droite:
+            {
+                dres.moveRight(ter);
+                //dres.LienPokD2();
+                movingState+=1;
+                dres.setMovingState(moving,movingState);
+                break;
+            }
+            case gauche:
+            {
+                dres.moveLeft(ter);
+                //dres.LienPokD2();
+                movingState+=1;
+                dres.setMovingState(moving,movingState);
+                break;
+            }
+            default : break;
+        }
+    }
+    else 
+    {
+        dres.setMovingState(false,0);
+    }
+
+
+
+
+    SDL_SetRenderDrawColor(renderer,100,100,100,225);
+    SDL_RenderClear(renderer);
+    setupRenderer(state);
+    SDL_RenderPresent(renderer);
+
+    unsigned int end = SDL_GetPerformanceCounter();
+    float elapsedMS = (end - start) / SDL_GetPerformanceCounter() * 1000.f;
+    SDL_Delay(floor((float)(100/6) - elapsedMS)); // limite 60 fps
 
     } 
     afficherDetruit();

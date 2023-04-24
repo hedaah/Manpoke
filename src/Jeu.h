@@ -48,6 +48,8 @@ public :
 
     void actionsMonstre ();
     void actionClavier(const char touche);          //< \brief rend vrai si mange une pastille, faux sinon
+    
+    void setupRenderer(int state);
 
     //Fonctions affichage SDL
     void afficherInit();

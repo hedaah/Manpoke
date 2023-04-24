@@ -49,11 +49,12 @@ void Personne::setDir(Direction dir) {
 
 void Personne::moveLeft(const Terrain & t){
     cout<<"boolen vrai est "<<true<<endl;
-    cout<<t.Collision(m_corps.x,m_corps.y)<<endl;
-    if(t.Collision(getPosX()+1.0,getPosY())){
+    cout << "coordonnée dresseur x : " << getPosX()  << " coordonnée dresseur y : " << getPosY() << endl; 
+
+    cout<<t.Collision(getPosX()-1.0,getPosY())<<endl;
+    if(t.Collision(getPosX(),getPosY())){
         
-        setPos(getPosX() + 0.1, getPosY());
-        m_dir = gauche;
+        setPos(getPosX() - (long double)0.05, getPosY());
     }
     
     //setPos(getPosX() + 0.1, getPosY());
@@ -61,34 +62,58 @@ void Personne::moveLeft(const Terrain & t){
 
 void Personne::moveRight(const Terrain & t){
     cout<<"boolen vrai est "<<true<<endl;
-    cout<<t.Collision(m_corps.x,m_corps.y)<<endl;
-    if(t.Collision(getPosX()-1.0,getPosY())){
-        setPos(getPosX() - 0.1, getPosY());
-        m_dir = droite;
+    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
+
+    cout<<t.Collision(m_corps.x+1.0,m_corps.y)<<endl;
+    if(t.Collision(getPosX()+1.0,getPosY())){
+        setPos(getPosX() + (long double)0.05, getPosY());
     }
     ////setPos(getPosX() - 0.1, getPosY());
 }
 
 void Personne::moveUp(const Terrain & t){
     cout<<"boolen vrai est "<<true<<endl;
-    cout<<t.Collision(m_corps.x,m_corps.y)<<endl;
-    if(t.Collision(getPosX(),getPosY()+1)){
-        setPos(getPosX(), getPosY() + 1.0);
-        m_dir = haut;
+    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
+    cout<<t.Collision(getPosX(),getPosY())<<endl;
+    if(t.Collision(getPosX(),getPosY()-1.0)){
+        setPos(getPosX(), getPosY() - (long double)0.05);
     }
     //setPos(getPosX(), getPosY() + 0.1);
 }
 
 void Personne::moveDown(const Terrain & t){
     cout<<"boolen vrai est "<<true<<endl;
+    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
+
     cout<<t.Collision(m_corps.x,m_corps.y)<<endl;
-    if(t.Collision(getPosX(),getPosY()-1)){
-        setPos(getPosX(), getPosY() - 1);
-        m_dir = bas;  
+    if(t.Collision(getPosX(),getPosY()+1.0)){
+        setPos(getPosX(), getPosY() + (long double)0.05); 
     }
     //setPos(getPosX(), getPosY() - 0.1);
 }
 
-Image* Personne::getImageSprite(){
-    return &im_sprite[0];
+Image& Personne::getImageSprite(){
+    return im_sprites;
+}
+
+void Personne::getMovingState(bool& isMoving, unsigned short int& internalMovingState)
+{
+    isMoving = b_isMoving;
+    internalMovingState = m_internalMovingState;
+}
+
+void Personne::setMovingState(const bool& isMoving, const unsigned short int& internalMovingState)
+{
+    b_isMoving = isMoving;
+    m_internalMovingState = internalMovingState;
+}
+
+unsigned short int Personne::getInternalMovingState()
+{
+    return m_internalMovingState;
+}
+
+SDL_Rect* Personne::getTabSpritesRect(Direction dir)
+{
+    return rect_spritesPart[dir];
 }
