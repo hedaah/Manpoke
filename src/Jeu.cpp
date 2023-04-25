@@ -6,7 +6,7 @@ using namespace std;
 Jeu::Jeu(){
     afficherInit();
 
-    im_Menu.loadFromFile("data/ecran_menu.jpg",renderer);
+    im_Menu.loadFromFile("data/menu.png",renderer);
 
     dres.setNbPokeball(5);
     for (unsigned int i = 0; i< dres.getNbPokeball() ; i++)
@@ -160,8 +160,8 @@ void Jeu::afficherInit()
     int dimX,dimY;
     dimX=ter.getDimX();
     dimY=ter.getDimY();
-    dimX=dimX*64;
-    dimY=dimY*64;
+    dimX=dimX*65;
+    dimY=dimY*70;
     cout<<"dimension de x ="<<dimX<<endl;
     cout<<"dimension de y="<<dimY<<endl;
     
@@ -185,7 +185,7 @@ void Jeu::afficherInit()
 
      // Sons
      if(withSound){
-        sound=Mix_LoadWAV("data/ecran.mp3");
+        //sound=Mix_LoadWAV("data/ecn.mp3");
         pas=Mix_LoadWAV("data/bruit_pas.wav");
         if(sound==nullptr){
             cout<<"Failed to load son d'ecran mp3"<<endl;
@@ -213,7 +213,7 @@ void Jeu::afficherDetruit()
 void Jeu::setupRenderer(int state)
 {
      switch (state){
-        case 0:im_Menu.draw(renderer,0,0,1000,600);
+        case 0:im_Menu.draw(renderer,0,0,1755,1050);
             Mix_PlayChannel(-1,sound,-1);
             break;
         case 1: 
@@ -228,15 +228,15 @@ void Jeu::setupRenderer(int state)
                     switch (ter.getXY(x,y))
                     {
                     case '#':
-                        ter.getImageTerrain(WALL).draw(renderer,x*64,y*64,64,64);
+                        ter.getImageTerrain(WALL).draw(renderer,x*65,y*60,65,60);
                         //cout << "Wall a bien été dessiné" << endl;
                         break;
                     case '.':
-                        ter.getImageTerrain(GRASS).draw(renderer,x*64,y*64,64,64);
+                        ter.getImageTerrain(GRASS).draw(renderer,x*65,y*60,65,60);
                         //cout << "Grass a bien été dessiné" << endl;
                         break;
                     case 'A':
-                        ter.getImageTerrain(STONE).draw(renderer,x*64,y*64,64,64);
+                        ter.getImageTerrain(STONE).draw(renderer,x*65,y*60,65,60);
                         //cout << "Stone a bien été dessiné" << endl;
                         break;
                     //case 'D':
@@ -252,7 +252,7 @@ void Jeu::setupRenderer(int state)
 
             
             //dres.getImageSprite()[dres.getDir()].draw(renderer,dres.getPosX()*37,dres.getPosY()*40,37,40);
-            SDL_Rect tmpTrainerRect = {dres.getPosX()*64,dres.getPosY()*64,64,64};
+            SDL_Rect tmpTrainerRect = {dres.getPosX()*65,dres.getPosY()*60,65,60};
 
             if (dres.getInternalMovingState() == 0)
             {
@@ -309,19 +309,19 @@ void Jeu::afficherBoucle()
 
     while(!quit)
     {
+        
+        int mouseX,mouseY;
+        SDL_GetMouseState(&mouseX,&mouseY);
         unsigned int start = SDL_GetPerformanceCounter();
         while(SDL_PollEvent(&Event))
         {   
             if(Event.type == SDL_QUIT) quit=true;
 
-            else if (Event.type == SDL_KEYDOWN) 
+            else if (Event.type == SDL_KEYDOWN || Event.type==SDL_MOUSEBUTTONDOWN) 
             { 
 
 				switch (Event.key.keysym.scancode) 
                 {   
-                    case SDL_SCANCODE_RETURN:
-                        state=1;
-                        break;
                     
                     case SDL_SCANCODE_ESCAPE:
                         quit = true;
@@ -386,6 +386,30 @@ void Jeu::afficherBoucle()
                         break;
                     
                     default: 
+                        if (Event.button.button==SDL_BUTTON_LEFT){
+                            if(mouseX>=212 && mouseX<=573 && mouseY>=411 && mouseY<=661){
+                                cout<<"bouton souris qui fonctionne"<<endl;
+                                state=1;
+                            }
+                            if(mouseX>= 590 && mouseX<=954 && mouseY>=411 && mouseY<=661){
+                                cout<<"Tu as Selectionné Reglage"<<endl;
+                                
+                            }
+                            if(mouseX>=212 && mouseX<=573 && mouseY>=681 && mouseY<=929){
+                                cout<<"Tu as selectionné Credit"<<endl;
+                                
+                            }
+                            if(mouseX>=590 && mouseX<=954 && mouseY>=681 && mouseY<=929){
+                                cout<<"Tu as selectionné Quitter"<<endl;
+                                quit=true;
+                                
+                            }
+
+                            
+
+                        }
+                        break;
+                        
                     Mix_Pause(-2);
                     break;
 				}
@@ -445,7 +469,7 @@ void Jeu::afficherBoucle()
 
 
 
-    SDL_SetRenderDrawColor(renderer,100,100,100,225);
+    SDL_SetRenderDrawColor(renderer,255,255,100,225);
     SDL_RenderClear(renderer);
     setupRenderer(state);
     SDL_RenderPresent(renderer);
