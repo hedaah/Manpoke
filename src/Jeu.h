@@ -19,19 +19,13 @@ private :
 
     SDL_Window * window;
     SDL_Renderer * renderer;
-    SDL_Renderer * menu;
-
-    SDL_Rect positionMenu;
 
     TTF_Font * font;
-    Image font_im;
-    SDL_Color font_color;
 
-    Mix_Chunk * sound;
-    Mix_Chunk * pas;
     bool withSound;
 
-    Image im_Menu;
+    Image im_Menu[2];
+    Image Im_vie;
 
 public :
 

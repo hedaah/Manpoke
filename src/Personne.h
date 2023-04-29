@@ -35,8 +35,9 @@ class Personne {
 
         void regeneration();// vie regeneré 
 
-        int getVie();
-        void setVie(int x);
+        int getVie(); //retourne la vie de la personne
+        void setVie(int x);  // modifie la vie
+        void WORLVie(int x); // recupere ou perd de la vie
 
         float getPosX(); // récupère la position X de la personne.
         float getPosY(); // récupère la position Y de la personne.

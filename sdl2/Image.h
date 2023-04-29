@@ -21,7 +21,6 @@ private:
 public:
     Image () ;
     Image (const Image& im ) { std::cout<<"consttructeur par copie : ne devrait pas passer ici"<<std::endl; }
-    const Image& operator=(const Image& im) const { std::cout<<"operator= par copie : ne devrait pas passer ici"<<std::endl; }
     ~Image();
     void loadFromFile (const char* filename, SDL_Renderer * renderer);
     void loadFromCurrentSurface (SDL_Renderer * renderer);

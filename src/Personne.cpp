@@ -23,6 +23,10 @@ void Personne::setVie(int x) {
     m_vie = x;
 }
 
+void Personne::WORLVie(int x){
+    m_vie= m_vie - x;
+}
+
 float Personne::getPosX() {
      return m_corps.x;
 }

@@ -43,9 +43,6 @@ Terrain::Terrain() {
                 case '.' : tab_terr[i][j]=GRASS;
                         break;
 
-                case 'D' : tab_terr[i][j]=DOOR;
-                        break;
-
                 case 'A': tab_terr[i][j]=STONE;
                         break;
             }
@@ -97,19 +94,9 @@ Image& Terrain::getImageTerrain(TypeCase c){
             return im_wall;
             break;
         }
-        case DOOR:
-        {
-            return im_door;
-            break;
-        }
         case STONE:
         {
             return im_stone;
-            break;
-        }
-        case WATER:
-        {
-            return im_water;
             break;
         }
         default :
@@ -133,19 +120,9 @@ void Terrain::setImageTerrain(TypeCase c, const char* fileName, SDL_Renderer* re
             im_wall.loadFromFile(fileName,renderer);
             break;
         }
-        case DOOR:
-        {
-            im_door.loadFromFile(fileName,renderer);
-            break;
-        }
         case STONE:
         {
             im_stone.loadFromFile(fileName,renderer);
-            break;
-        }
-        case WATER:
-        {
-            im_water.loadFromFile(fileName,renderer);
             break;
         }
         default : break;

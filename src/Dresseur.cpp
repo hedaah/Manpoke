@@ -6,7 +6,7 @@ using namespace std;
 Dresseur::Dresseur(){
     
     setPos(1,1);
-    setVie(1000);
+    setVie(125);
     for(int i=0;i<=10;i++){
 
         //version 2 du stock pokeball //
@@ -16,74 +16,10 @@ Dresseur::Dresseur(){
         tab_StockPokeball[i].b_Lancement=true;
 
     }
-
     nb_RP=9;
-}
-/* VERSION 1
-void Dresseur::LienPokD(){
-    for(int i=0;i<9;i++){
-        pokeball[i].x=getPosX();
-        pokeball[i].y=getPosY()+20;
-    }
-}
-
-bool Dresseur::getBol(){
-    return lancer;
-}
-
-void Dresseur::setBolF(){
-    lancer=false;
-}
-
-void Dresseur::setBolT(){
-    lancer=true;
-}
-
-Vect2D Dresseur::getPoke(int entier){
-    return pokeball[entier];
-}
-int Dresseur::getPosXP(int entier){
-    return pokeball[entier].x;
-}
-
-int Dresseur::getPosYP(int entier){
-    return pokeball[entier].y;
-}
-
-void Dresseur::attaquer(int entier){
-    switch (getDir())
-    {
-    case 0 : 
-        //while(!lancer){ 
-        pokeball[entier].y=pokeball[entier].y+0.10;
-            //if(pokeball[entier].distance2(pokeball[entier],getVect2D())==200)
-            //{
-                //lancer=true;
-            //}
-       // }
-        break;
-
-    case 1 :
-        pokeball[entier].y=pokeball[entier].y-0.10;
-        break;
-
-    case 2:
-        pokeball[entier].x=pokeball[entier].x+0.10;
-        break;
-
-    case 3:
-        pokeball[entier].x=pokeball[entier].x-0.10;
-        break;
-
     
-    default:
-        break;
-    }
+
 }
-
-*/
-
-// VERSION 2//
 
 int Dresseur::getPosXSP(){
     return tab_StockPokeball[nb_RP].vec2_p.x;
@@ -213,4 +149,8 @@ void Dresseur::setNbPokeball(unsigned short int x) {
 
 Pokeball* Dresseur::getTabPokeball(){
     return tab_StockPokeball;
+}
+
+Image* Dresseur::getTabImageVie(){
+    return im_vie;
 }

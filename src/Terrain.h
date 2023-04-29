@@ -7,7 +7,7 @@
 #include <SDL2/SDL_mixer.h>
 #include "../sdl2/Image.h"
 
-enum TypeCase { GRASS='.',WALL='#',DOOR='D',STONE='A',WATER='W'};
+enum TypeCase { GRASS='.',WALL='#',STONE='A'};
 
 class Terrain {
 private:

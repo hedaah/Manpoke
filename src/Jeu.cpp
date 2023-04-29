@@ -3,129 +3,7 @@
 #include "Jeu.h"
 using namespace std;
 
-Jeu::Jeu(){
-    afficherInit();
-
-    im_Menu.loadFromFile("data/menu.png",renderer);
-
-    dres.setNbPokeball(5);
-    for (unsigned int i = 0; i< dres.getNbPokeball() ; i++)
-    {
-        dres.getTabPokeball()[i].im_pokeball.loadFromFile("data/pokeball.png", renderer);
-    }
-    /*dres.getImageSprite()[haut].loadFromFile("data/haut.png",renderer);
-    dres.getImageSprite()[gauche].loadFromFile("data/gauche.png",renderer);
-    dres.getImageSprite()[bas].loadFromFile("data/bas.png",renderer);
-    dres.getImageSprite()[droite].loadFromFile("data/droite.png",renderer);*/
-
-    dres.getImageSprite().loadFromFile("data/trainer.png",renderer);
-    dres.getTabSpritesRect(haut)[0] = {0,192,64,64};
-    dres.getTabSpritesRect(haut)[1] = {64,192,64,64};
-    dres.getTabSpritesRect(haut)[2] = {128,192,64,64};
-    dres.getTabSpritesRect(haut)[3] = {192,192,64,64};
-
-    dres.getTabSpritesRect(bas)[0] = {0,0,64,64};
-    dres.getTabSpritesRect(bas)[1] = {64,0,64,64};
-    dres.getTabSpritesRect(bas)[2] = {128,0,64,64};
-    dres.getTabSpritesRect(bas)[3] = {192,0,64,64};
-
-    dres.getTabSpritesRect(gauche)[0] = {0,64,64,64};
-    dres.getTabSpritesRect(gauche)[1] = {64,64,64,64};
-    dres.getTabSpritesRect(gauche)[2] = {128,64,64,64};
-    dres.getTabSpritesRect(gauche)[3] = {192,64,64,64};
-
-    dres.getTabSpritesRect(droite)[0] = {0,128,64,64};
-    dres.getTabSpritesRect(droite)[1] = {64,128,64,64};
-    dres.getTabSpritesRect(droite)[2] = {128,128,64,64};
-    dres.getTabSpritesRect(droite)[3] = {192,128,64,64};
-
-
-    ter.setImageTerrain(GRASS,"data/herbe.png",renderer);
-    ter.setImageTerrain(WALL,"data/mur.png",renderer);
-    ter.setImageTerrain(DOOR,"data/porte2.png",renderer);
-    ter.setImageTerrain(STONE,"data/pierre.png",renderer);
-}
-
-
-void Jeu::actionClavier(const char touche){
-    bool moving;
-    unsigned short int movingState;
-    dres.getMovingState(moving,movingState);
-    cout << "moving : " << moving << " movingState : " << movingState << " direction : " << dres.getDir() << endl; 
-    if (moving == true) 
-    {
-        return; //Si le joueur est déjà en mouvement, on fait rien et on attend la fin de son déplacement actuel.
-    }
-    switch (touche){
-    case 'z':
-        if (moving == false) {
-            dres.setMovingState(true,0);
-            dres.setDir(haut);
-            dres.LienPokD2();
-        }
-        break;
-
-    case 's':
-        if (moving == false) {
-            dres.setMovingState(true,0);
-            dres.setDir(bas);
-            dres.LienPokD2();
-        }
-        break;
-    case 'd':
-        if (moving == false) {
-            dres.setMovingState(true,0);
-            dres.setDir(droite);
-            dres.LienPokD2();
-        }
-        break;
-    case 'q':
-        if (moving == false) {
-            dres.setMovingState(true,0);
-            dres.setDir(gauche);
-            dres.LienPokD2();
-        }
-        break;
-    case 'a':
-        dres.attaquer2();
-        dres.LienPokD2();
-        //     while(dres.getBol()){
-            //dres.attaquer(0);
-            //cout<<"position du pokemon ="<<dres.getPoke(0).y<<endl;
-            //cout<<"la distance entre le pokemon et dresseur est ="<<dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())<<endl;
-            //if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==200){
-                        //dres.setBolF();
-                        //cout<<"la valeur boolen "<<dres.getBol()<<endl;
-                //}
-            //if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==201){
-                        //dres.setBolF();
-                        //cout<<"la valeur boolen "<<dres.getBol()<<endl;
-                //}
-        //     }
-        
-            /*
-            if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==201){
-                        dres.setBolF();
-                        cout<<dres.getBol()<<endl;
-                }
-        */
-            break;
-    default:
-        break;
-    }
-}
-
-void Jeu::actionsMonstre(){
-    for(int i=0;i<=10;i++){
-        tab[i].deplacerAuto();
-    }
-}
-
-const Terrain& Jeu::getConstTerrain() const {return ter;}
-const Dresseur& Jeu::getConstDresseur() const {return dres;}
-
 void Jeu::afficherInit()
-
 {  
     
     // On initialise SDL 
@@ -176,27 +54,142 @@ void Jeu::afficherInit()
     }
 
      renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
-
-    
-    
-
-     // Fonts
-
-
-     // Sons
-     if(withSound){
-        //sound=Mix_LoadWAV("data/ecn.mp3");
-        pas=Mix_LoadWAV("data/bruit_pas.wav");
-        if(sound==nullptr){
-            cout<<"Failed to load son d'ecran mp3"<<endl;
-        }
-        if(pas==nullptr){
-            cout<<"Failed to load bruit pas wav"<<endl;
-        }
-
-     }
     
 }
+
+Jeu::Jeu(){
+    afficherInit();
+
+    im_Menu[0].loadFromFile("data/Menu/menu.png",renderer);
+    im_Menu[1].loadFromFile("data/Menu/GameOver.png",renderer);
+
+
+    dres.getTabImageVie()[0].loadFromFile("data/vie/Vie125.png", renderer);
+    dres.getTabImageVie()[1].loadFromFile("data/vie/Vie100.png", renderer);
+    dres.getTabImageVie()[2].loadFromFile("data/vie/Vie75.png", renderer);
+    dres.getTabImageVie()[3].loadFromFile("data/vie/Vie50.png", renderer);
+    dres.getTabImageVie()[4].loadFromFile("data/vie/Vie25.png", renderer);
+    dres.getTabImageVie()[5].loadFromFile("data/vie/Vie0.png", renderer);
+
+
+
+
+    dres.setNbPokeball(5);
+    for (unsigned int i = 0; i< dres.getNbPokeball() ; i++)
+    {
+        dres.getTabPokeball()[i].im_pokeball.loadFromFile("data/pokeball.png", renderer);
+    }
+    /*dres.getImageSprite()[haut].loadFromFile("data/haut.png",renderer);
+    dres.getImageSprite()[gauche].loadFromFile("data/gauche.png",renderer);
+    dres.getImageSprite()[bas].loadFromFile("data/bas.png",renderer);
+    dres.getImageSprite()[droite].loadFromFile("data/droite.png",renderer);*/
+
+    dres.getImageSprite().loadFromFile("data/trainer.png",renderer);
+    dres.getTabSpritesRect(haut)[0] = {0,192,64,64};
+    dres.getTabSpritesRect(haut)[1] = {64,192,64,64};
+    dres.getTabSpritesRect(haut)[2] = {128,192,64,64};
+    dres.getTabSpritesRect(haut)[3] = {192,192,64,64};
+
+    dres.getTabSpritesRect(bas)[0] = {0,0,64,64};
+    dres.getTabSpritesRect(bas)[1] = {64,0,64,64};
+    dres.getTabSpritesRect(bas)[2] = {128,0,64,64};
+    dres.getTabSpritesRect(bas)[3] = {192,0,64,64};
+
+    dres.getTabSpritesRect(gauche)[0] = {0,64,64,64};
+    dres.getTabSpritesRect(gauche)[1] = {64,64,64,64};
+    dres.getTabSpritesRect(gauche)[2] = {128,64,64,64};
+    dres.getTabSpritesRect(gauche)[3] = {192,64,64,64};
+
+    dres.getTabSpritesRect(droite)[0] = {0,128,64,64};
+    dres.getTabSpritesRect(droite)[1] = {64,128,64,64};
+    dres.getTabSpritesRect(droite)[2] = {128,128,64,64};
+    dres.getTabSpritesRect(droite)[3] = {192,128,64,64};
+
+
+    ter.setImageTerrain(GRASS,"data/Map/herbe.png",renderer);
+    ter.setImageTerrain(WALL,"data/Map/mur.png",renderer);
+    ter.setImageTerrain(STONE,"data/Map/pierre.png",renderer);
+}
+
+
+void Jeu::actionClavier(const char touche){
+    bool moving;
+    unsigned short int movingState;
+    dres.getMovingState(moving,movingState);
+    cout << "moving : " << moving << " movingState : " << movingState << " direction : " << dres.getDir() << endl; 
+    if (moving == true) 
+    {
+        return; //Si le joueur est déjà en mouvement, on fait rien et on attend la fin de son déplacement actuel.
+    }
+    switch (touche){
+    case 'z':
+        if (moving == false) {
+            dres.setMovingState(true,0);
+            dres.setDir(haut);
+            dres.LienPokD2();
+        }
+        break;
+
+    case 's':
+        if (moving == false) {
+            dres.setMovingState(true,0);
+            dres.setDir(bas);
+            dres.LienPokD2();
+        }
+        break;
+    case 'd':
+        if (moving == false) {
+            dres.setMovingState(true,0);
+            dres.setDir(droite);
+            dres.LienPokD2();
+        }
+        break;
+    case 'q':
+        if (moving == false) {
+            dres.setMovingState(true,0);
+            dres.setDir(gauche);
+            dres.LienPokD2();
+        }
+        break;
+    case 'a':
+        dres.attaquer2();
+        dres.LienPokD2();
+        dres.WORLVie(+25);
+        //     while(dres.getBol()){
+            //dres.attaquer(0);
+            //cout<<"position du pokemon ="<<dres.getPoke(0).y<<endl;
+            //cout<<"la distance entre le pokemon et dresseur est ="<<dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())<<endl;
+            //if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==200){
+                        //dres.setBolF();
+                        //cout<<"la valeur boolen "<<dres.getBol()<<endl;
+                //}
+            //if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==201){
+                        //dres.setBolF();
+                        //cout<<"la valeur boolen "<<dres.getBol()<<endl;
+                //}
+        //     }
+        
+            /*
+            if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==201){
+                        dres.setBolF();
+                        cout<<dres.getBol()<<endl;
+                }
+        */
+            break;
+    default:
+        break;
+    }
+}
+
+void Jeu::actionsMonstre(){
+    for(int i=0;i<=10;i++){
+        tab[i].deplacerAuto();
+    }
+}
+
+const Terrain& Jeu::getConstTerrain() const {return ter;}
+const Dresseur& Jeu::getConstDresseur() const {return dres;}
+
 
 void Jeu::afficherDetruit()
 {
@@ -210,16 +203,20 @@ void Jeu::afficherDetruit()
 
 }
 
-void Jeu::setupRenderer(int state)
+void Jeu::setupRenderer(int state) // tous les draw
 {
      switch (state){
-        case 0:im_Menu.draw(renderer,0,0,1755,1050);
-            Mix_PlayChannel(-1,sound,-1);
+        case 0:im_Menu[0].draw(renderer,0,0,1755,1050);
             break;
-        case 1: 
+        
+        case 1 :
+                im_Menu[1].draw(renderer,0,0,1755,1050);
+            break;
+
+        case 2: 
             //cout << "Nous sommes rentrée dans le draw de la map"  << endl;
-            
-            if (renderer == NULL) { cout << "Renderer nul lors du draw de map" << endl;}
+
+            // DESSIN DE MAP //
             for(unsigned int x=0;x<ter.getDimX();x++){
                 for(unsigned int y=0;y<ter.getDimY();y++)
                 {
@@ -246,12 +243,43 @@ void Jeu::setupRenderer(int state)
                     
                 }
             }
-            //cout << dres.GetnombreRestantesPokemon() << endl;
-                //dres.getTabPokeball()[0].im_pokeball.draw(renderer,dres.getPosXSP()*64,dres.getPosYSP()*64,18,20);
-                //dres.getTabPokeball()[0].im_pokeball.draw(renderer,dres.getPosXSPA()*64,dres.getPosYSPA()*64,18,20);
+            // DESSIN DU SCORE DU DRESSEUR
 
-            
-            //dres.getImageSprite()[dres.getDir()].draw(renderer,dres.getPosX()*37,dres.getPosY()*40,37,40);
+            switch (dres.getVie())
+            {
+                case 125:
+                    dres.getTabImageVie()[0].draw(renderer,150,910,180,90);
+                    break;
+
+                case 100:
+                    dres.getTabImageVie()[1].draw(renderer,150,910,180,90);
+                    break;
+                
+                case 75:
+                    dres.getTabImageVie()[2].draw(renderer,150,910,180,90);
+                
+                    break;
+                
+                case 50:
+                    dres.getTabImageVie()[3].draw(renderer,150,910,180,90);
+                    break;
+                
+                case 25:
+                    dres.getTabImageVie()[4].draw(renderer,150,910,180,90);
+                    break;
+
+                case 0:
+                    dres.getTabImageVie()[5].draw(renderer,150,910,180,90);
+                    break;
+
+                default:
+                    break;
+            } 
+
+
+
+            // DESSIN DU DRESSEUR //
+           
             SDL_Rect tmpTrainerRect = {dres.getPosX()*65,dres.getPosY()*60,65,60};
 
             if (dres.getInternalMovingState() == 0)
@@ -288,6 +316,7 @@ void Jeu::setupRenderer(int state)
             //Mix_Pause(-1);
             break;
 
+
      }
 }
 
@@ -298,19 +327,10 @@ void Jeu::afficherBoucle()
     int state=0;
     SDL_Event Event;
 
-    //unsigned int x,y;
-    //int restante=dres.GetnombreRestantesPokemon();
-
-    
-
-    
-
-    //
-
+        int mouseX,mouseY;
     while(!quit)
     {
         
-        int mouseX,mouseY;
         SDL_GetMouseState(&mouseX,&mouseY);
         unsigned int start = SDL_GetPerformanceCounter();
         while(SDL_PollEvent(&Event))
@@ -367,29 +387,21 @@ void Jeu::afficherBoucle()
                         //Mix_PlayChannel(-2,pas,-2);
                         break;
                     
-                    case SDL_SCANCODE_SPACE:
-                        //cout<<" 1- valeur du boolen ="<<getConstDresseur().getBol()<<endl;
-                        //while(dres().getBol()){
-                            
+                    case SDL_SCANCODE_SPACE: 
+
                             actionClavier('a');
                             cout<<"position du pokemon en x = "<<dres.getPosXSPA()<<endl;
                             cout<<"position du pokemon en y = "<<dres.getPosYSPA()<<endl;
                             dres.getTabPokeball()[0].im_pokeball.draw(renderer,dres.getPosXSPA()*37,dres.getPosYSPA()*40,18,20);
-                            //im_pokeball.draw(renderer,getConstDresseur().getPosXSP(),getConstDresseur().getPosYSP(),20,20);
-
-
                             
-
-                        //}
-                        //getConstDresseur().setBolT();
-                        //cout<<"2- valeur du boolen ="<<getConstDresseur().getBol()<<endl;
                         break;
                     
                     default: 
-                        if (Event.button.button==SDL_BUTTON_LEFT){
+                        cout<<"x de la souris ="<<mouseX<<" et y de la souris ="<<mouseY<<endl;
+                        if (Event.button.button==SDL_BUTTON_LEFT && state==0){
                             if(mouseX>=212 && mouseX<=573 && mouseY>=411 && mouseY<=661){
                                 cout<<"bouton souris qui fonctionne"<<endl;
-                                state=1;
+                                state=2;
                             }
                             if(mouseX>= 590 && mouseX<=954 && mouseY>=411 && mouseY<=661){
                                 cout<<"Tu as Selectionné Reglage"<<endl;
@@ -403,17 +415,19 @@ void Jeu::afficherBoucle()
                                 cout<<"Tu as selectionné Quitter"<<endl;
                                 quit=true;
                                 
-                            }
-
-                            
+                            }  
 
                         }
-                        break;
                         
-                    Mix_Pause(-2);
                     break;
 				}
 			}
+            cout<<"vie restante du dresseur"<<dres.getVie()<<endl;
+                        if(dres.getVie()==0) {
+                            cout<<"fin game"<<endl;
+                            state=1;
+                            cout<<state<<endl;
+                        }
         }
     // ################## Déplacement du joueur ################
 
@@ -469,7 +483,7 @@ void Jeu::afficherBoucle()
 
 
 
-    SDL_SetRenderDrawColor(renderer,255,255,100,225);
+    SDL_SetRenderDrawColor(renderer,255,255,255,225);
     SDL_RenderClear(renderer);
     setupRenderer(state);
     SDL_RenderPresent(renderer);
