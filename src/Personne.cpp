@@ -83,7 +83,7 @@ bool Personne::moveLeft(const Terrain & t){
         return true;
     }
     setDir(gauche);
-    cout << "coordonnée dresseur x : " << getPosX()  << " coordonnée dresseur y : " << getPosY() << endl; 
+    //cout << "coordonnée dresseur x : " << getPosX()  << " coordonnée dresseur y : " << getPosY() << endl; 
     double tmpx = getPosX() - 1.0;
     double tmpy = getPosY();
 
@@ -114,7 +114,7 @@ bool Personne::moveRight(const Terrain & t){
         return true;
     }
     setDir(droite);
-    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
+    //cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
     double tmpx = getPosX() + 1.0;
     double tmpy = getPosY();
 
@@ -143,7 +143,7 @@ bool Personne::moveUp(const Terrain & t){
         return true;
     }
     setDir(haut);
-    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
+    //cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
     double tmpx = getPosX();
     double tmpy = getPosY() - 1.0;
 
@@ -166,7 +166,7 @@ bool Personne::moveDown(const Terrain & t){
     bool moving;
     unsigned short int movingState;
     getMovingState(moving,movingState);
-    cout << "Movingstate : " << movingState << endl;
+    //cout << "Movingstate : " << movingState << endl;
     if (movingState > 0)
     {
         setPos(getPosX(), getPosY() + (long double)0.05);
@@ -174,7 +174,7 @@ bool Personne::moveDown(const Terrain & t){
     }
 
     setDir(bas);
-    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
+    //cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
     double tmpx = getPosX();
     double tmpy = getPosY() + 1.0;
 

@@ -104,12 +104,10 @@ Jeu::Jeu(){
 
     for (unsigned int i = 0; i< dres.getNbPokeball() ; i++)
     {
-        dres.getTabPokeball()[i].im_pokeball.loadFromFile("data/pokeball.png", renderer);
+        dres.getTabPokeball()[i]->im_pokeball.loadFromFile("data/pokeball.png",renderer);
+
     }
-    /*dres.getImageSprite()[haut].loadFromFile("data/haut.png",renderer);
-    dres.getImageSprite()[gauche].loadFromFile("data/gauche.png",renderer);
-    dres.getImageSprite()[bas].loadFromFile("data/bas.png",renderer);
-    dres.getImageSprite()[droite].loadFromFile("data/droite.png",renderer);*/
+    
 
     dres.getImageSprite().loadFromFile("data/trainer.png",renderer);
     
@@ -165,7 +163,7 @@ Jeu::Jeu(){
     font=TTF_OpenFont("DejaVuSansCondensed.ttf", 72 );
 
     point=0;
-    score=dres.GetnombreRestantesPokemon();
+    score=dres.GetnombreRestantesPokemon()+1;
     font_color.r = 255;font_color.g = 255;font_color.b = 255;
 
 
@@ -179,6 +177,9 @@ void Jeu::actionClavier(const char touche){
     bool moving;
     unsigned short int movingState;
     dres.getMovingState(moving,movingState);
+
+    bool monstreMort = false;
+    int indexMonstreMort = -1;
     //cout << "moving : " << moving << " movingState : " << movingState << " direction : " << dres.getDir() << endl; 
     if (moving == true) 
     {
@@ -189,7 +190,7 @@ void Jeu::actionClavier(const char touche){
         if (moving == false) {
             dres.setDir(haut);
             dres.setMovingState(true,0);
-            //dres.LienPokD2();
+            dres.LienPokD2();
         }
         break;
 
@@ -197,49 +198,59 @@ void Jeu::actionClavier(const char touche){
         if (moving == false) {
             dres.setDir(bas);
             dres.setMovingState(true,0);
-            //dres.LienPokD2();
+            dres.LienPokD2();
+
+            
         }
         break;
     case 'd':
         if (moving == false) {
             dres.setDir(droite);
             dres.setMovingState(true,0);
-            //dres.LienPokD2();
+            dres.LienPokD2();
+
+            
         }
         break;
     case 'q':
         if (moving == false) {
             dres.setDir(gauche);
             dres.setMovingState(true,0);
-            //dres.LienPokD2();
+            dres.LienPokD2();
+
         }
         break;
     case 'a':
-        dres.WORLVie(-25);
-        /*dres.attaquer2();
-        dres.LienPokD2();*/
-        //cout << "(TOUCHE) Coordonnée dresseur x : " << dres.getPosX() << " coordonnée dresseur y :" << dres.getPosY() << endl;
-        //     while(dres.getBol()){
-            //dres.attaquer(0);
-            //cout<<"position du pokemon ="<<dres.getPoke(0).y<<endl;
-            //cout<<"la distance entre le pokemon et dresseur est ="<<dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())<<endl;
-            //if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==200){
-                        //dres.setBolF();
-                        //cout<<"la valeur boolen "<<dres.getBol()<<endl;
-                //}
-            //if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==201){
-                        //dres.setBolF();
-                        //cout<<"la valeur boolen "<<dres.getBol()<<endl;
-                //}
-        //     }
-        
-            /*
-            if(dres.getPoke(0).distance2(dres.getPoke(0),dres.getVect2D())==201){
-                        dres.setBolF();
-                        cout<<dres.getBol()<<endl;
-                }
-        */
+
+    // boucle pour vérifier si le dresseur est proche d'un monstre
+    for (unsigned short int i = 0; i < tab_monstres.size(); i++)
+    {
+        if (dres.getDresseur().distance2(tab_monstres[i]->getVect2D(), dres.getDresseur()) <= 2) {
+            cout << "Un monstre est mort." << endl;
+            monstreMort = true;
+            indexMonstreMort = i;
             break;
+        }
+    }
+
+    if (monstreMort) {
+        // supprime le monstre de la liste dont le monstre a ete proche du dresseur
+        tab_monstres.erase(tab_monstres.begin() + indexMonstreMort);
+        
+    }
+    else {
+        cout << "Aucun monstre n'a été touché." << endl;
+    }
+    monstreMort = false;
+
+    break;
+
+
+    case 't':
+        tab_monstres.back();
+
+        break;
+
     default:
         break;
     }
@@ -275,7 +286,7 @@ void Jeu::gestionDeplacement(Personne& p)
                 {
                     break;
                 }
-                //dres.LienPokD2();
+                dres.LienPokD2();
             }
             case bas:
             {
@@ -289,7 +300,7 @@ void Jeu::gestionDeplacement(Personne& p)
                 {
                     break;
                 }
-                //dres.LienPokD2();
+                dres.LienPokD2();
             }
             case droite:
             {
@@ -303,7 +314,7 @@ void Jeu::gestionDeplacement(Personne& p)
                 {
                     break;
                 }
-                //dres.LienPokD2();
+                dres.LienPokD2();
             }
             case gauche:
             {
@@ -317,7 +328,7 @@ void Jeu::gestionDeplacement(Personne& p)
                 {
                     break;
                 }
-                //dres.LienPokD2();
+                dres.LienPokD2();
             }
             default : break;
         }
@@ -453,6 +464,8 @@ void Jeu::setupRenderer(int state)
                     break;
             } 
 
+            //dres.getTabPokeball()[0]->im_pokeball.draw(renderer,65,60,20,20);
+
             Im_score.draw(renderer,1250,790,470,350);
             Im_Pr.draw(renderer,800,920,80,80);
 
@@ -462,16 +475,10 @@ void Jeu::setupRenderer(int state)
             Stock.w=70;
             Stock.h=70;
 
-            SDL_Rect Score;
-            Score.x=1000;
-            Score.y=925;
-            Score.h=140;
-            Score.w=70;
-
             SDL_RenderCopy(renderer,font_im.getTexture(),nullptr,&Stock);
-            SDL_RenderCopy(renderer,font_im.getTexture(),nullptr,&Score);
-
         
+
+           
 
 
             //cout << dres.GetnombreRestantesPokemon() << endl;
@@ -528,8 +535,8 @@ void Jeu::afficherBoucle()
                     case SDL_SCANCODE_UP:
                         actionClavier('z');
                         cout<<"position du dresseur en y = "<<dres.getPosY()<<endl;
-                        cout<<"position du pokeball en y = "<<dres.getPosYSP()<<endl;
-                        cout<<"la direction du dresseur = "<<dres.getDir()<<endl;
+                        //cout<<"position du pokeball en y = "<<dres.getPosYSP()<<endl;
+                        //cout<<"la direction du dresseur = "<<dres.getDir()<<endl;
                         //im_pokeball.draw(renderer,getConstDresseur().getPosXSP()*37,getConstDresseur().getPosYSP()*40,18,20);
                         //Mix_PlayChannel(-2,pas,-2);
                         break;
@@ -537,8 +544,8 @@ void Jeu::afficherBoucle()
                     case SDL_SCANCODE_DOWN:
                         actionClavier('s');
                         cout<<"position du dresseur en y = "<<dres.getPosY()<<endl;
-                        cout<<"position du pokeball en y = "<<dres.getPosYSP()<<endl;
-                        cout<<"la direction du dresseur = "<<dres.getDir()<<endl;
+                        //cout<<"position du pokeball en y = "<<dres.getPosYSP()<<endl;
+                        //cout<<"la direction du dresseur = "<<dres.getDir()<<endl;
                         //im_pokeball.draw(renderer,getConstDresseur().getPosXSP()*37,getConstDresseur().getPosYSP()*40,18,20);
                         //im_pokeball.draw(renderer,getConstDresseur().getPosXP(),getConstDresseur().getPosYP(),10,10);
                         //Mix_PlayChannel(-2,pas,-2);
@@ -547,7 +554,7 @@ void Jeu::afficherBoucle()
                     case SDL_SCANCODE_LEFT:
                         actionClavier('q');
                         cout<<"position du dresseur en x = "<<dres.getPosX()<<endl;
-                        cout<<"position du pokeball en x = "<<dres.getPosXSP()<<endl;
+                        //cout<<"position du pokeball en x = "<<dres.getPosXSP()<<endl;
                         cout<<"la direction du dresseur = "<<dres.getDir()<<endl;
                         //im_pokeball.draw(renderer,getConstDresseur().getPosXSP()*37,getConstDresseur().getPosYSP()*40,18,20);
 
@@ -558,7 +565,7 @@ void Jeu::afficherBoucle()
                     case SDL_SCANCODE_RIGHT:
                         actionClavier('d');
                         cout<<"position du dresseur en x = "<<dres.getPosX()<<endl;
-                        cout<<"position du pokeball en x = "<<dres.getPosXSP()<<endl;
+                        //cout<<"position du pokeball en x = "<<dres.getPosXSP()<<endl;
                         cout<<"la direction du dresseur = "<<dres.getDir()<<endl;
                         //im_pokeball.draw(renderer,getConstDresseur().getPosXSP()*37,getConstDresseur().getPosYSP()*40,18,20);
                         //im_pokeball.draw(renderer,getConstDresseur().getPosXP(),getConstDresseur().getPosYP(),10,10);
@@ -566,18 +573,13 @@ void Jeu::afficherBoucle()
                         break;
                     
                     case SDL_SCANCODE_SPACE:
-                        //cout<<" 1- valeur du boolen ="<<getConstDresseur().getBol()<<endl;
-                        //while(dres().getBol()){
-                            
                             actionClavier('a');
-                            cout<<"position du pokemon en x = "<<dres.getPosXSPA()<<endl;
-                            cout<<"position du pokemon en y = "<<dres.getPosYSPA()<<endl;
+                            //cout<<"position du pokemon en x = "<<dres.getPosXSPA()<<endl;
+                            //cout<<"position du pokemon en y = "<<dres.getPosYSPA()<<endl;
+                            
                             score--;
                             score_str=to_string(score);
-
                             point_str=to_string(point);
-
-    
                             font_im.setSurface(TTF_RenderText_Blended(font,score_str.c_str(),font_color));
                             font_im.loadFromCurrentSurface(renderer);
 
@@ -587,6 +589,11 @@ void Jeu::afficherBoucle()
                         //getConstDresseur().setBolT();
                         //cout<<"2- valeur du boolen ="<<getConstDresseur().getBol()<<endl;
                         break;
+
+                        case SDL_SCANCODE_P :
+                            actionClavier('t');
+                            cout<<" cela a bien marche"<<endl;
+                            break;
                     
                     default: 
                         if (Event.button.button==SDL_BUTTON_LEFT ){

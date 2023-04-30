@@ -62,16 +62,12 @@ Terrain::~Terrain() {
 }
 
 bool Terrain::Collision(double& x,double& y)const {
-    std::cout << "AVant cast x : " << x << " avant cast y : " << y << std::endl;
+   // std::cout << "AVant cast x : " << x << " avant cast y : " << y << std::endl;
     x = round(x);
     y = round(y);
     int x_int = static_cast<int>(x);
     int y_int = static_cast<int>(y);
-    std::cout << "x_int : " << x_int << " y_int " << y_int << std::endl;
-    if (tab_terr[x_int][y_int] == '#')
-    {
-        std::cout << "LA case sur laquelle le dresseur essaye d'avancere st un #" << std::endl;
-    }
+    //std::cout << "x_int : " << x_int << " y_int " << y_int << std::endl;
     return ((x_int >= 0) && (x_int < dimx) && (y_int >= 0) && (y_int < dimy) && (tab_terr[x_int][y_int] != '#'));
     //return true; // SI BESOIN DE DEBUG DEPLACEMENT
 }

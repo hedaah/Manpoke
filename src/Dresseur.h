@@ -1,6 +1,9 @@
 #ifndef _Dresseur_H
 #define _Dresseur_H
 
+
+#include <vector>
+
 #include "Vect2D.h"
 #include "Personne.h"
 #include <SDL2/SDL.h>
@@ -8,9 +11,10 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 
+using namespace std;
+
 struct Pokeball {
     Vect2D vec2_p; // position
-    int m_Vie; //sa vie
     int m_Degat; //son degat
     bool b_Lancement; // boolen pour gerer le lancement
 
@@ -22,9 +26,8 @@ struct Pokeball {
 class Dresseur : public Personne{
 
     private :
-        
 
-        Pokeball tab_StockPokeball[10]; //stock Pokeball du Dresseur VERSION 2
+        vector<Pokeball*> tab_pokeball;     //stock Pokeball du Dresseur VERSION 2
         unsigned short int m_nbPokeball;
         int nb_RP; // nombre restantes de pokemon du Dresseur VERSION 2
         int nb_RPA;
@@ -47,9 +50,13 @@ class Dresseur : public Personne{
         unsigned short int getNbPokeball();
         void setNbPokeball(unsigned short int x);
 
-        Pokeball* getTabPokeball();
+        vector<Pokeball*> getTabPokeball();
 
         Image* getTabImageVie();
+
+        Vect2D getPokeball();
+
+        Vect2D getDresseur();
 
         int GetnombreRestantesPokemon();
 
