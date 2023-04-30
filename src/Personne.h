@@ -29,18 +29,20 @@ class Personne {
         Image im_sprites;
         
         SDL_Rect rect_spritesPart[4][4];
+        SDL_Rect rect_spritePos;
 
     public: 
         Personne(); // constructeur, toutes les données membres à 0 et la direction en bas, ces données seront gérées par les classes Monstre et Personne qui héritent de cette classe.
 
         void regeneration();// vie regeneré 
 
-        int getVie(); //retourne la vie de la personne
-        void setVie(int x);  // modifie la vie
+        int getVie();
+        void setVie(int x);
         void WORLVie(int x); // recupere ou perd de la vie
 
-        float getPosX(); // récupère la position X de la personne.
-        float getPosY(); // récupère la position Y de la personne.
+
+        double getPosX(); // récupère la position X de la personne.
+        double getPosY(); // récupère la position Y de la personne.
         void setPos(float x, float y); // Définie la position de la personne.
 
         Vect2D getVect2D(); // recupere le vecteur de la personne
@@ -55,11 +57,12 @@ class Personne {
         Image& getImageSprite();
 
         SDL_Rect* getTabSpritesRect(Direction dir);
+        SDL_Rect& getRectPos();
 
-        void moveLeft(const Terrain & t); // déplacement vers la gauche
-        void moveRight(const Terrain & t); // déplacement vers la droite
-        void moveUp(const Terrain & t); // déplacement vers le haut
-        void moveDown(const Terrain & t); // déplacement vers le bas
+        bool moveLeft(const Terrain & t); // déplacement vers la gauche
+        bool moveRight(const Terrain & t); // déplacement vers la droite
+        bool moveUp(const Terrain & t); // déplacement vers le haut
+        bool moveDown(const Terrain & t); // déplacement vers le bas
 };
 
 #endif

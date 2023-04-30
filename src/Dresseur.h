@@ -15,7 +15,6 @@ struct Pokeball {
     bool b_Lancement; // boolen pour gerer le lancement
 
     Image im_pokeball;
-    
 
 };
 
@@ -23,6 +22,7 @@ struct Pokeball {
 class Dresseur : public Personne{
 
     private :
+        
 
         Pokeball tab_StockPokeball[10]; //stock Pokeball du Dresseur VERSION 2
         unsigned short int m_nbPokeball;
@@ -30,6 +30,9 @@ class Dresseur : public Personne{
         int nb_RPA;
 
         Image im_vie[6];
+
+        
+
 
     public :
 

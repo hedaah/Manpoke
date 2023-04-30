@@ -7,7 +7,7 @@
 #include <SDL2/SDL_mixer.h>
 #include "../sdl2/Image.h"
 
-enum TypeCase { GRASS='.',WALL='#',STONE='A'};
+enum TypeCase { GRASS='.',WALL='#',DOOR='D',STONE='A',WATER='W'};
 
 class Terrain {
 private:
@@ -29,7 +29,7 @@ public :
     /*Destructeur, lors d'un changement de niveau cela permettra de delete le terrain qui n'est plus affiché*/
     ~Terrain();
 
-    bool Collision(float x,float y) const ;
+    bool Collision(double& x,double& y) const ;
 
     TypeCase getXY(unsigned int x,unsigned  int y) const;
 

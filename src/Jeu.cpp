@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 #include "Jeu.h"
 using namespace std;
@@ -54,27 +55,53 @@ void Jeu::afficherInit()
     }
 
      renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
+
+    
+    
+
+     // Fonts
+
+
+     // Sons
+     if(withSound){
+        sound=Mix_LoadWAV("data/ecran.mp3");
+        pas=Mix_LoadWAV("data/bruit_pas.wav");
+        if(sound==nullptr){
+            cout<<"Failed to load son d'ecran mp3"<<endl;
+        }
+        if(pas==nullptr){
+            cout<<"Failed to load bruit pas wav"<<endl;
+        }
+
+     }
     
 }
 
 Jeu::Jeu(){
     afficherInit();
+    srand(time(NULL));
 
     im_Menu[0].loadFromFile("data/Menu/menu.png",renderer);
     im_Menu[1].loadFromFile("data/Menu/GameOver.png",renderer);
 
+    Im_score.loadFromFile("data/Score/score.png",renderer);
 
-    dres.getTabImageVie()[0].loadFromFile("data/vie/Vie125.png", renderer);
-    dres.getTabImageVie()[1].loadFromFile("data/vie/Vie100.png", renderer);
-    dres.getTabImageVie()[2].loadFromFile("data/vie/Vie75.png", renderer);
-    dres.getTabImageVie()[3].loadFromFile("data/vie/Vie50.png", renderer);
-    dres.getTabImageVie()[4].loadFromFile("data/vie/Vie25.png", renderer);
-    dres.getTabImageVie()[5].loadFromFile("data/vie/Vie0.png", renderer);
+    Im_Pr.loadFromFile("data/Score/Pokeball.png",renderer);
+
+    dres.getTabImageVie()[0].loadFromFile("data/Score/vie/Vie125.png", renderer);
+    dres.getTabImageVie()[1].loadFromFile("data/Score/vie/Vie100.png", renderer);
+    dres.getTabImageVie()[2].loadFromFile("data/Score/vie/Vie75.png", renderer);
+    dres.getTabImageVie()[3].loadFromFile("data/Score/vie/Vie50.png", renderer);
+    dres.getTabImageVie()[4].loadFromFile("data/Score/vie/Vie25.png", renderer);
+    dres.getTabImageVie()[5].loadFromFile("data/Score/vie/Vie0.png", renderer);
 
 
+    int tmpDresPosX = static_cast<int>(dres.getPosX()*65.);
+    int tmpDresPosY = static_cast<int>(dres.getPosY()*60.0);
+    dres.getRectPos() = {tmpDresPosX,tmpDresPosY,200,200}; // On peut modifier directement depuis le getter car on récupère la 
+                                                         //référence vers le rectpos de l'instance, on récupère la référence 
+                                                         //car on en a besoin pour draw ensuite.
 
-
-    dres.setNbPokeball(5);
     for (unsigned int i = 0; i< dres.getNbPokeball() ; i++)
     {
         dres.getTabPokeball()[i].im_pokeball.loadFromFile("data/pokeball.png", renderer);
@@ -85,38 +112,60 @@ Jeu::Jeu(){
     dres.getImageSprite()[droite].loadFromFile("data/droite.png",renderer);*/
 
     dres.getImageSprite().loadFromFile("data/trainer.png",renderer);
-    dres.getTabSpritesRect(haut)[0] = {0,192,64,64};
-    dres.getTabSpritesRect(haut)[1] = {64,192,64,64};
-    dres.getTabSpritesRect(haut)[2] = {128,192,64,64};
-    dres.getTabSpritesRect(haut)[3] = {192,192,64,64};
-
-    dres.getTabSpritesRect(bas)[0] = {0,0,64,64};
-    dres.getTabSpritesRect(bas)[1] = {64,0,64,64};
-    dres.getTabSpritesRect(bas)[2] = {128,0,64,64};
-    dres.getTabSpritesRect(bas)[3] = {192,0,64,64};
-
-    dres.getTabSpritesRect(gauche)[0] = {0,64,64,64};
-    dres.getTabSpritesRect(gauche)[1] = {64,64,64,64};
-    dres.getTabSpritesRect(gauche)[2] = {128,64,64,64};
-    dres.getTabSpritesRect(gauche)[3] = {192,64,64,64};
-
-    dres.getTabSpritesRect(droite)[0] = {0,128,64,64};
-    dres.getTabSpritesRect(droite)[1] = {64,128,64,64};
-    dres.getTabSpritesRect(droite)[2] = {128,128,64,64};
-    dres.getTabSpritesRect(droite)[3] = {192,128,64,64};
-
+    
+    USInt_level = 1; // On commence toujours au niveau 1.
+    USInt_nbMonstre = 10; // Toujours 10 monstres par niveaux.
 
     ter.setImageTerrain(GRASS,"data/Map/herbe.png",renderer);
     ter.setImageTerrain(WALL,"data/Map/mur.png",renderer);
+    ter.setImageTerrain(DOOR,"data/Map/porte2.png",renderer);
     ter.setImageTerrain(STONE,"data/Map/pierre.png",renderer);
+
+    for (unsigned short int i =0;i< USInt_nbMonstre ; i++)
+    {
+        if (i < 6) // 6 petits monstres
+        {
+            tab_monstre[i].getImageSprite().loadFromFile("data/001.png",renderer);
+            tab_monstre[i].setPos(9.0,2.0 + i);
+            int tmpMonstrePosX = static_cast<int>(tab_monstre[i].getPosX()*65.0);
+            int tmpMonstrePosY = static_cast<int>(tab_monstre[i].getPosY()*60.0);
+            tab_monstre[i].getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+        }
+        else if (i >= 6 && i < 9) // 3 monstres moyens
+        {
+            tab_monstre[i].getImageSprite().loadFromFile("data/002.png",renderer);
+            tab_monstre[i].setPos(10.0,2.0+i);
+            int tmpMonstrePosX = static_cast<int>(tab_monstre[i].getPosX()*65.0);
+            int tmpMonstrePosY = static_cast<int>(tab_monstre[i].getPosY()*60.0);
+            tab_monstre[i].getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+        }
+        else if (i == 9) // 1 monstre grand
+        {
+            tab_monstre[i].getImageSprite().loadFromFile("data/003.png",renderer);
+            tab_monstre[i].setPos(5.0,5.0);
+            int tmpMonstrePosX = static_cast<int>(tab_monstre[i].getPosX()*65.0);
+            int tmpMonstrePosY = static_cast<int>(tab_monstre[i].getPosY()*60.0);
+            tab_monstre[i].getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+        }
+    }
+
+    font=TTF_OpenFont("DejaVuSansCondensed.ttf", 72 );
+
+    score=dres.GetnombreRestantesPokemon();
+    font_color.r = 255;font_color.g = 255;font_color.b = 255;
+
+
 }
 
+Jeu::~Jeu(){
+    delete[] tab_monstre;
+}
 
 void Jeu::actionClavier(const char touche){
     bool moving;
     unsigned short int movingState;
     dres.getMovingState(moving,movingState);
-    cout << "moving : " << moving << " movingState : " << movingState << " direction : " << dres.getDir() << endl; 
+    //cout << "moving : " << moving << " movingState : " << movingState << " direction : " << dres.getDir() << endl; 
     if (moving == true) 
     {
         return; //Si le joueur est déjà en mouvement, on fait rien et on attend la fin de son déplacement actuel.
@@ -124,37 +173,38 @@ void Jeu::actionClavier(const char touche){
     switch (touche){
     case 'z':
         if (moving == false) {
-            dres.setMovingState(true,0);
             dres.setDir(haut);
-            dres.LienPokD2();
+            dres.setMovingState(true,0);
+            //dres.LienPokD2();
         }
         break;
 
     case 's':
         if (moving == false) {
-            dres.setMovingState(true,0);
             dres.setDir(bas);
-            dres.LienPokD2();
+            dres.setMovingState(true,0);
+            //dres.LienPokD2();
         }
         break;
     case 'd':
         if (moving == false) {
-            dres.setMovingState(true,0);
             dres.setDir(droite);
-            dres.LienPokD2();
+            dres.setMovingState(true,0);
+            //dres.LienPokD2();
         }
         break;
     case 'q':
         if (moving == false) {
-            dres.setMovingState(true,0);
             dres.setDir(gauche);
-            dres.LienPokD2();
+            dres.setMovingState(true,0);
+            //dres.LienPokD2();
         }
         break;
     case 'a':
-        dres.attaquer2();
-        dres.LienPokD2();
-        dres.WORLVie(+25);
+        dres.WORLVie(-25);
+        /*dres.attaquer2();
+        dres.LienPokD2();*/
+        //cout << "(TOUCHE) Coordonnée dresseur x : " << dres.getPosX() << " coordonnée dresseur y :" << dres.getPosY() << endl;
         //     while(dres.getBol()){
             //dres.attaquer(0);
             //cout<<"position du pokemon ="<<dres.getPoke(0).y<<endl;
@@ -183,13 +233,127 @@ void Jeu::actionClavier(const char touche){
 
 void Jeu::actionsMonstre(){
     for(int i=0;i<=10;i++){
-        tab[i].deplacerAuto();
+        int tmp = rand() % 4;
+        tab_monstre[i].deplacerAuto(tmp);
+    }
+}
+
+void Jeu::gestionDeplacement(Personne& p)
+{
+    bool moving;
+    unsigned short int movingState;
+    p.getMovingState(moving,movingState);
+    //cout << "moving : " << moving << " movingState : " << movingState << " direction : " << dres.getDir() << endl; 
+    if (movingState < 20 && moving == true) // On veut que le déplacement dure 20 frames, càd environ 1/3 secondes dans le cas où l'ordinateur rend bien à 60 images par secondes.
+    {
+        //cout << "On entre dans le déplacement" << endl;
+        switch(p.getDir())
+        {
+            case haut:
+            {
+                if (p.moveUp(ter) == true)
+                {
+                    movingState+=1;
+                    p.setMovingState(moving,movingState);
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+                //dres.LienPokD2();
+            }
+            case bas:
+            {
+                if (p.moveDown(ter) == true)
+                {
+                    movingState+=1;
+                    p.setMovingState(moving,movingState);
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+                //dres.LienPokD2();
+            }
+            case droite:
+            {
+                if (p.moveRight(ter) == true)
+                {
+                    movingState+=1;
+                    p.setMovingState(moving,movingState);
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+                //dres.LienPokD2();
+            }
+            case gauche:
+            {
+                if (p.moveLeft(ter) == true)
+                {
+                    movingState+=1;
+                    p.setMovingState(moving,movingState);
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+                //dres.LienPokD2();
+            }
+            default : break;
+        }
+    }
+    else if (movingState >= 20)
+    {
+        p.setMovingState(false,0);
+    }
+}
+
+void Jeu::gestionRendue(Personne& p)
+{
+    int tmpPosX = static_cast<int>(p.getPosX()*65.0);
+    int tmpPosY = static_cast<int>(p.getPosY()*60.0);
+    p.getRectPos() = {tmpPosX,tmpPosY,65,60};
+
+    if (p.getInternalMovingState() == 0)
+    {
+        SDL_RenderCopy(renderer,p.getImageSprite().getTexture(),
+            &p.getTabSpritesRect(p.getDir())[0],&p.getRectPos());
+    }
+    else if (p.getInternalMovingState() < 4)
+    {
+        SDL_RenderCopy(renderer,p.getImageSprite().getTexture(),
+            &p.getTabSpritesRect(p.getDir())[0],&p.getRectPos());
+    }
+    else if (p.getInternalMovingState() < 8 && p.getInternalMovingState() >=4)
+    {
+        SDL_RenderCopy(renderer,p.getImageSprite().getTexture(),
+            &p.getTabSpritesRect(p.getDir())[1],&p.getRectPos());
+    }
+    else if (p.getInternalMovingState() < 12 && p.getInternalMovingState() >=8)
+    {
+        SDL_RenderCopy(renderer,p.getImageSprite().getTexture(),
+            &p.getTabSpritesRect(p.getDir())[2],&p.getRectPos());
+    }
+    else if (p.getInternalMovingState() < 16 && p.getInternalMovingState() >=12)
+    {
+        SDL_RenderCopy(renderer,p.getImageSprite().getTexture(),
+            &p.getTabSpritesRect(p.getDir())[3],&p.getRectPos());
+    }
+    else if (p.getInternalMovingState() >= 16)
+    {
+        SDL_RenderCopy(renderer,p.getImageSprite().getTexture(),
+            &p.getTabSpritesRect(p.getDir())[0],&p.getRectPos());
     }
 }
 
 const Terrain& Jeu::getConstTerrain() const {return ter;}
 const Dresseur& Jeu::getConstDresseur() const {return dres;}
-
 
 void Jeu::afficherDetruit()
 {
@@ -203,20 +367,19 @@ void Jeu::afficherDetruit()
 
 }
 
-void Jeu::setupRenderer(int state) // tous les draw
+void Jeu::setupRenderer(int state)
 {
      switch (state){
         case 0:im_Menu[0].draw(renderer,0,0,1755,1050);
+           
             break;
-        
-        case 1 :
-                im_Menu[1].draw(renderer,0,0,1755,1050);
+        case 1:
+            im_Menu[1].draw(renderer,0,0,1755,1050);
             break;
 
         case 2: 
             //cout << "Nous sommes rentrée dans le draw de la map"  << endl;
-
-            // DESSIN DE MAP //
+            
             for(unsigned int x=0;x<ter.getDimX();x++){
                 for(unsigned int y=0;y<ter.getDimY();y++)
                 {
@@ -243,7 +406,7 @@ void Jeu::setupRenderer(int state) // tous les draw
                     
                 }
             }
-            // DESSIN DU SCORE DU DRESSEUR
+
 
             switch (dres.getVie())
             {
@@ -276,46 +439,38 @@ void Jeu::setupRenderer(int state) // tous les draw
                     break;
             } 
 
+            Im_score.draw(renderer,1250,790,470,350);
+            Im_Pr.draw(renderer,800,920,80,80);
+
+            SDL_Rect positionTitre;
+            positionTitre.x=725;
+            positionTitre.y=925;
+            positionTitre.w=70;
+            positionTitre.h=70;
+
+            SDL_RenderCopy(renderer,font_im.getTexture(),nullptr,&positionTitre);
 
 
-            // DESSIN DU DRESSEUR //
-           
-            SDL_Rect tmpTrainerRect = {dres.getPosX()*65,dres.getPosY()*60,65,60};
+            //cout << dres.GetnombreRestantesPokemon() << endl;
+                //dres.getTabPokeball()[0].im_pokeball.draw(renderer,dres.getPosXSP()*64,dres.getPosYSP()*64,18,20);
+                //dres.getTabPokeball()[0].im_pokeball.draw(renderer,dres.getPosXSPA()*64,dres.getPosYSPA()*64,18,20);
 
-            if (dres.getInternalMovingState() == 0)
+            
+            //dres.getImageSprite()[dres.getDir()].draw(renderer,dres.getPosX()*37,dres.getPosY()*40,37,40);
+
+            //Préparation du rendu du dresseur.
+            gestionRendue(dres);
+
+            //Préparation du rendu des monstres.
+            actionsMonstre();
+            for (unsigned short int i = 0; i<USInt_nbMonstre ; i++)
             {
-                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
-                    &dres.getTabSpritesRect(dres.getDir())[0],&tmpTrainerRect);
+                gestionRendue(tab_monstre[i]);
             }
-           else if (dres.getInternalMovingState() < 4)
-           {
-                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
-                    &dres.getTabSpritesRect(dres.getDir())[0],&tmpTrainerRect);
-           }
-           else if (dres.getInternalMovingState() < 8 && dres.getInternalMovingState() >=4)
-           {
-                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
-                    &dres.getTabSpritesRect(dres.getDir())[1],&tmpTrainerRect);
-           }
-           else if (dres.getInternalMovingState() < 12 && dres.getInternalMovingState() >=8)
-           {
-                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
-                    &dres.getTabSpritesRect(dres.getDir())[2],&tmpTrainerRect);
-           }
-           else if (dres.getInternalMovingState() < 16 && dres.getInternalMovingState() >=12)
-           {
-                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
-                    &dres.getTabSpritesRect(dres.getDir())[3],&tmpTrainerRect);
-           }
-           else if (dres.getInternalMovingState() >= 16)
-           {
-                SDL_RenderCopy(renderer,dres.getImageSprite().getTexture(),
-                    &dres.getTabSpritesRect(dres.getDir())[0],&tmpTrainerRect);
-           }
+
 
             //Mix_Pause(-1);
             break;
-
 
      }
 }
@@ -326,11 +481,11 @@ void Jeu::afficherBoucle()
      
     int state=0;
     SDL_Event Event;
+    int mouseX,mouseY;
 
-        int mouseX,mouseY;
+
     while(!quit)
     {
-        
         SDL_GetMouseState(&mouseX,&mouseY);
         unsigned int start = SDL_GetPerformanceCounter();
         while(SDL_PollEvent(&Event))
@@ -387,103 +542,83 @@ void Jeu::afficherBoucle()
                         //Mix_PlayChannel(-2,pas,-2);
                         break;
                     
-                    case SDL_SCANCODE_SPACE: 
-
+                    case SDL_SCANCODE_SPACE:
+                        //cout<<" 1- valeur du boolen ="<<getConstDresseur().getBol()<<endl;
+                        //while(dres().getBol()){
+                            
                             actionClavier('a');
                             cout<<"position du pokemon en x = "<<dres.getPosXSPA()<<endl;
                             cout<<"position du pokemon en y = "<<dres.getPosYSPA()<<endl;
-                            dres.getTabPokeball()[0].im_pokeball.draw(renderer,dres.getPosXSPA()*37,dres.getPosYSPA()*40,18,20);
+                            score--;
+                            score_str=to_string(score);
+
+    
+                            font_im.setSurface(TTF_RenderText_Blended(font,score_str.c_str(),font_color));
+                            font_im.loadFromCurrentSurface(renderer);
+
                             
+
+                        //}
+                        //getConstDresseur().setBolT();
+                        //cout<<"2- valeur du boolen ="<<getConstDresseur().getBol()<<endl;
                         break;
                     
                     default: 
-                        cout<<"x de la souris ="<<mouseX<<" et y de la souris ="<<mouseY<<endl;
-                        if (Event.button.button==SDL_BUTTON_LEFT && state==0){
-                            if(mouseX>=212 && mouseX<=573 && mouseY>=411 && mouseY<=661){
-                                cout<<"bouton souris qui fonctionne"<<endl;
-                                state=2;
+                        if (Event.button.button==SDL_BUTTON_LEFT ){
+
+
+                            switch (state){
+                                case 0:
+                                    if(mouseX>=212 && mouseX<=573 && mouseY>=411 && mouseY<=661){
+                                        cout<<"bouton souris qui fonctionne"<<endl;
+                                        state=2;
+                                    }
+                                    if(mouseX>= 590 && mouseX<=954 && mouseY>=411 && mouseY<=661){
+                                        cout<<"Tu as Selectionné Reglage"<<endl;
+                                        
+                                    }
+                                    if(mouseX>=212 && mouseX<=573 && mouseY>=681 && mouseY<=929){
+                                        cout<<"Tu as selectionné Credit"<<endl;
+                                        
+                                    }
+                                    if(mouseX>=590 && mouseX<=954 && mouseY>=681 && mouseY<=929){
+                                        quit=true;  
+                                    } 
+
+                                break;
+
+                                case 1:
+
+                                    if(mouseX>=336 && mouseX<=859 && mouseY>=541 && mouseY<=649){
+                                        quit=true;  
+                                    } 
+                                    break;
+
+
                             }
-                            if(mouseX>= 590 && mouseX<=954 && mouseY>=411 && mouseY<=661){
-                                cout<<"Tu as Selectionné Reglage"<<endl;
-                                
-                            }
-                            if(mouseX>=212 && mouseX<=573 && mouseY>=681 && mouseY<=929){
-                                cout<<"Tu as selectionné Credit"<<endl;
-                                
-                            }
-                            if(mouseX>=590 && mouseX<=954 && mouseY>=681 && mouseY<=929){
-                                cout<<"Tu as selectionné Quitter"<<endl;
-                                quit=true;
-                                
-                            }  
 
                         }
-                        
                     break;
 				}
 			}
-            cout<<"vie restante du dresseur"<<dres.getVie()<<endl;
-                        if(dres.getVie()==0) {
-                            cout<<"fin game"<<endl;
-                            state=1;
-                            cout<<state<<endl;
-                        }
+            if(dres.getVie()==0) {
+                cout<<"fin game"<<endl;
+                state=1;
+                cout<<state<<endl;
+            }
         }
     // ################## Déplacement du joueur ################
+    gestionDeplacement(dres);
 
-    bool moving;
-    unsigned short int movingState;
-    dres.getMovingState(moving,movingState);
-    //cout << "moving : " << moving << " movingState : " << movingState << " direction : " << dres.getDir() << endl; 
-    if (movingState < 20 && moving == true) // On veut que le déplacement dure 20 frames, càd environ 1/3 secondes dans le cas où l'ordinateur rend bien à 60 images par secondes.
+    // ################## Déplacement des monstres ################
+    for(unsigned short int i=0;i<USInt_nbMonstre;i++)
     {
-        cout << "On entre dans le déplacement" << endl;
-        switch(dres.getDir())
-        {
-            case haut:
-            {
-                dres.moveUp(ter);
-                //dres.LienPokD2();
-                movingState+=1;
-                dres.setMovingState(moving,movingState);
-                break;
-            }
-            case bas:
-            {
-                dres.moveDown(ter);
-                //dres.LienPokD2();
-                movingState+=1;
-                dres.setMovingState(moving,movingState);
-                break;
-            }
-            case droite:
-            {
-                dres.moveRight(ter);
-                //dres.LienPokD2();
-                movingState+=1;
-                dres.setMovingState(moving,movingState);
-                break;
-            }
-            case gauche:
-            {
-                dres.moveLeft(ter);
-                //dres.LienPokD2();
-                movingState+=1;
-                dres.setMovingState(moving,movingState);
-                break;
-            }
-            default : break;
-        }
-    }
-    else 
-    {
-        dres.setMovingState(false,0);
+        gestionDeplacement(tab_monstre[i]);
     }
 
 
 
-
-    SDL_SetRenderDrawColor(renderer,255,255,255,225);
+    SDL_SetRenderDrawColor(renderer,100,100,100,225);
     SDL_RenderClear(renderer);
     setupRenderer(state);
     SDL_RenderPresent(renderer);
@@ -496,7 +631,6 @@ void Jeu::afficherBoucle()
     afficherDetruit();
 
 }
-
 
 void Jeu::afficher()
 {

@@ -12,7 +12,7 @@ Vect2D::Vect2D(const Vect2D & a)
     y=a.y;
 }
 
-Vect2D Vect2D::make_Vect2D(float r,float i)
+Vect2D Vect2D::make_Vect2D(double r,double i)
 {
     Vect2D c;
     c.x=r;
@@ -35,7 +35,7 @@ Vect2D  Vect2D::operator*(Vect2D a){
     return c;
 }
 
-Vect2D Vect2D::translate(Vect2D p, float dx,float dy)
+Vect2D Vect2D::translate(Vect2D p, double dx,double dy)
 {
     return p+make_Vect2D(dx,dy);
 }

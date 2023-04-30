@@ -4,10 +4,32 @@ using namespace std;
 
 
 Personne::Personne(){
-    m_corps.x=0.0;
-    m_corps.y=0.0;
+    m_corps.x=1.0;
+    m_corps.y=1.0;
     m_vie = 0;
     m_dir = bas;
+
+    //Les sprites utilisés ont tous la même structure dans leur fichier png associé.
+
+    getTabSpritesRect(haut)[0] = {0,192,64,64};
+    getTabSpritesRect(haut)[1] = {64,192,64,64};
+    getTabSpritesRect(haut)[2] = {128,192,64,64};
+    getTabSpritesRect(haut)[3] = {192,192,64,64};
+
+    getTabSpritesRect(bas)[0] = {0,0,64,64};
+    getTabSpritesRect(bas)[1] = {64,0,64,64};
+    getTabSpritesRect(bas)[2] = {128,0,64,64};
+    getTabSpritesRect(bas)[3] = {192,0,64,64};
+
+    getTabSpritesRect(gauche)[0] = {0,64,64,64};
+    getTabSpritesRect(gauche)[1] = {64,64,64,64};
+    getTabSpritesRect(gauche)[2] = {128,64,64,64};
+    getTabSpritesRect(gauche)[3] = {192,64,64,64};
+
+    getTabSpritesRect(droite)[0] = {0,128,64,64};
+    getTabSpritesRect(droite)[1] = {64,128,64,64};
+    getTabSpritesRect(droite)[2] = {128,128,64,64};
+    getTabSpritesRect(droite)[3] = {192,128,64,64};
 }
 
 
@@ -24,14 +46,14 @@ void Personne::setVie(int x) {
 }
 
 void Personne::WORLVie(int x){
-    m_vie= m_vie - x;
+    m_vie= m_vie + x;
 }
 
-float Personne::getPosX() {
+double Personne::getPosX() {
      return m_corps.x;
 }
 
-float Personne::getPosY() {
+double Personne::getPosY() {
     return m_corps.y;
 }
 
@@ -51,47 +73,122 @@ void Personne::setDir(Direction dir) {
 
 }
 
-void Personne::moveLeft(const Terrain & t){
-    cout<<"boolen vrai est "<<true<<endl;
+bool Personne::moveLeft(const Terrain & t){
+    bool moving;
+    unsigned short int movingState;
+    getMovingState(moving,movingState);
+    if (movingState > 0)
+    {
+        setPos(getPosX() - (long double)0.05, getPosY());
+        return true;
+    }
+    setDir(gauche);
     cout << "coordonnée dresseur x : " << getPosX()  << " coordonnée dresseur y : " << getPosY() << endl; 
+    double tmpx = getPosX() - 1.0;
+    double tmpy = getPosY();
 
-    cout<<t.Collision(getPosX()-1.0,getPosY())<<endl;
-    if(t.Collision(getPosX(),getPosY())){
+    //cout<<t.Collision(getPosX()-1.0,getPosY())<<endl;
+    if(t.Collision(tmpx,tmpy)){
         
         setPos(getPosX() - (long double)0.05, getPosY());
+        return true;
+    }
+    else
+    {
+        moving = false;
+        movingState = 0;
+        setMovingState(moving,movingState);
+        return false;
     }
     
     //setPos(getPosX() + 0.1, getPosY());
 }
 
-void Personne::moveRight(const Terrain & t){
-    cout<<"boolen vrai est "<<true<<endl;
-    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
-
-    cout<<t.Collision(m_corps.x+1.0,m_corps.y)<<endl;
-    if(t.Collision(getPosX()+1.0,getPosY())){
+bool Personne::moveRight(const Terrain & t){
+    bool moving;
+    unsigned short int movingState;
+    getMovingState(moving,movingState);
+    if (movingState > 0 )
+    {
         setPos(getPosX() + (long double)0.05, getPosY());
+        return true;
+    }
+    setDir(droite);
+    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
+    double tmpx = getPosX() + 1.0;
+    double tmpy = getPosY();
+
+    //cout<<t.Collision(m_corps.x+1.0,m_corps.y)<<endl;
+    if(t.Collision(tmpx,tmpy)){
+        setPos(getPosX() + (long double)0.05, getPosY());
+        return true;
+    }
+    else
+    {
+        moving = false;
+        movingState = 0;
+        setMovingState(moving,movingState);
+        return false;
     }
     ////setPos(getPosX() - 0.1, getPosY());
 }
 
-void Personne::moveUp(const Terrain & t){
-    cout<<"boolen vrai est "<<true<<endl;
-    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
-    cout<<t.Collision(getPosX(),getPosY())<<endl;
-    if(t.Collision(getPosX(),getPosY()-1.0)){
+bool Personne::moveUp(const Terrain & t){
+    bool moving;
+    unsigned short int movingState;
+    getMovingState(moving,movingState);
+    if (movingState > 0 )
+    {
         setPos(getPosX(), getPosY() - (long double)0.05);
+        return true;
+    }
+    setDir(haut);
+    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
+    double tmpx = getPosX();
+    double tmpy = getPosY() - 1.0;
+
+    //cout<<t.Collision(getPosX(),getPosY())<<endl;
+    if(t.Collision(tmpx,tmpy)){
+        setPos(getPosX(), getPosY() - (long double)0.05);
+        return true;
+    }
+    else
+    {
+        moving = false;
+        movingState = 0;
+        setMovingState(moving,movingState);
+        return false;
     }
     //setPos(getPosX(), getPosY() + 0.1);
 }
 
-void Personne::moveDown(const Terrain & t){
-    cout<<"boolen vrai est "<<true<<endl;
-    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
+bool Personne::moveDown(const Terrain & t){
+    bool moving;
+    unsigned short int movingState;
+    getMovingState(moving,movingState);
+    cout << "Movingstate : " << movingState << endl;
+    if (movingState > 0)
+    {
+        setPos(getPosX(), getPosY() + (long double)0.05);
+        return true;
+    }
 
-    cout<<t.Collision(m_corps.x,m_corps.y)<<endl;
-    if(t.Collision(getPosX(),getPosY()+1.0)){
+    setDir(bas);
+    cout << "coordonnée dresseur x : " << getPosX() << " coordonnée dresseur y : " << getPosY() << endl; 
+    double tmpx = getPosX();
+    double tmpy = getPosY() + 1.0;
+
+    //cout<<t.Collision(m_corps.x,m_corps.y)<<endl;
+    if(t.Collision(tmpx,tmpy)){
         setPos(getPosX(), getPosY() + (long double)0.05); 
+        return true;
+    }
+    else
+    {
+        moving = false;
+        movingState = 0;
+        setMovingState(moving,movingState);
+        return false;
     }
     //setPos(getPosX(), getPosY() - 0.1);
 }
@@ -120,4 +217,9 @@ unsigned short int Personne::getInternalMovingState()
 SDL_Rect* Personne::getTabSpritesRect(Direction dir)
 {
     return rect_spritesPart[dir];
+}
+
+SDL_Rect& Personne::getRectPos()
+{
+    return rect_spritePos;
 }

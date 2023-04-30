@@ -3,6 +3,7 @@
 #include <time.h>
 #include <cassert>
 #include <string.h>
+#include <math.h>
 #include "Terrain.h"
 
 const char terrain1[15][28] = {
@@ -43,6 +44,9 @@ Terrain::Terrain() {
                 case '.' : tab_terr[i][j]=GRASS;
                         break;
 
+                case 'D' : tab_terr[i][j]=DOOR;
+                        break;
+
                 case 'A': tab_terr[i][j]=STONE;
                         break;
             }
@@ -57,11 +61,19 @@ Terrain::~Terrain() {
     dimy=0;
 }
 
-bool Terrain::Collision(float x,float y)const {
+bool Terrain::Collision(double& x,double& y)const {
+    std::cout << "AVant cast x : " << x << " avant cast y : " << y << std::endl;
+    x = round(x);
+    y = round(y);
     int x_int = static_cast<int>(x);
     int y_int = static_cast<int>(y);
     std::cout << "x_int : " << x_int << " y_int " << y_int << std::endl;
+    if (tab_terr[x_int][y_int] == '#')
+    {
+        std::cout << "LA case sur laquelle le dresseur essaye d'avancere st un #" << std::endl;
+    }
     return ((x_int >= 0) && (x_int < dimx) && (y_int >= 0) && (y_int < dimy) && (tab_terr[x_int][y_int] != '#'));
+    //return true; // SI BESOIN DE DEBUG DEPLACEMENT
 }
 
 TypeCase Terrain::getXY(unsigned int x,unsigned  int y)const {
@@ -94,9 +106,19 @@ Image& Terrain::getImageTerrain(TypeCase c){
             return im_wall;
             break;
         }
+        case DOOR:
+        {
+            return im_door;
+            break;
+        }
         case STONE:
         {
             return im_stone;
+            break;
+        }
+        case WATER:
+        {
+            return im_water;
             break;
         }
         default :
@@ -120,9 +142,19 @@ void Terrain::setImageTerrain(TypeCase c, const char* fileName, SDL_Renderer* re
             im_wall.loadFromFile(fileName,renderer);
             break;
         }
+        case DOOR:
+        {
+            im_door.loadFromFile(fileName,renderer);
+            break;
+        }
         case STONE:
         {
             im_stone.loadFromFile(fileName,renderer);
+            break;
+        }
+        case WATER:
+        {
+            im_water.loadFromFile(fileName,renderer);
             break;
         }
         default : break;
