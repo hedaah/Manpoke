@@ -57,7 +57,7 @@ double Personne::getPosY() {
     return m_corps.y;
 }
 
-void Personne::setPos(float x, float y) {
+void Personne::setPos(double x, double y) {
     m_corps.x = x;
     m_corps.y = y;
 }

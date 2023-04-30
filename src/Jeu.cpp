@@ -121,36 +121,50 @@ Jeu::Jeu(){
     ter.setImageTerrain(DOOR,"data/Map/porte2.png",renderer);
     ter.setImageTerrain(STONE,"data/Map/pierre.png",renderer);
 
+
     for (unsigned short int i =0;i< USInt_nbMonstre ; i++)
     {
         if (i < 6) // 6 petits monstres
         {
-            tab_monstre[i].getImageSprite().loadFromFile("data/001.png",renderer);
-            tab_monstre[i].setPos(9.0,2.0 + i);
-            int tmpMonstrePosX = static_cast<int>(tab_monstre[i].getPosX()*65.0);
-            int tmpMonstrePosY = static_cast<int>(tab_monstre[i].getPosY()*60.0);
-            tab_monstre[i].getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            Monstre tmp(8.0,2.0+i,petit);
+            Monstre* tmp2 = new Monstre;
+            tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+            tmp2->setVie(tmp.getVie());
+            tab_monstres.push_back(tmp2);
+            tab_monstres[i]->getImageSprite().loadFromFile("data/001.png",renderer);
+            int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+            int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+            tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
         }
         else if (i >= 6 && i < 9) // 3 monstres moyens
         {
-            tab_monstre[i].getImageSprite().loadFromFile("data/002.png",renderer);
-            tab_monstre[i].setPos(10.0,2.0+i);
-            int tmpMonstrePosX = static_cast<int>(tab_monstre[i].getPosX()*65.0);
-            int tmpMonstrePosY = static_cast<int>(tab_monstre[i].getPosY()*60.0);
-            tab_monstre[i].getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            Monstre tmp(10.0,2.0+i,moyen);
+            Monstre* tmp2 = new Monstre;
+            tmp2->setPos(tmp.getPosX(),tmp.getPosY());
+            tmp2->setVie(tmp.getVie());
+            tab_monstres.push_back(tmp2);
+            tab_monstres[i]->getImageSprite().loadFromFile("data/002.png",renderer);
+            int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+            int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+            tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
         }
         else if (i == 9) // 1 monstre grand
         {
-            tab_monstre[i].getImageSprite().loadFromFile("data/003.png",renderer);
-            tab_monstre[i].setPos(5.0,5.0);
-            int tmpMonstrePosX = static_cast<int>(tab_monstre[i].getPosX()*65.0);
-            int tmpMonstrePosY = static_cast<int>(tab_monstre[i].getPosY()*60.0);
-            tab_monstre[i].getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            Monstre tmp(5.0,5.0,grand);
+            Monstre* tmp2 = new Monstre;
+            tmp2->setPos(tmp.getPosX(),tmp.getPosY());
+            tmp2->setVie(tmp.getVie());
+            tab_monstres.push_back(tmp2);
+            tab_monstres[i]->getImageSprite().loadFromFile("data/003.png",renderer);
+            int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+            int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+            tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
         }
     }
 
     font=TTF_OpenFont("DejaVuSansCondensed.ttf", 72 );
 
+    point=0;
     score=dres.GetnombreRestantesPokemon();
     font_color.r = 255;font_color.g = 255;font_color.b = 255;
 
@@ -158,7 +172,7 @@ Jeu::Jeu(){
 }
 
 Jeu::~Jeu(){
-    delete[] tab_monstre;
+    
 }
 
 void Jeu::actionClavier(const char touche){
@@ -232,9 +246,9 @@ void Jeu::actionClavier(const char touche){
 }
 
 void Jeu::actionsMonstre(){
-    for(int i=0;i<=10;i++){
+    for(unsigned short int i=0;i<tab_monstres.size();i++){
         int tmp = rand() % 4;
-        tab_monstre[i].deplacerAuto(tmp);
+        tab_monstres[i]->deplacerAuto(tmp);
     }
 }
 
@@ -442,13 +456,22 @@ void Jeu::setupRenderer(int state)
             Im_score.draw(renderer,1250,790,470,350);
             Im_Pr.draw(renderer,800,920,80,80);
 
-            SDL_Rect positionTitre;
-            positionTitre.x=725;
-            positionTitre.y=925;
-            positionTitre.w=70;
-            positionTitre.h=70;
+            SDL_Rect Stock;
+            Stock.x=725;
+            Stock.y=925;
+            Stock.w=70;
+            Stock.h=70;
 
-            SDL_RenderCopy(renderer,font_im.getTexture(),nullptr,&positionTitre);
+            SDL_Rect Score;
+            Score.x=1000;
+            Score.y=925;
+            Score.h=140;
+            Score.w=70;
+
+            SDL_RenderCopy(renderer,font_im.getTexture(),nullptr,&Stock);
+            SDL_RenderCopy(renderer,font_im.getTexture(),nullptr,&Score);
+
+        
 
 
             //cout << dres.GetnombreRestantesPokemon() << endl;
@@ -463,9 +486,9 @@ void Jeu::setupRenderer(int state)
 
             //Préparation du rendu des monstres.
             actionsMonstre();
-            for (unsigned short int i = 0; i<USInt_nbMonstre ; i++)
+            for (unsigned short int i = 0; i<tab_monstres.size() ; i++)
             {
-                gestionRendue(tab_monstre[i]);
+                gestionRendue(*tab_monstres[i]);
             }
 
 
@@ -552,6 +575,8 @@ void Jeu::afficherBoucle()
                             score--;
                             score_str=to_string(score);
 
+                            point_str=to_string(point);
+
     
                             font_im.setSurface(TTF_RenderText_Blended(font,score_str.c_str(),font_color));
                             font_im.loadFromCurrentSurface(renderer);
@@ -611,9 +636,9 @@ void Jeu::afficherBoucle()
     gestionDeplacement(dres);
 
     // ################## Déplacement des monstres ################
-    for(unsigned short int i=0;i<USInt_nbMonstre;i++)
+    for(unsigned short int i=0;i<tab_monstres.size();i++)
     {
-        gestionDeplacement(tab_monstre[i]);
+        gestionDeplacement(*tab_monstres[i]);
     }
 
 

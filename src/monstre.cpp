@@ -2,7 +2,9 @@
 #include "monstre.h"
 
 Monstre::Monstre(){
-
+    setPos(5,5);
+    m_type = moyen;
+    setVie(100);
 }
 
 Monstre::Monstre(unsigned short int x, unsigned short int y) {

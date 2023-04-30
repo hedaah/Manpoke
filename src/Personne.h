@@ -43,7 +43,7 @@ class Personne {
 
         double getPosX(); // récupère la position X de la personne.
         double getPosY(); // récupère la position Y de la personne.
-        void setPos(float x, float y); // Définie la position de la personne.
+        void setPos(double x, double y); // Définie la position de la personne.
 
         Vect2D getVect2D(); // recupere le vecteur de la personne
 

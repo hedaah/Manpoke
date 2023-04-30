@@ -24,6 +24,7 @@ obj/Dresseur.o : src/Dresseur.h src/Dresseur.cpp src/Personne.h
 obj/monstre.o : src/monstre.h src/monstre.cpp src/Vect2D.h
 	g++ -g -o obj/monstre.o -Wall -c src/monstre.cpp
 
+
 obj/Terrain.o : src/Terrain.h src/Terrain.cpp
 	g++ -g -o obj/Terrain.o -Wall -c src/Terrain.cpp
 

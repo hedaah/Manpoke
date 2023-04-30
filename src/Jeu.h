@@ -9,6 +9,7 @@
 #include "Terrain.h"
 #include "monstre.h"
 #include "../sdl2/Image.h"
+#include <vector>
 
 using namespace std;
 
@@ -21,7 +22,9 @@ private :
 
 	Terrain ter;
 	Dresseur dres;
-	Monstre* tab_monstre = new Monstre[10];
+    std::vector<Monstre*> tab_monstres;
+    // Utilisations simples : tab_monstres.pop_back() : enlève le dernier élément du tableau
+    // tab_monstres.erase(i) : enlève l'élément i du tableau dynamique
 
     SDL_Window * window;
     SDL_Renderer * renderer;
@@ -41,6 +44,9 @@ private :
 
     int score;
     string score_str;
+
+    int point;
+    string point_str;
     
 
     unsigned short int USInt_level;
