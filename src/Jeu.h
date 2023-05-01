@@ -14,17 +14,20 @@
 using namespace std;
 
 /**
-@brief Un jeu (de pacman) = un terrain et un pacman
-*/
+
+    @class Jeu
+    @brief Module représentant le jeu Manpoke
+    La classe Jeu gère l'ensemble des éléments du jeu, tels que le terrain, les dresseurs,
+    les monstres, le score et les points de vie. Elle s'occupe également de l'affichage
+    du jeu grâce à la bibliothèque SDL2.
+    */
 class Jeu {
 
 private :
 
 	Terrain ter;
 	Dresseur dres;
-    std::vector<Monstre*> tab_monstres;
-    // Utilisations simples : tab_monstres.pop_back() : enlève le dernier élément du tableau
-    // tab_monstres.erase(i) : enlève l'élément i du tableau dynamique
+    vector<Monstre*> tab_monstres;
 
     SDL_Window * window;
     SDL_Renderer * renderer;
@@ -39,9 +42,11 @@ private :
     Mix_Chunk * pas;
     bool withSound;
 
-    Image im_Menu[2];
+    Image im_Menu[3];
     Image Im_score;
     Image Im_Pr;
+
+    int niveau;
 
     int score;
     string score_str;
@@ -55,33 +60,107 @@ private :
 
 public :
 
-    
+    /**
+     * @brief Constructeur de la classe Jeu.
+     */
     Jeu();
+
+    /**
+     * @brief Destructeur de la classe Jeu.
+     */
     ~Jeu();
 
 
 
+    /**
+     * @brief Accesseur pour le terrain du jeu.
+     * @return Une référence constante vers le terrain du jeu.
+     */
+    const Terrain& getConstTerrain () const;  
 
-    const Terrain& getConstTerrain () const;                        //< \brief accesseur nécesseaire pour l'affichage
-    const Dresseur& getConstDresseur () const;                          //< \brief accesseur nécesseaire pour l'affichage
-                                                                        //< \brief accesseur nécesseaire pour l'affichage
-    int getNombreDeMonstre() const;                                 //< \brief accesseur nécesseaire pour l'affichage
+    
+    /**
+     * @brief Accesseur pour le nombre de monstres restants dans le jeu.
+     * @return Le nombre de monstres restants dans le jeu.
+     */                      
+    const Dresseur& getConstDresseur () const; 
+
+    /**
+     * @brief Accesseur pour le nombre de monstres restants dans le jeu.
+     * @return Le nombre de monstres restants dans le jeu.
+     */                        
+                                                                        
+    int getNombreDeMonstre() const;  
+
+    /**
+     * @brief Actions des monstres du jeu.
+     */                              
 
     void actionsMonstre ();
-    void actionClavier(const char touche);          //< \brief rend vrai si mange une pastille, faux sinon
 
+    /**
+     * @brief Gestion des actions du joueur en fonction des touches du clavier.
+     * @param touche La touche du clavier appuyée par le joueur.
+     */
+    void actionClavier(const char touche);          
+
+    /**
+     * @brief Gestion des actions du joueur en fonction des touches du clavier.
+     * @param  p la personne utilise.
+     */
     void gestionDeplacement(Personne& p);
+
+    /**
+     * @brief Gestion des rendu.
+     * @param p la personne utilise..
+     */
     void gestionRendue(Personne& p);
+
+    /**
+     * @brief Gestion des attaques du dresseur.
+     * @param d le dresseur
+     */
+
+
     void gestionAttaques(Dresseur& d);
 
+    /**
+     * @brief Gestion de changement de niveau.
+     * @param i un entier de niveau
+     */
+
     void changeLevel(int i);
+
+    /**
+     * @brief Setup des draws a jour
+     * @param state entier du menu
+     */
     
     void setupRenderer(int state);
 
     //Fonctions affichage SDL
+    /**
+     * @brief Iinitialise la fenetre sdl
+     *
+     */
     void afficherInit();
+
+    /**
+     * @brief Detruit la fenetre
+     *
+     */
     void afficherDetruit();
+
+    /**
+     * @brief retourne un Gameloop
+     *
+     */
     void afficherBoucle();
+
+    /**
+     * @brief Affiche la fenetre
+     *
+     */
     void afficher();
 
 };

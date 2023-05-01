@@ -81,8 +81,11 @@ Jeu::Jeu(){
     afficherInit();
     srand(time(NULL));
 
+
     im_Menu[0].loadFromFile("data/Menu/menu.png",renderer);
     im_Menu[1].loadFromFile("data/Menu/GameOver.png",renderer);
+    im_Menu[2].loadFromFile("data/Menu/win.jpg",renderer);
+
 
     Im_score.loadFromFile("data/Score/score.png",renderer);
 
@@ -160,7 +163,7 @@ Jeu::Jeu(){
         }
     }
 
-    font=TTF_OpenFont("DejaVuSansCondensed.ttf", 72 );
+    font=TTF_OpenFont("data/DejaVuSansCondensed.ttf", 72 );
 
 
     point=0;
@@ -370,6 +373,7 @@ void Jeu::changeLevel(int i)
     default:
         break;
     }
+    niveau=i;
 }
 
 Jeu::~Jeu(){
@@ -729,8 +733,11 @@ void Jeu::setupRenderer(int state)
         case 1:
             im_Menu[1].draw(renderer,0,0,1755,1050);
             break;
+        case 2:
+            im_Menu[2].draw(renderer,0,0,1755,1050);
+            break;
 
-        case 2: 
+        case 3: 
             //cout << "Nous sommes rentrée dans le draw de la map"  << endl;
             
             for(unsigned int x=0;x<ter.getDimX();x++){
@@ -952,7 +959,7 @@ void Jeu::afficherBoucle()
                                 case 0:
                                     if(mouseX>=212 && mouseX<=573 && mouseY>=411 && mouseY<=661){
                                         cout<<"bouton souris qui fonctionne"<<endl;
-                                        state=2;
+                                        state=3;
                                     }
                                     if(mouseX>= 590 && mouseX<=954 && mouseY>=411 && mouseY<=661){
                                         cout<<"Tu as Selectionné Reglage"<<endl;
@@ -986,6 +993,17 @@ void Jeu::afficherBoucle()
                 cout<<"fin game"<<endl;
                 state=1;
                 cout<<state<<endl;
+            } 
+
+            if(score==0)
+            {
+                state=1;
+            }
+
+
+            if(tab_monstres.size()==0 && niveau==3 )
+            {
+                state=2;
             }
 
             point_str=to_string(point);
