@@ -111,7 +111,7 @@ Jeu::Jeu(){
 
     dres.getImageSprite().loadFromFile("data/trainer.png",renderer);
     
-    USInt_level = 1; // On commence toujours au niveau 1.
+    USInt_level = 0; // On commence toujours au niveau 0.
     USInt_nbMonstre = 10; // Toujours 10 monstres par niveaux.
 
     ter.setImageTerrain(GRASS,"data/Map/herbe.png",renderer);
@@ -129,7 +129,7 @@ Jeu::Jeu(){
             tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
             tmp2->setVie(tmp.getVie());
             tab_monstres.push_back(tmp2);
-            tab_monstres[i]->getImageSprite().loadFromFile("data/001.png",renderer);
+            tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/001.png",renderer);
             int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
             int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
             tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
@@ -141,7 +141,7 @@ Jeu::Jeu(){
             tmp2->setPos(tmp.getPosX(),tmp.getPosY());
             tmp2->setVie(tmp.getVie());
             tab_monstres.push_back(tmp2);
-            tab_monstres[i]->getImageSprite().loadFromFile("data/002.png",renderer);
+            tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/002.png",renderer);
             int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
             int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
             tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
@@ -153,7 +153,7 @@ Jeu::Jeu(){
             tmp2->setPos(tmp.getPosX(),tmp.getPosY());
             tmp2->setVie(tmp.getVie());
             tab_monstres.push_back(tmp2);
-            tab_monstres[i]->getImageSprite().loadFromFile("data/003.png",renderer);
+            tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/003.png",renderer);
             int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
             int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
             tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
@@ -168,6 +168,208 @@ Jeu::Jeu(){
     font_color.r = 255;font_color.g = 255;font_color.b = 255;
 
 
+}
+
+void Jeu::changeLevel(int i)
+{
+    ter.setMap(i);
+
+    switch (i)
+    {
+    case 0:
+    {
+        ter.setImageTerrain(GRASS,"data/Map/herbe.png",renderer);
+        ter.setImageTerrain(WALL,"data/Map/mur.png",renderer);
+        ter.setImageTerrain(DOOR,"data/Map/porte2.png",renderer);
+        ter.setImageTerrain(STONE,"data/Map/pierre.png",renderer);
+        for (unsigned short int i =0;i< USInt_nbMonstre ; i++)
+        {
+            if (i < 6) // 6 petits monstres
+            {
+                Monstre tmp(8.0,2.0+i,petit);
+                Monstre* tmp2 = new Monstre(petit);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pkemon/001.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+            else if (i >= 6 && i < 9) // 3 monstres moyens
+            {
+                Monstre tmp(10.0,2.0+i,moyen);
+                Monstre* tmp2 = new Monstre(moyen);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/002.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+            else if (i == 9) // 1 monstre grand
+            {
+                Monstre tmp(5.0,5.0,grand);
+                Monstre* tmp2 = new Monstre(grand);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/003.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+        }
+        break;
+    }
+    case 1:
+    {
+        ter.setImageTerrain(GRASS,"data/Map/mur2.png",renderer);
+        ter.setImageTerrain(WALL,"data/Map/sol2.png",renderer);
+        ter.setImageTerrain(DOOR,"data/Map/door.jpg",renderer);
+        ter.setImageTerrain(STONE,"data/Map/pierre2.png",renderer);
+        for (unsigned short int i =0;i< USInt_nbMonstre ; i++)
+        {
+            if (i < 6) // 6 petits monstres
+            {
+                Monstre tmp(9.0,2.0+i,petit);
+                Monstre* tmp2 = new Monstre(petit);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/449.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+            else if (i >= 6 && i < 9) // 3 monstres moyens
+            {
+                Monstre tmp(10.0,2.0+i,moyen);
+                Monstre* tmp2 = new Monstre(moyen);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/450.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+            else if (i == 9) // 1 monstre grand
+            {
+                Monstre tmp(5.0,5.0,grand);
+                Monstre* tmp2 = new Monstre(grand);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/377s.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+        }
+        break;
+    }
+    case 2:
+    {
+        ter.setImageTerrain(GRASS,"data/Map/solneige.png",renderer);
+        ter.setImageTerrain(WALL,"data/Map/murneige.png",renderer);
+        ter.setImageTerrain(DOOR,"data/Map/door.jpg",renderer);
+        ter.setImageTerrain(STONE,"data/Map/pierreneige.png",renderer);
+        for (unsigned short int i =0;i< USInt_nbMonstre ; i++)
+        {
+            if (i < 6) // 6 petits monstres
+            {
+                Monstre tmp(9.0,2.0+i,petit);
+                Monstre* tmp2 = new Monstre(petit);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/364.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+            else if (i >= 6 && i < 9) // 3 monstres moyens
+            {
+                Monstre tmp(10.0,2.0+i,moyen);
+                Monstre* tmp2 = new Monstre(moyen);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/365.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+            else if (i == 9) // 1 monstre grand
+            {
+                Monstre tmp(5.0,5.0,grand);
+                Monstre* tmp2 = new Monstre(grand);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/378.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+        }
+        break;
+    }
+    case 3:
+    {
+        ter.setImageTerrain(GRASS,"data/Map/solvolcan.png",renderer);
+        ter.setImageTerrain(WALL,"data/Map/murvolc.jpg",renderer);
+        ter.setImageTerrain(DOOR,"data/Map/door.jpg",renderer);
+        ter.setImageTerrain(STONE,"data/Map/pierreVolcan.png",renderer);
+        for (unsigned short int i =0;i< USInt_nbMonstre ; i++)
+        {
+            if (i < 6) // 6 petits monstres
+            {
+                Monstre tmp(9.0,2.0+i,petit);
+                Monstre* tmp2 = new Monstre(petit);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/732.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+            else if (i >= 6 && i < 9) // 3 monstres moyens
+            {
+                Monstre tmp(10.0,2.0+i,moyen);
+                Monstre* tmp2 = new Monstre(moyen);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/006s.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+            else if (i == 9) // 1 monstre grand
+            {
+                Monstre tmp(5.0,5.0,grand);
+                Monstre* tmp2 = new Monstre(grand);
+                tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
+                tmp2->setVie(tmp.getVie());
+                tab_monstres.push_back(tmp2);
+                tab_monstres[i]->getImageSprite().loadFromFile("data/pokemon/445s.png",renderer);
+                int tmpMonstrePosX = static_cast<int>(tab_monstres[i]->getPosX()*65.0);
+                int tmpMonstrePosY = static_cast<int>(tab_monstres[i]->getPosY()*60.0);
+                tab_monstres[i]->getRectPos() = {tmpMonstrePosX,tmpMonstrePosY,65,60};
+            }
+        }
+        break;
+    }
+
+
+    
+    default:
+        break;
+    }
 }
 
 Jeu::~Jeu(){
@@ -316,6 +518,17 @@ void Jeu::actionsMonstre(){
 
 void Jeu::gestionDeplacement(Personne& p)
 {
+    //Avant tout déplacements, on regarde si le joueur se trouve sur la porte et si elle a été débloquée.
+    cout << "Case actuelle du dresseur : " << ter.getXY(round(dres.getPosX()),round(dres.getPosY())) << " et taille monstre : " << tab_monstres.size() << endl;
+    if (ter.getXY(round(dres.getPosX()),round(dres.getPosY())) == 'D' && tab_monstres.size() == 0)
+    {
+        if (USInt_level +1 == 4) // FIn du jeu
+        {
+
+        }
+        changeLevel(USInt_level+1);
+        USInt_level++;
+    }
     bool moving;
     unsigned short int movingState;
     p.getMovingState(moving,movingState);
@@ -437,20 +650,20 @@ void Jeu::gestionAttaques(Dresseur& d)
     Vect2D vec2_tmpCalcul;
     dres.getAttackingState(attacking,attackingState,vec2_monstre,vec2_pokeball);
 
-    cout << "Coordonées POKEBALL AVANT LES IF " << vec2_pokeball.x << " " << vec2_pokeball.y << endl;
+   // cout << "Coordonées POKEBALL AVANT LES IF " << vec2_pokeball.x << " " << vec2_pokeball.y << endl;
 
     if (attacking == true && attackingState < 10) // l'attaque dure 10 frames soit 1/6 secondes;
     {
         if (vec2_monstre.x - vec2_pokeball.x > 0.1)
         {
-            cout << "Cas monstre à droite de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
-            << "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
+           // cout << "Cas monstre à droite de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
+            //<< "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
             vec2_pokeball.x += 0.1;
         }
         else if (vec2_monstre.x - vec2_pokeball.x < 0.1)
         {
-            cout << "Cas monstre à gauche de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
-            << "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
+            //cout << "Cas monstre à gauche de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
+            //<< "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
             vec2_pokeball.x -= 0.1;
         }
         else
@@ -460,22 +673,22 @@ void Jeu::gestionAttaques(Dresseur& d)
 
         if (vec2_monstre.y - vec2_pokeball.y >0.1)
         {
-            cout << "Cas monstre en dessous de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
-            << "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
+            //cout << "Cas monstre en dessous de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
+           // << "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
             vec2_pokeball.y += 0.1;
         }
         else if (vec2_monstre.y - vec2_pokeball.y < 0.1)
         {
-            cout << "Cas monstre au dessus de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
-            << "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
+            //cout << "Cas monstre au dessus de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
+            //<< "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
             vec2_pokeball.y -= 0.1;
         }
         else
         {
-            cout << "On ne fait rien ici" << endl;
+            //cout << "On ne fait rien ici" << endl;
         }
 
-        cout << "Coordonées POKEBALL APRES LES IF " << vec2_pokeball.x << " " << vec2_pokeball.y << endl;
+       // cout << "Coordonées POKEBALL APRES LES IF " << vec2_pokeball.x << " " << vec2_pokeball.y << endl;
         
         dres.getTabPokeball()[0]->im_pokeball.draw(renderer,vec2_pokeball.x*65.0,vec2_pokeball.y*60.0,60,60);
         attackingState++;
@@ -527,21 +740,33 @@ void Jeu::setupRenderer(int state)
                     //cout << "SUr quel case on est : "<<(char)ter.getXY(x,y) << endl;
                     switch (ter.getXY(x,y))
                     {
-                    case '#':
-                        ter.getImageTerrain(WALL).draw(renderer,x*65,y*60,65,60);
-                        //cout << "Wall a bien été dessiné" << endl;
-                        break;
-                    case '.':
-                        ter.getImageTerrain(GRASS).draw(renderer,x*65,y*60,65,60);
-                        //cout << "Grass a bien été dessiné" << endl;
-                        break;
-                    case 'A':
-                        ter.getImageTerrain(STONE).draw(renderer,x*65,y*60,65,60);
-                        //cout << "Stone a bien été dessiné" << endl;
-                        break;
-                    //case 'D':
-                    //   im_porte.draw(renderer,x*67,y*30,67,30);
-                    
+                        case '#':
+                        {
+                            ter.getImageTerrain(WALL).draw(renderer,x*65,y*60,65,60);
+                            //cout << "Wall a bien été dessiné" << endl;
+                            break;
+                        }
+                        case '.':
+                        {
+                            ter.getImageTerrain(GRASS).draw(renderer,x*65,y*60,65,60);
+                            //cout << "Grass a bien été dessiné" << endl;
+                            break;
+                        }
+                        case 'A':
+                        {
+                            ter.getImageTerrain(STONE).draw(renderer,x*65,y*60,65,60);
+                            //cout << "Stone a bien été dessiné" << endl;
+                            break;
+                        }
+                        case 'D':
+                        {
+                            if (tab_monstres.size() == 0)
+                            {
+                                ter.getImageTerrain(DOOR).draw(renderer,x*65,y*60,65,60);
+                                break;
+                            }
+                        }
+                        default : break;
                     }
                     
                 }

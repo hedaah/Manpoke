@@ -24,6 +24,61 @@ const char terrain1[15][28] = {
  "###########################"
 };
 
+const char terrain2[15][28] = {
+ "###########################",
+ "#.......##................#",
+ "#####..##..........#######",
+ "#.......##................#",
+ "#.........................#",
+ "#..##...........AA........#",
+ "#.........##....AA........#",
+ "#....D......#...AA....#####",
+ "#.........#.....AA........#",
+ "#......#....#...AA........#",
+ "#..AAAAAAA...........AA...#",
+ "#........A...........AA...#",
+ "#....................AA...#",
+ "#.....#......#.......AA...#",
+ "###########################"
+};
+
+
+const char terrain3[15][28] = {
+ "###########################",
+ "#.......##................#",
+ "#####..##..........#######",
+ "#.......##................#",
+ "#.............AAAAAA......#",
+ "######....................#",
+ "#.........##....AA........#",
+ "########......#...AA..#####",
+ "#.........#.....AA........#",
+ "#......#....#...AA........#",
+ "#..#######................#",
+ "#.....D.........AAAA.AA...#",
+ "#....................AA...#",
+ "#.....#......#............#",
+ "###########################"
+};
+
+const char terrain4[15][28] = {
+ "###########################",
+ "#.......##................#",
+ "#####..##..........#######",
+ "#.......##...........D....#",
+ "#.............AAA.........#",
+ "######....................#",
+ "#.........##....AA........#",
+ "########......#...AA..#####",
+ "#.........#.....AA........#",
+ "#......#....#...AA........#",
+ "#..#######................#",
+ "#...............AAAA.AA...#",
+ "#......AAAAA.........AA...#",
+ "#.....#......#............#",
+ "###########################"
+};
+
 
 /**/
 
@@ -54,6 +109,105 @@ Terrain::Terrain() {
     }
     
 }
+
+void Terrain::setMap(int j){
+
+   switch(j){
+    case 0:
+     for(unsigned int i = 0; i< dimx ;++i)
+    {
+        for(unsigned int j = 0; j < dimy; ++j)
+        {
+            switch(terrain1[dimy-1-j][i])
+            {
+                case '#' : tab_terr[i][j]=WALL;
+                        break;
+
+                case '.' : tab_terr[i][j]=GRASS;
+                        break;
+
+                case 'D' : tab_terr[i][j]=DOOR;
+                        break;
+
+                case 'A': tab_terr[i][j]=STONE;
+                        break;
+            }
+        }
+    }
+     break;
+    case 1:
+         for(unsigned int i = 0; i< dimx ;++i)
+    {
+        for(unsigned int j = 0; j < dimy; ++j)
+        {
+            switch(terrain2[dimy-1-j][i])
+            {
+                case '#' : tab_terr[i][j]=WALL;
+                        break;
+
+                case '.' : tab_terr[i][j]=GRASS;
+                        break;
+
+                case 'D' : tab_terr[i][j]=DOOR;
+                        break;
+
+                case 'A': tab_terr[i][j]=STONE;
+                        break;
+            }
+        }
+    }
+        break;
+
+    case 2:
+         for(unsigned int i = 0; i< dimx ;++i)
+    {
+        for(unsigned int j = 0; j < dimy; ++j)
+        {
+            switch(terrain3[dimy-1-j][i])
+            {
+                case '#' : tab_terr[i][j]=WALL;
+                        break;
+
+                case '.' : tab_terr[i][j]=GRASS;
+                        break;
+
+                case 'D' : tab_terr[i][j]=DOOR;
+                        break;
+
+                case 'A': tab_terr[i][j]=STONE;
+                        break;
+            }
+        }
+    }
+    break;
+
+    case 3:
+         for(unsigned int i = 0; i< dimx ;++i)
+    {
+        for(unsigned int j = 0; j < dimy; ++j)
+        {
+            switch(terrain3[dimy-1-j][i])
+            {
+                case '#' : tab_terr[i][j]=WALL;
+                        break;
+
+                case '.' : tab_terr[i][j]=GRASS;
+                        break;
+
+                case 'D' : tab_terr[i][j]=DOOR;
+                        break;
+
+                case 'A': tab_terr[i][j]=STONE;
+                        break;
+            }
+        }
+    }
+    break;
+    
+    default:
+        break;
+    }
+ }
 
 
 Terrain::~Terrain() {

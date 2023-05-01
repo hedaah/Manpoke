@@ -73,6 +73,8 @@ public :
     void gestionDeplacement(Personne& p);
     void gestionRendue(Personne& p);
     void gestionAttaques(Dresseur& d);
+
+    void changeLevel(int i);
     
     void setupRenderer(int state);
 

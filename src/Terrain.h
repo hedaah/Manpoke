@@ -38,6 +38,8 @@ public :
     Image& getImageTerrain(TypeCase c);
     void setImageTerrain(TypeCase c, const char* fileName, SDL_Renderer* renderer);
 
+    void setMap(int j);
+
     unsigned  int getDimX();
     unsigned  int getDimY();
 

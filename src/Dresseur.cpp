@@ -5,7 +5,7 @@ using namespace std;
 
 Dresseur::Dresseur(){
     
-    nb_RP=50; //Nombre de pokeballs
+    nb_RP=150; //Nombre de pokeballs
     setPos(1,1);
     setVie(125);
     for(int i=0;i<=nb_RP;i++){
