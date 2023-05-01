@@ -34,6 +34,11 @@ class Dresseur : public Personne{
 
         Image im_vie[6];
 
+        bool b_isAttacking;
+        unsigned short int USInt_internalAttackingState;
+        Vect2D vec_attackedMonster;
+        Vect2D vec_currentPokeballAttack;
+
         
 
 
@@ -41,14 +46,17 @@ class Dresseur : public Personne{
 
         Dresseur();// constructeur
 
-        int getPosXSP(); //recupere la position x du pokeball[nb_RP]
-        int getPosYSP(); //recupere la position x du pokeball[nb_RP]
+        double getPosXSP(); //recupere la position x du pokeball[nb_RP]
+        double getPosYSP(); //recupere la position y du pokeball[nb_RP]
 
         int getPosXSPA(); //recupere la position x du pokeball lancé 
         int getPosYSPA();  // recupere la position y du pokeball lancé
 
         unsigned short int getNbPokeball();
         void setNbPokeball(unsigned short int x);
+
+        void getAttackingState(bool& attacking,unsigned short int& internalAttackingState,Vect2D& vecMonstre, Vect2D& vecPokebal);
+        void setAttackingState(bool attacking, unsigned short int internalAttackingState, Vect2D& vecMonstre, Vect2D& vecPokeball);
 
         vector<Pokeball*> getTabPokeball();
 

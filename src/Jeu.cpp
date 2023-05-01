@@ -102,9 +102,9 @@ Jeu::Jeu(){
                                                          //référence vers le rectpos de l'instance, on récupère la référence 
                                                          //car on en a besoin pour draw ensuite.
 
-    for (unsigned int i = 0; i< dres.getNbPokeball() ; i++)
+    for (unsigned int i = 0; i< dres.getTabPokeball().size() ; i++)
     {
-       //dres.getTabPokeball()[i]->im_pokeball.loadFromFile("data/pokeball.png",renderer);
+       dres.getTabPokeball()[i]->im_pokeball.loadFromFile("data/pokeball.png",renderer);
 
     }
     
@@ -223,10 +223,33 @@ void Jeu::actionClavier(const char touche){
         }
         break;
     case 'a':
+    {
         // boucle pour vérifier si le dresseur est proche d'un monstre
+        bool attacking;
+        unsigned short int attackingState;
+        Vect2D vec2_monstre;
+        Vect2D vec2_pokeball;
+        vec2_monstre.make_Vect2D(0,0);
+        vec2_pokeball.make_Vect2D(0,0);
+        dres.getAttackingState(attacking,attackingState,vec2_monstre,vec2_pokeball);
+        if (attacking == true)
+        {
+            return; //Si le dresseur attaque déjà, on attend la fin de son attaque pour pouvoir re-attaquer.
+        }
+
         for (unsigned short int i = 0; i < tab_monstres.size(); i++)
         {
             if (dres.getDresseur().distance2(tab_monstres[i]->getVect2D(), dres.getDresseur()) <= 1) {
+                if (attacking == false)
+                {
+                    Vect2D tmpMonstreVec = tab_monstres[i]->getVect2D();
+                    Vect2D tmpPokeballVec;
+                    Vect2D tmp;
+                    tmpPokeballVec = tmp.make_Vect2D(dres.getPosX(),dres.getPosY());
+                    attacking = true;
+                    attackingState = 0;
+                    dres.setAttackingState(attacking,attackingState,tmpMonstreVec,tmpPokeballVec);
+                }
                 cout << "Un monstre est mort." << endl;
                 monstreMort = true;
                 indexMonstreMort = i ;
@@ -251,13 +274,11 @@ void Jeu::actionClavier(const char touche){
             case grand:
                 point+=200;
                 cout<<"monstre grand tue"<<endl;
-
                 break;
             
             case boss:
                 point+=1000;
                 cout<<"Boss tue"<<endl;
-
                 break;
                 
             default:
@@ -277,12 +298,12 @@ void Jeu::actionClavier(const char touche){
         monstreMort = false;
 
     break;
+    }
         
 
 
     default:
-
-        break;
+        {break;}
     }
 }
 
@@ -316,7 +337,7 @@ void Jeu::gestionDeplacement(Personne& p)
                 {
                     break;
                 }
-                dres.LienPokD2();
+                //dres.LienPokD2();
             }
             case bas:
             {
@@ -330,7 +351,7 @@ void Jeu::gestionDeplacement(Personne& p)
                 {
                     break;
                 }
-                dres.LienPokD2();
+                //dres.LienPokD2();
             }
             case droite:
             {
@@ -344,7 +365,7 @@ void Jeu::gestionDeplacement(Personne& p)
                 {
                     break;
                 }
-                dres.LienPokD2();
+                //dres.LienPokD2();
             }
             case gauche:
             {
@@ -358,7 +379,7 @@ void Jeu::gestionDeplacement(Personne& p)
                 {
                     break;
                 }
-                dres.LienPokD2();
+                //dres.LienPokD2();
             }
             default : break;
         }
@@ -404,6 +425,70 @@ void Jeu::gestionRendue(Personne& p)
     {
         SDL_RenderCopy(renderer,p.getImageSprite().getTexture(),
             &p.getTabSpritesRect(p.getDir())[0],&p.getRectPos());
+    }
+}
+
+void Jeu::gestionAttaques(Dresseur& d)
+{
+    bool attacking;
+    unsigned short int attackingState;
+    Vect2D vec2_monstre;
+    Vect2D vec2_pokeball;
+    Vect2D vec2_tmpCalcul;
+    dres.getAttackingState(attacking,attackingState,vec2_monstre,vec2_pokeball);
+
+    cout << "Coordonées POKEBALL AVANT LES IF " << vec2_pokeball.x << " " << vec2_pokeball.y << endl;
+
+    if (attacking == true && attackingState < 10) // l'attaque dure 10 frames soit 1/6 secondes;
+    {
+        if (vec2_monstre.x - vec2_pokeball.x > 0.1)
+        {
+            cout << "Cas monstre à droite de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
+            << "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
+            vec2_pokeball.x += 0.1;
+        }
+        else if (vec2_monstre.x - vec2_pokeball.x < 0.1)
+        {
+            cout << "Cas monstre à gauche de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
+            << "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
+            vec2_pokeball.x -= 0.1;
+        }
+        else
+        {
+            cout << "On ne fait rien ici" << endl;
+        }
+
+        if (vec2_monstre.y - vec2_pokeball.y >0.1)
+        {
+            cout << "Cas monstre en dessous de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
+            << "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
+            vec2_pokeball.y += 0.1;
+        }
+        else if (vec2_monstre.y - vec2_pokeball.y < 0.1)
+        {
+            cout << "Cas monstre au dessus de la pokeball, coordonnées monstre : (" <<vec2_monstre.x << "," << vec2_monstre.y << ")" 
+            << "et coordonnées pokeball : (" << vec2_pokeball.x << "," << vec2_pokeball.y << ")." << endl;
+            vec2_pokeball.y -= 0.1;
+        }
+        else
+        {
+            cout << "On ne fait rien ici" << endl;
+        }
+
+        cout << "Coordonées POKEBALL APRES LES IF " << vec2_pokeball.x << " " << vec2_pokeball.y << endl;
+        
+        dres.getTabPokeball()[0]->im_pokeball.draw(renderer,vec2_pokeball.x*65.0,vec2_pokeball.y*60.0,60,60);
+        attackingState++;
+        dres.setAttackingState(attacking,attackingState,vec2_monstre,vec2_pokeball);
+    }
+    else if (attackingState == 10)
+    {
+        attacking = false;
+        attackingState = 0;
+        Vect2D tmp;
+        vec2_monstre = tmp.make_Vect2D(0,0);
+        vec2_pokeball = tmp.make_Vect2D(0,0);
+        dres.setAttackingState(attacking,attackingState,vec2_monstre,vec2_pokeball);
     }
 }
 
@@ -525,7 +610,15 @@ void Jeu::setupRenderer(int state)
 
             
             //dres.getImageSprite()[dres.getDir()].draw(renderer,dres.getPosX()*37,dres.getPosY()*40,37,40);
-
+            bool attacking;
+            unsigned short int attackingState;
+            Vect2D vec2_monstre;
+            Vect2D vec2_pokeball;
+            dres.getAttackingState(attacking,attackingState,vec2_monstre,vec2_pokeball);
+            if (attacking == true)
+            {
+                dres.getTabPokeball()[0]->im_pokeball.draw(renderer,vec2_pokeball.x*65.0,vec2_pokeball.y*60.0,20,20);
+            }
             //Préparation du rendu du dresseur.
             gestionRendue(dres);
 
@@ -686,6 +779,9 @@ void Jeu::afficherBoucle()
     {
         gestionDeplacement(*tab_monstres[i]);
     }
+
+    // ################## Gestion des attaques ################
+    gestionAttaques(dres);
 
 
 

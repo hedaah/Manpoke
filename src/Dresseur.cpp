@@ -5,7 +5,7 @@ using namespace std;
 
 Dresseur::Dresseur(){
     
-    nb_RP=9;
+    nb_RP=50; //Nombre de pokeballs
     setPos(1,1);
     setVie(125);
     for(int i=0;i<=nb_RP;i++){
@@ -16,13 +16,17 @@ Dresseur::Dresseur(){
         tab_pokeball.push_back(p);
 
     }
+    b_isAttacking = false;
+    USInt_internalAttackingState = 0;
+    Vect2D vec_pokeball;
+    vec_pokeball.make_Vect2D(0,0);
 }
 
-int Dresseur::getPosXSP(){
+double Dresseur::getPosXSP(){
     return tab_pokeball[nb_RP]->vec2_p.x;
 }
 
-int Dresseur::getPosYSP(){
+double Dresseur::getPosYSP(){
     return tab_pokeball[nb_RP]->vec2_p.y;
 }
 
@@ -56,7 +60,7 @@ void Dresseur::attaquer2(){
     }
     switch (getDir())
     {
-    case 0: //haut
+    case haut: //haut
         if(nb_RP>0){
                 tab_pokeball[nb_RP]->vec2_p.y=tab_pokeball[nb_RP]->vec2_p.y-4;
                 cout<<"position du pokeball["<<nb_RP<< "]en y = "<<tab_pokeball[nb_RP]->vec2_p.y<<" et sa distance avec le dresseur est = "<<tab_pokeball[nb_RP]->vec2_p.distance2(tab_pokeball[nb_RP]->vec2_p,getVect2D())<<endl;
@@ -74,7 +78,7 @@ void Dresseur::attaquer2(){
         }
         break;
 
-    case 1: // bas
+    case bas: // bas
         if(nb_RP>0){
                 tab_pokeball[nb_RP]->vec2_p.y=tab_pokeball[nb_RP]->vec2_p.y+4;
                 cout<<"position du pokeball["<<nb_RP<< "]en y= "<<tab_pokeball[nb_RP]->vec2_p.y<<" et sa distance avec le dresseur est = "<<tab_pokeball[nb_RP]->vec2_p.distance2(tab_pokeball[nb_RP]->vec2_p,getVect2D())<<endl;
@@ -88,7 +92,7 @@ void Dresseur::attaquer2(){
         }
         break;
 
-    case 2:
+    case gauche:
         if(nb_RP>0){
                 tab_pokeball[nb_RP]->vec2_p.x=tab_pokeball[nb_RP]->vec2_p.x-4;
                 cout<<"position du pokeball["<<nb_RP<< "]en x = "<<tab_pokeball[nb_RP]->vec2_p.x<<" et sa distance avec le dresseur est = "<<tab_pokeball[nb_RP]->vec2_p.distance2(tab_pokeball[nb_RP]->vec2_p,getVect2D())<<endl;
@@ -102,7 +106,7 @@ void Dresseur::attaquer2(){
         }
         break;
 
-    case 3: 
+    case droite: 
         if(nb_RP>0){
                 tab_pokeball[nb_RP]->vec2_p.x=tab_pokeball[nb_RP]->vec2_p.x+4;
                 cout<<"position du pokeball["<<nb_RP<< "]en x = "<<tab_pokeball[nb_RP]->vec2_p.x<<" et sa distance avec le dresseur est = "<<tab_pokeball[nb_RP]->vec2_p.distance2(tab_pokeball[nb_RP]->vec2_p,getVect2D())<<endl;
@@ -147,4 +151,19 @@ Vect2D Dresseur::getPokeball(){
 
 Vect2D Dresseur::getDresseur(){
     return getVect2D(); 
+}
+
+void Dresseur::getAttackingState(bool& attacking,unsigned short int& internalAttackingState,Vect2D& vec_monstre, Vect2D& vec_pokeball)
+{
+    attacking = b_isAttacking;
+    internalAttackingState = USInt_internalAttackingState;
+    vec_monstre = vec_attackedMonster;
+    vec_pokeball = vec_currentPokeballAttack;
+}
+void Dresseur::setAttackingState(bool attacking, unsigned short int internalAttackingState,Vect2D& vec_monstre, Vect2D& vec_pokeball)
+{
+    b_isAttacking = attacking;
+    USInt_internalAttackingState = internalAttackingState;
+    vec_attackedMonster = vec_monstre;
+    vec_currentPokeballAttack = vec_pokeball;
 }

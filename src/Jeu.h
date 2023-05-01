@@ -72,6 +72,7 @@ public :
 
     void gestionDeplacement(Personne& p);
     void gestionRendue(Personne& p);
+    void gestionAttaques(Dresseur& d);
     
     void setupRenderer(int state);
 
