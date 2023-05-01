@@ -32,6 +32,7 @@ private :
 
     TTF_Font * font;
     Image font_im;
+    Image font_point;
     SDL_Color font_color;
 
     Mix_Chunk * sound;

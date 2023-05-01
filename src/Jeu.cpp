@@ -104,7 +104,7 @@ Jeu::Jeu(){
 
     for (unsigned int i = 0; i< dres.getNbPokeball() ; i++)
     {
-        dres.getTabPokeball()[i]->im_pokeball.loadFromFile("data/pokeball.png",renderer);
+       //dres.getTabPokeball()[i]->im_pokeball.loadFromFile("data/pokeball.png",renderer);
 
     }
     
@@ -125,7 +125,7 @@ Jeu::Jeu(){
         if (i < 6) // 6 petits monstres
         {
             Monstre tmp(8.0,2.0+i,petit);
-            Monstre* tmp2 = new Monstre;
+            Monstre* tmp2 = new Monstre(petit);
             tmp2->setPos(tmp.getPosX(),tmp.getPosY()); 
             tmp2->setVie(tmp.getVie());
             tab_monstres.push_back(tmp2);
@@ -137,7 +137,7 @@ Jeu::Jeu(){
         else if (i >= 6 && i < 9) // 3 monstres moyens
         {
             Monstre tmp(10.0,2.0+i,moyen);
-            Monstre* tmp2 = new Monstre;
+            Monstre* tmp2 = new Monstre(moyen);
             tmp2->setPos(tmp.getPosX(),tmp.getPosY());
             tmp2->setVie(tmp.getVie());
             tab_monstres.push_back(tmp2);
@@ -149,7 +149,7 @@ Jeu::Jeu(){
         else if (i == 9) // 1 monstre grand
         {
             Monstre tmp(5.0,5.0,grand);
-            Monstre* tmp2 = new Monstre;
+            Monstre* tmp2 = new Monstre(grand);
             tmp2->setPos(tmp.getPosX(),tmp.getPosY());
             tmp2->setVie(tmp.getVie());
             tab_monstres.push_back(tmp2);
@@ -161,6 +161,7 @@ Jeu::Jeu(){
     }
 
     font=TTF_OpenFont("DejaVuSansCondensed.ttf", 72 );
+
 
     point=0;
     score=dres.GetnombreRestantesPokemon()+1;
@@ -178,6 +179,7 @@ void Jeu::actionClavier(const char touche){
     unsigned short int movingState;
     dres.getMovingState(moving,movingState);
 
+    int random = rand() % 2; // génère un nombre aléatoire entre 0 et 2
     bool monstreMort = false;
     int indexMonstreMort = -1;
     //cout << "moving : " << moving << " movingState : " << movingState << " direction : " << dres.getDir() << endl; 
@@ -221,37 +223,65 @@ void Jeu::actionClavier(const char touche){
         }
         break;
     case 'a':
-
-    // boucle pour vérifier si le dresseur est proche d'un monstre
-    for (unsigned short int i = 0; i < tab_monstres.size(); i++)
-    {
-        if (dres.getDresseur().distance2(tab_monstres[i]->getVect2D(), dres.getDresseur()) <= 2) {
-            cout << "Un monstre est mort." << endl;
-            monstreMort = true;
-            indexMonstreMort = i;
-            break;
+        // boucle pour vérifier si le dresseur est proche d'un monstre
+        for (unsigned short int i = 0; i < tab_monstres.size(); i++)
+        {
+            if (dres.getDresseur().distance2(tab_monstres[i]->getVect2D(), dres.getDresseur()) <= 1) {
+                cout << "Un monstre est mort." << endl;
+                monstreMort = true;
+                indexMonstreMort = i ;
+                break;
+            }
         }
-    }
 
-    if (monstreMort) {
-        // supprime le monstre de la liste dont le monstre a ete proche du dresseur
-        tab_monstres.erase(tab_monstres.begin() + indexMonstreMort);
-        
-    }
-    else {
-        cout << "Aucun monstre n'a été touché." << endl;
-    }
-    monstreMort = false;
+        if (monstreMort) {
+            // supprime le monstre de la liste dont le monstre a ete proche du dresseur
+            switch (tab_monstres[indexMonstreMort]->getType())
+            {
+            case petit:
+                point+=50;
+                cout<<"monstre petit tue"<<endl;
+                break;
+
+            case moyen:
+                point+=100;
+                cout<<" monstre moyen tue"<<endl;
+                break;
+
+            case grand:
+                point+=200;
+                cout<<"monstre grand tue"<<endl;
+
+                break;
+            
+            case boss:
+                point+=1000;
+                cout<<"Boss tue"<<endl;
+
+                break;
+                
+            default:
+                break;
+            }
+            tab_monstres.erase(tab_monstres.begin() + indexMonstreMort);
+    
+            
+            }
+        else {
+            cout << "Aucun monstre n'a été touché." << endl;
+            if (random == 0 && !tab_monstres.empty()) {
+                dres.WORLVie(-25);
+            }
+        break;
+        }
+        monstreMort = false;
 
     break;
+        
 
-
-    case 't':
-        tab_monstres.back();
-
-        break;
 
     default:
+
         break;
     }
 }
@@ -475,7 +505,15 @@ void Jeu::setupRenderer(int state)
             Stock.w=70;
             Stock.h=70;
 
+            SDL_Rect Point;
+            Point.x=1400;
+            Point.y=940;
+            Point.w=40;
+            Point.h=40;
+
             SDL_RenderCopy(renderer,font_im.getTexture(),nullptr,&Stock);
+            SDL_RenderCopy(renderer,font_point.getTexture(),nullptr,&Point);
+
         
 
            
@@ -578,10 +616,7 @@ void Jeu::afficherBoucle()
                             //cout<<"position du pokemon en y = "<<dres.getPosYSPA()<<endl;
                             
                             score--;
-                            score_str=to_string(score);
-                            point_str=to_string(point);
-                            font_im.setSurface(TTF_RenderText_Blended(font,score_str.c_str(),font_color));
-                            font_im.loadFromCurrentSurface(renderer);
+                            
 
                             
 
@@ -590,10 +625,6 @@ void Jeu::afficherBoucle()
                         //cout<<"2- valeur du boolen ="<<getConstDresseur().getBol()<<endl;
                         break;
 
-                        case SDL_SCANCODE_P :
-                            actionClavier('t');
-                            cout<<" cela a bien marche"<<endl;
-                            break;
                     
                     default: 
                         if (Event.button.button==SDL_BUTTON_LEFT ){
@@ -638,6 +669,14 @@ void Jeu::afficherBoucle()
                 state=1;
                 cout<<state<<endl;
             }
+
+            point_str=to_string(point);
+            score_str=to_string(score);
+        
+            font_point.setSurface(TTF_RenderText_Blended(font,point_str.c_str(),font_color));
+            font_point.loadFromCurrentSurface(renderer);
+            font_im.setSurface(TTF_RenderText_Blended(font,score_str.c_str(),font_color));
+            font_im.loadFromCurrentSurface(renderer);
         }
     // ################## Déplacement du joueur ################
     gestionDeplacement(dres);

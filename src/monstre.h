@@ -19,11 +19,13 @@ class Monstre: public Personne
 
   public :
 
-  Monstre();
+  Monstre(TypeMonstre type);
   Monstre(unsigned short int x, unsigned short int y); // m_type = moyen, vie = 100;
   Monstre(unsigned short int x, unsigned short int y, TypeMonstre type);
 
-  void cleanMonstre(Monstre* p); 
+  void cleanMonstre(Monstre* p);
+
+  TypeMonstre getType();
 
   void deplacerAuto(int tmp); // deplacement aléatoire des monstres
 

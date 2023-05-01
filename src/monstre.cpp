@@ -1,9 +1,9 @@
 #include <iostream>
 #include "monstre.h"
 
-Monstre::Monstre(){
+Monstre::Monstre(TypeMonstre type){
     setPos(5,5);
-    m_type = moyen;
+    m_type = type;
     setVie(100);
 }
 
@@ -96,6 +96,10 @@ void Monstre::deplacerAuto(int tmp){
     default:
         break;
     }
+}
+
+TypeMonstre Monstre::getType(){
+    return m_type;
 }
 
 void Monstre::cleanMonstre(Monstre* p){
